@@ -1,0 +1,1 @@
+enum NotificationType { user, system }
