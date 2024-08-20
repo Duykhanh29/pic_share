@@ -3,7 +3,9 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:pic_share/data/enums/role_type.dart';
 part 'user_model.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(
+    explicitToJson:
+        true) // add explicitToJson to make sure toJson of UserModel calls to another toJson inside this userModel
 @CopyWith(copyWithNull: true)
 class UserModel {
   final RoleType roleType;

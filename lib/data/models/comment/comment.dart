@@ -4,7 +4,7 @@ import 'package:pic_share/data/models/comment/comment_user.dart';
 import 'package:pic_share/data/models/comment/reply.dart';
 part 'comment.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 @CopyWith(copyWithNull: true)
 class Comment {
   final String? id;

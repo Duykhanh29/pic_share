@@ -23,6 +23,6 @@ Map<String, dynamic> _$CommentToJson(Comment instance) => <String, dynamic>{
       'id': instance.id,
       'content': instance.content,
       'createdAt': instance.createdAt,
-      'listReply': instance.listReply,
-      'user': instance.user,
+      'listReply': instance.listReply.map((e) => e.toJson()).toList(),
+      'user': instance.user?.toJson(),
     };

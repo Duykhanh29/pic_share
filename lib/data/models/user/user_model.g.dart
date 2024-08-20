@@ -33,8 +33,8 @@ Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'urlAvatar': instance.urlAvatar,
       'isVerified': instance.isVerified,
       'userCode': instance.userCode,
-      'geoInfo': instance.geoInfo,
-      'config': instance.config,
+      'geoInfo': instance.geoInfo?.toJson(),
+      'config': instance.config?.toJson(),
     };
 
 const _$RoleTypeEnumMap = {

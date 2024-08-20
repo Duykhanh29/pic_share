@@ -16,13 +16,15 @@ Message _$MessageFromJson(Map<String, dynamic> json) => Message(
           $enumDecodeNullable(_$MessageTypeEnumMap, json['messageType']) ??
               MessageType.text,
       sennderId: json['sennderId'] as String?,
+      time: (json['time'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$MessageToJson(Message instance) => <String, dynamic>{
       'id': instance.id,
       'sennderId': instance.sennderId,
       'messageType': _$MessageTypeEnumMap[instance.messageType]!,
-      'messageContent': instance.messageContent,
+      'messageContent': instance.messageContent?.toJson(),
+      'time': instance.time,
     };
 
 const _$MessageTypeEnumMap = {

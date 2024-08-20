@@ -3,7 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:pic_share/data/models/comment/comment_user.dart';
 part 'reply.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 @CopyWith(copyWithNull: true)
 class Reply {
   final String? id;
