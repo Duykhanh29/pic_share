@@ -4,7 +4,7 @@ import 'package:pic_share/data/models/comment/comment.dart';
 
 part 'post.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 @CopyWith(copyWithNull: true)
 class Post {
   final String? id;

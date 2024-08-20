@@ -28,5 +28,5 @@ Map<String, dynamic> _$PostToJson(Post instance) => <String, dynamic>{
       'likeCount': instance.likeCount,
       'isDeleted': instance.isDeleted,
       'cmtCount': instance.cmtCount,
-      'listComment': instance.listComment,
+      'listComment': instance.listComment.map((e) => e.toJson()).toList(),
     };

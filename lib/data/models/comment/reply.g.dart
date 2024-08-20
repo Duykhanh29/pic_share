@@ -19,5 +19,5 @@ Map<String, dynamic> _$ReplyToJson(Reply instance) => <String, dynamic>{
       'id': instance.id,
       'content': instance.content,
       'createdAt': instance.createdAt,
-      'user': instance.user,
+      'user': instance.user?.toJson(),
     };

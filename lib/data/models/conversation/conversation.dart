@@ -3,7 +3,7 @@ import 'package:pic_share/data/models/conversation/message.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'conversation.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 @CopyWith(copyWithNull: true)
 class Conversation {
   final String? id;

@@ -29,6 +29,6 @@ Map<String, dynamic> _$ConversationToJson(Conversation instance) =>
       'createdAt': instance.createdAt,
       'updatedAt': instance.updatedAt,
       'participants': instance.participants,
-      'messages': instance.messages,
-      'lastMessage': instance.lastMessage,
+      'messages': instance.messages.map((e) => e.toJson()).toList(),
+      'lastMessage': instance.lastMessage?.toJson(),
     };

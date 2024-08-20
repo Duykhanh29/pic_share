@@ -3,7 +3,7 @@ import 'package:pic_share/data/enums/message_type.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'message.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 @CopyWith(copyWithNull: true)
 class Message {
   final String? id;
