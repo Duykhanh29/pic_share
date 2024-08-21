@@ -2,6 +2,7 @@ part of './app_pages.dart';
 
 abstract class Routes {
   static const String root = '/';
+  static const String navBar = '/nav_bar';
   static const String login = '/login';
   static const String home = '/home';
   static const String notification = '/notification';
@@ -13,4 +14,5 @@ abstract class Routes {
   static const String comments = '/comments';
   static const String reactedUsers = '/reacted_users';
   static const String chat = '/chat';
+  static const String register = '/register';
 }

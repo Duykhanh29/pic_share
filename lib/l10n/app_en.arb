@@ -57,6 +57,17 @@
     "addCaption":"Add caption",
     "reactedUser":"People who reacted",
     "chat":"Chat",
-    "newPost":"New post"
-
+    "newPost":"New post",
+    "emailFieldCanNotBeEmpty":"Email field can not be empty",
+    "pleaseEnterValidEmail":"Please enter a valid email address",
+    "signIn":"Sign in",
+    "register":"Register",
+    "all":"All",
+    "minPasswordLength":"Password must be at least 6 characters",
+    "passCannotBeEmpty":"Password cannot be empty",
+    "or":"Or",
+    "and":"And",
+    "alreadyHaveAccount": "Already have an Account?",
+    "allRightReserved":"All Rights Reserved.",
+    "appName": "Sharing picture"
 }

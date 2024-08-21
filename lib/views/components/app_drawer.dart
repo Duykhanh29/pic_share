@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:pic_share/app/constants/app_color.dart';
+import 'package:pic_share/app/constants/app_images.dart';
+import 'package:pic_share/app/constants/app_text_styles.dart';
 import 'package:pic_share/app/helper/divider_helper.dart';
 import 'package:pic_share/app/helper/image_cache_helper.dart';
+import 'package:pic_share/view_model/drawer/drawer_controller.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class AppDrawer extends StatelessWidget {
+class AppDrawer extends GetView<AppDrawerController> {
   const AppDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context)!;
     return Drawer(
       width: MediaQuery.of(context).size.width * 0.7,
       surfaceTintColor: Colors.white,
@@ -20,21 +27,33 @@ class AppDrawer extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ImageCacheHelper.avatarImage(
-                      url:
-                          "https://images.pexels.com/photos/1391499/pexels-photo-1391499.jpeg?cs=srgb&dl=pexels-soldiervip-1391499.jpg&fm=jpg",
-                      width: MediaQuery.of(context).size.width * 0.15,
-                      height: MediaQuery.of(context).size.width * 0.15),
-                  Text("User name")
+                  controller.currentUser?.urlAvatar != null
+                      ? ImageCacheHelper.avatarImage(
+                          url: controller.currentUser!.urlAvatar!,
+                          width: MediaQuery.of(context).size.width * 0.15,
+                          height: MediaQuery.of(context).size.width * 0.15)
+                      : CircleAvatar(
+                          radius: MediaQuery.of(context).size.width * 0.075,
+                          backgroundImage:
+                              const AssetImage(AppImage.userEmptyAvatar),
+                        ),
+                  Text(
+                    controller.currentUser?.name ?? "No name",
+                    style: AppTextStyles.headingTextStyle(),
+                  ),
                 ],
               ),
             ),
           ),
           Container(
             padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-            child: const ListTile(
-              title: Text("Home"),
-              leading: Text("data"),
+            child: ListTile(
+              onTap: () {},
+              title: Text(
+                t.all,
+                style: AppTextStyles.commonTextStyle(),
+              ),
+              leading: const Icon(Icons.people_alt_sharp),
             ),
           ),
           Expanded(
@@ -45,6 +64,7 @@ class AppDrawer extends StatelessWidget {
                     padding:
                         const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                     child: ListTile(
+                      onTap: () {},
                       title: Text("Friend $index"),
                       leading: Text("data"),
                     ),
@@ -56,21 +76,18 @@ class AppDrawer extends StatelessWidget {
           ),
           const Divider(),
           GestureDetector(
-            onTap: () {},
+            onTap: controller.logout,
             child: Container(
               decoration:
                   BoxDecoration(color: Colors.transparent.withOpacity(0)),
-              child: const ListTile(
+              child: ListTile(
                 title: Text(
-                  "Sign out",
-                  style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.red,
-                      fontWeight: FontWeight.w400),
+                  t.logout,
+                  style: AppTextStyles.logOutTextStyle(),
                 ),
-                leading: Icon(
+                leading: const Icon(
                   Icons.logout_sharp,
-                  color: Colors.red,
+                  color: AppColors.warningColor,
                 ),
               ),
             ),
