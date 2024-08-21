@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 class AppColors {
   static Color backgroundColor = const Color.fromARGB(255, 66, 138, 255);
+  static Color backgrounAuthScreendColor =
+      const Color.fromARGB(255, 215, 221, 232);
   static Color secondaryColor = const Color.fromARGB(255, 107, 152, 224);
   static Color thirdColor = const Color.fromARGB(255, 77, 186, 175);
   static Color lightTabarColor = const Color.fromARGB(255, 152, 253, 155);
@@ -30,5 +32,5 @@ class AppColors {
   static Color dardSecondaryColor = const Color.fromARGB(255, 15, 75, 173);
 
   // post view
-  static Color postViewColor = Colors.black26;
+  static Color postViewColor = Colors.black87;
 }

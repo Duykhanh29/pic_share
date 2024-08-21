@@ -19,7 +19,7 @@ class DividerHelper {
     return Container(
       // padding: const EdgeInsets.only(left: 15, bottom: 10, top: 20),
       margin: const EdgeInsets.only(left: 5, bottom: 10, top: 10),
-      decoration: BoxDecoration(color: Colors.red),
+      decoration: const BoxDecoration(color: Colors.red),
       // height: 15,
       // alignment: Alignment.centerLeft,
       child: Text(

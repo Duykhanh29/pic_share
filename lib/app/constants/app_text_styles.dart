@@ -34,6 +34,13 @@ class AppTextStyles {
         fontSize: 13, fontWeight: FontWeight.normal, color: Colors.black);
   }
 
+  static TextStyle logOutTextStyle() {
+    return const TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.w500,
+        color: AppColors.warningColor);
+  }
+
   static TextStyle warningTextStyle() {
     return const TextStyle(
         fontSize: 14,

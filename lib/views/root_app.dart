@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pic_share/routes/app_pages.dart';
-import 'package:pic_share/view_model/nav_bottom/nav_bottom_bidings.dart';
+import 'package:pic_share/view_model/auth/auth_bindings.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -11,7 +11,7 @@ class RootApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      initialBinding: NavBottomBindinngs(),
+      initialBinding: AuthBindings(),
       initialRoute: Routes.root,
       getPages: AppPages.pages,
       fallbackLocale: const Locale('en', 'UK'),

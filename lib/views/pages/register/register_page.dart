@@ -1,33 +1,52 @@
 import 'package:flutter/material.dart';
-import 'package:pic_share/views/widgets/keyboard_dismiss.dart';
+import 'package:get/get.dart';
+import 'package:pic_share/app/constants/app_text_styles.dart';
+import 'package:pic_share/view_model/register/register_controller.dart';
+import 'package:pic_share/views/pages/auth/auth_view.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class RegisterPage extends StatelessWidget {
+class RegisterPage extends GetView<RegisterController> {
   const RegisterPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return KeyboardDismiss(
-      child: Scaffold(
-        body: Center(
-          child: Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: Colors.grey, width: 1)),
-            margin: EdgeInsets.symmetric(horizontal: 20),
-            padding: EdgeInsets.all(15),
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Text(
-                    "Email",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+    final t = AppLocalizations.of(context)!;
+    return Obx(
+      () => AuthView(
+        title: t.register,
+        emailController: controller.emailController,
+        onSubmitted: controller.registerUserByEmailAndPass,
+        passwordController: controller.passController,
+        formKey: controller.formKey,
+        isPassVissibility: controller.isPassVissibility.value,
+        onChangePassVissibility: controller.onChangePassVissibility,
+        child: Column(
+          children: [
+            const SizedBox(height: 30),
+            Container(
+              alignment: Alignment.centerLeft,
+              child: TextButton(
+                style: ButtonStyle(
+                  shape: MaterialStateProperty.all(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
                   ),
-                  TextFormField(),
-                ],
+                ),
+                onPressed: () {
+                  Get.back();
+                },
+                child: Text(
+                  t.alreadyHaveAccount,
+                  style: AppTextStyles.commonTextStyle()
+                      .copyWith(decoration: TextDecoration.underline),
+                ),
               ),
             ),
-          ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.2,
+            ),
+          ],
         ),
       ),
     );
