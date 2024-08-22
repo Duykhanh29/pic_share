@@ -1,7 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:home_widget/home_widget.dart';
+import 'package:pic_share/app/config/home_widget_config.dart';
 import 'package:pic_share/app/constants/app_color.dart';
 import 'package:pic_share/app/constants/app_text_styles.dart';
+import 'package:pic_share/app/constants/strings.dart';
 import 'package:pic_share/app/helper/bottom_sheet_helper.dart';
 import 'package:pic_share/app/helper/image_cache_helper.dart';
 import 'package:pic_share/routes/app_pages.dart';
@@ -267,7 +272,7 @@ class SinglePostContainer extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             InkWell(
-              onTap: () {},
+              onTap: () async {},
               child: Center(
                 child: Text(t.share),
               ),
