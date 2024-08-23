@@ -6,6 +6,8 @@ import 'package:grouped_list/grouped_list.dart';
 import 'package:pic_share/app/constants/app_color.dart';
 import 'package:pic_share/app/constants/app_text_styles.dart';
 import 'package:pic_share/app/custom/app_bar_custom.dart';
+import 'package:pic_share/app/custom/custom_back_button.dart';
+import 'package:pic_share/app/helper/image_cache_helper.dart';
 import 'package:pic_share/app/utils/date_utils.dart' as date;
 import 'package:pic_share/data/models/conversation/message.dart';
 import 'package:pic_share/dump_data/dump_data.dart';
@@ -22,7 +24,25 @@ class ChatPage extends GetView<ChatController> {
     final t = AppLocalizations.of(context)!;
     return KeyboardDismiss(
       child: Scaffold(
-        appBar: CustomAppBar(title: t.chat).show(),
+        appBar: AppBar(
+          backgroundColor: AppColors.secondaryColor,
+          elevation: 5,
+          leading: const CustomBackButton(onBack: null),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              ImageCacheHelper.avatarImage(
+                  url:
+                      "https://img.beautiful-people-feels.com/bp/images/img_bloc/bloc85/08100438_66b670257652e.jpg?v=20240810043910"),
+              const SizedBox(width: 10),
+              Text(
+                "Username",
+                style: AppTextStyles.headingTextStyle(),
+              )
+            ],
+          ),
+        ),
         body: Container(
           padding: const EdgeInsets.all(5),
           child: Column(
