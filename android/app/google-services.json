@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "537865764821",
+    "project_id": "picshare-a3bba",
+    "storage_bucket": "picshare-a3bba.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:537865764821:android:ec2933a446d55ad8de075c",
+        "android_client_info": {
+          "package_name": "com.example.pic_share"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "537865764821-1j9bu4le92u03kcnqorkcd347p9o20l1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.pic_share",
+            "certificate_hash": "ff22f445a4eacb55d6d89015d81494050d53ce1a"
+          }
+        },
+        {
+          "client_id": "537865764821-2hp6rom1p5u7irkl6qvommehs7296dqj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCuCPomh89wD3lLY3NXrldLf602hfe0NCo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "537865764821-2hp6rom1p5u7irkl6qvommehs7296dqj.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "537865764821-kov6poj30uoqkvdi5ai1qgi43pn3mcmr.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.picShare"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

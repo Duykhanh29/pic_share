@@ -57,5 +57,17 @@
     "addCaption":"Thêm chú thích",
     "reactedUser":"Người dùng tương tác",
     "chat":"Nhắn tin",
-    "newPost":"Bài đăng mới"
+    "newPost":"Bài đăng mới",
+    "emailFieldCanNotBeEmpty":"Trường email không được trống",
+    "pleaseEnterValidEmail":"Hãy nhập địa chỉ hợp lệ",
+    "signIn":"Đăng nhập",
+    "register":"Đăng ký",
+    "all":"Tất cả",
+    "minPasswordLength":"Mật khẩu phải có ít nhất 6 ký tự",
+    "passCannotBeEmpty":"Mật khẩu không được để trống",
+    "or":"Hoặc",
+    "and":"Và",
+    "alreadyHaveAccount": "Đã có tài khoản?",
+    "allRightReserved":"Đăng ký bản quyền tác giả",
+    "appName": "Sharing picture"
 }

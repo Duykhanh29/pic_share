@@ -7,7 +7,6 @@ import 'package:pic_share/views/pages/home/home_page.dart';
 import 'package:pic_share/views/pages/languages/language_page.dart';
 import 'package:pic_share/views/pages/new_post/new_post_page.dart';
 import 'package:pic_share/views/pages/notification/notification_page.dart';
-import 'package:pic_share/views/pages/settings/settings_page.dart';
 import 'package:badges/badges.dart' as badges;
 
 class NavBottomPage extends GetView<NavBottomController> {
@@ -23,7 +22,6 @@ class NavBottomPage extends GetView<NavBottomController> {
   final List<PersistentBottomNavBarItem> _navBarsItems = [
     PersistentBottomNavBarItem(
       icon: const Icon(Icons.home),
-      // title: "Home",
       activeColorPrimary: Colors.indigo,
       inactiveColorPrimary: Colors.grey,
       inactiveColorSecondary: Colors.purple,
@@ -41,29 +39,24 @@ class NavBottomPage extends GetView<NavBottomController> {
           ),
         ),
       ),
-
-      // title: "Live",
       activeColorPrimary: Colors.indigo,
       inactiveColorPrimary: Colors.grey,
       inactiveColorSecondary: Colors.purple,
     ),
     PersistentBottomNavBarItem(
       icon: const Icon(Icons.add_circle_outline),
-      // title: "Leagues",
       activeColorPrimary: Colors.indigo,
       inactiveColorPrimary: Colors.grey,
       inactiveColorSecondary: Colors.purple,
     ),
     PersistentBottomNavBarItem(
       icon: const Icon(Icons.message),
-      // title: "Favourite",
       activeColorPrimary: Colors.indigo,
       inactiveColorPrimary: Colors.grey,
       inactiveColorSecondary: Colors.purple,
     ),
     PersistentBottomNavBarItem(
       icon: const Icon(Icons.person_2_rounded),
-      // title: "Profile",
       activeColorPrimary: Colors.indigo,
       inactiveColorPrimary: Colors.grey,
       inactiveColorSecondary: Colors.purple,

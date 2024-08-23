@@ -22,6 +22,7 @@ class SharedUserWidget extends GetView<NewPostController> {
         children: [
           Container(
             decoration: BoxDecoration(
+                shape: BoxShape.circle,
                 border: isSelected
                     ? Border.all(color: AppColors.selectedColor, width: 2)
                     : Border.all(
