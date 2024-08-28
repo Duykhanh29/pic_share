@@ -23,7 +23,7 @@ class APIProvider {
         //   // Add the access token to the headers
         //   options.headers[HttpHeaders.authorizationHeader] = 'Bearer $accessToken';
         // }
-        // return handler.next(options);
+        return handler.next(options);
       },
       onError: (e, handler) async {
         if (e.response?.statusCode == 401) {}
@@ -50,8 +50,17 @@ class APIProvider {
             Options(method: request.method.string, headers: request.headers),
         queryParameters: request.query,
         data: request.body,
+        onReceiveProgress: (val1, val2) {
+          debugPrint("WHAT HAPPEND: $val1, $val2");
+        },
+        onSendProgress: (val1, val2) {
+          debugPrint("WHAT HAPPEND: $val1, $val2");
+        },
       );
-      return response.data;
+      if (response.statusCode == 200) {
+        return response.data;
+      }
+      return null;
     } on TimeoutException catch (_) {
       throw DioException.sendTimeout(
           timeout: const Duration(seconds: 25),
