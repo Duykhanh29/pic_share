@@ -13,6 +13,12 @@ class RegisterPage extends GetView<RegisterController> {
     final t = AppLocalizations.of(context)!;
     return Obx(
       () => AuthView(
+        confirmPassController: controller.confirmPasswordController,
+        isConfirmPassVissibility: controller.isConfirmPassVissibility.value,
+        nameController: controller.nameController,
+        onChangeConfirmPassVissibility:
+            controller.onChangeConfirmPassVissibility,
+        isRegister: true,
         title: t.register,
         emailController: controller.emailController,
         onSubmitted: controller.registerUserByEmailAndPass,
@@ -44,7 +50,7 @@ class RegisterPage extends GetView<RegisterController> {
               ),
             ),
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.2,
+              height: MediaQuery.of(context).size.height * 0.08,
             ),
           ],
         ),

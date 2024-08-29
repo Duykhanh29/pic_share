@@ -93,6 +93,7 @@ dev_dependencies:
   json_serializable: ^6.8.0
   build_runner: ^2.4.9
   flutter_lints: ^2.0.0
+  copy_with_extension_gen: ^5.0.4
 
 
 flutter:

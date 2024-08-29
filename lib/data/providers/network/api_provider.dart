@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:pic_share/app/services/token_manager.dart';
 import 'package:pic_share/data/providers/network/api_request_representable.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
@@ -18,11 +19,12 @@ class APIProvider {
       onRequest:
           (RequestOptions options, RequestInterceptorHandler handler) async {
         // Retrieve the access token from storage
-        // String? accessToken = await TokenManager().getToken();
-        // if (accessToken != null && accessToken.isNotEmpty) {
-        //   // Add the access token to the headers
-        //   options.headers[HttpHeaders.authorizationHeader] = 'Bearer $accessToken';
-        // }
+        String? accessToken = await TokenManager().getToken();
+        if (accessToken != null && accessToken.isNotEmpty) {
+          // Add the access token to the headers
+          options.headers[HttpHeaders.authorizationHeader] =
+              'Bearer $accessToken';
+        }
         return handler.next(options);
       },
       onError: (e, handler) async {

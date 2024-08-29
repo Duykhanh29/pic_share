@@ -69,5 +69,10 @@
     "and":"Và",
     "alreadyHaveAccount": "Đã có tài khoản?",
     "allRightReserved":"Đăng ký bản quyền tác giả",
-    "appName": "Sharing picture"
+    "appName": "Sharing picture",
+    "email":"Email",
+    "name":"Tên",
+    "password":"Mật khẩu",
+    "passwordConfirmation":"Xác nhận mật khẩu",
+    "passwordDoesNotMmatch":"Mật khẩu không khớp"
 }

@@ -28,3 +28,73 @@ class AuthAPI extends APIRequestRepresentable {
     return APIProvider().request(this);
   }
 }
+
+class RegisterAPI extends APIRequestRepresentable {
+  RegisterAPI(
+      {required this.email,
+      required this.name,
+      required this.password,
+      required this.passwordConfirmation});
+  String name;
+  String email;
+  String password;
+  String passwordConfirmation;
+  @override
+  String get endpoint => '/api/register';
+
+  @override
+  HTTPMethod get method => HTTPMethod.post;
+
+  @override
+  get body => {
+        'name': name,
+        'email': email,
+        'password': password,
+        'password_confirmation': passwordConfirmation
+      };
+
+  @override
+  Future request() {
+    return APIProvider().request(this);
+  }
+}
+
+class LoginAPI extends APIRequestRepresentable {
+  LoginAPI({
+    required this.email,
+    required this.password,
+  });
+  String email;
+  String password;
+  @override
+  String get endpoint => '/api/login';
+
+  @override
+  HTTPMethod get method => HTTPMethod.post;
+
+  @override
+  get body => {
+        'email': email,
+        'password': password,
+      };
+
+  @override
+  Future request() {
+    return APIProvider().request(this);
+  }
+}
+
+class LogoutAPI extends APIRequestRepresentable {
+  LogoutAPI();
+
+  @override
+  String get endpoint => '/api/logout';
+
+  @override
+  HTTPMethod get method => HTTPMethod.get;
+
+  @override
+  Future request() {
+    return APIProvider().request(this);
+  }
+}

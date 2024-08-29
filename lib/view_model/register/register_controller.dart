@@ -1,26 +1,38 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pic_share/app/services/local_storage_service.dart';
+import 'package:pic_share/app/services/token_manager.dart';
+import 'package:pic_share/data/models/user/user_model.dart';
 import 'package:pic_share/data/repositories/auth/auth_repository.dart';
 import 'package:pic_share/data/repositories/user/user_repository.dart';
 
 class RegisterController extends GetxController {
   final AuthRepository authRepository;
   final UserRepository userRepository;
-  final Rxn<User> user = Rxn<User>();
+  final LocalStorageService localStorageService;
+  final _tokenManager = TokenManager();
 
-  RegisterController(
-      {required this.authRepository, required this.userRepository});
+  RegisterController({
+    required this.authRepository,
+    required this.userRepository,
+    required this.localStorageService,
+  });
 
   final formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passController = TextEditingController();
+  final nameController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
 
+  Rx<UserModel?> user = Rx<UserModel?>(null);
   RxBool isPassVissibility = false.obs;
+  RxBool isConfirmPassVissibility = false.obs;
   @override
   void onClose() {
     emailController.dispose();
     passController.dispose();
+    nameController.dispose();
+    confirmPasswordController.dispose();
     super.onClose();
   }
 
@@ -28,12 +40,21 @@ class RegisterController extends GetxController {
     isPassVissibility.value = !isPassVissibility.value;
   }
 
+  void onChangeConfirmPassVissibility() {
+    isConfirmPassVissibility.value = !isConfirmPassVissibility.value;
+  }
+
   Future<void> registerUserByEmailAndPass() async {
     try {
       var isValid = formKey.currentState!.validate();
       if (isValid) {
         user.value = await authRepository.registerUserByEmailAndPass(
-            email: emailController.text.trim(), password: passController.text);
+            email: emailController.text.trim(),
+            password: passController.text,
+            confirmPassword: confirmPasswordController.text,
+            name: nameController.text.trim());
+        localStorageService.setUserModel = user.value;
+        _tokenManager.setAccessToken(user.value?.accessToken);
       } else {
         debugPrint("Form is not valid");
       }

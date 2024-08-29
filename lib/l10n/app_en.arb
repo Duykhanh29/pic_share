@@ -69,5 +69,10 @@
     "and":"And",
     "alreadyHaveAccount": "Already have an Account?",
     "allRightReserved":"All Rights Reserved.",
-    "appName": "Sharing picture"
+    "appName": "Sharing picture",
+    "email":"Email",
+    "name":"Name",
+    "password":"Password",
+    "passwordConfirmation":"Password confirmation",
+    "passwordDoesNotMmatch":"Password does not match"
 }

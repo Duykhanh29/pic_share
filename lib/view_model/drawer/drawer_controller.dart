@@ -6,8 +6,8 @@ class AppDrawerController extends GetxController {
   AuthController authController;
   AppDrawerController({required this.authController});
 
-  UserModel? get currentUser => authController.getCurrentUserModel;
+  UserModel? get currentUser => authController.getCurrentUser;
   Future<void> logout() async {
-    await authController.signOut();
+    await authController.logout();
   }
 }
