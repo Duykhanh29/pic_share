@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
 import 'package:pic_share/app/custom/app_bar_custom.dart';
 import 'package:pic_share/app/helper/divider_helper.dart';
+import 'package:pic_share/view_model/language/language_controller.dart';
 import 'package:pic_share/views/pages/languages/widgets/language_item_card.dart';
 
-class LanguagePage extends StatelessWidget {
+class LanguagePage extends GetView<LanguageController> {
   const LanguagePage({super.key});
 
   @override
@@ -16,13 +18,19 @@ class LanguagePage extends StatelessWidget {
         padding: const EdgeInsets.all(15),
         child: ListView.separated(
             itemBuilder: (context, index) {
-              return LanguageItemCard(
-                isSelected: index % 2 == 0,
+              return Obx(
+                () => LanguageItemCard(
+                  isSelected: index == controller.selectedLanguage.value,
+                  language: controller.languages[index],
+                  onSelected: () {
+                    controller.onChangeLanguage(index);
+                  },
+                ),
               );
             },
             separatorBuilder: (context, index) =>
                 DividerHelper.sizedboxDivider(),
-            itemCount: 12),
+            itemCount: controller.languages.length),
       ),
     );
   }

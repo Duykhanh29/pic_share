@@ -40,12 +40,12 @@ class LocalStorageService extends GetxService {
     return userModel?.config?.language;
   }
 
-  // set language(String? value) {
-  //   if (value != null) {
-  //     userModel = userModel?.copyWith(
-  //         config: userModel?.config?.copyWith(language: value));
-  //   }
-  // }
+  set setLanguage(String? value) {
+    if (value != null) {
+      setUserModel = userModel?.copyWith(
+          config: userModel?.config?.copyWith(language: value));
+    }
+  }
 
   void removeAllSharedPreferencesValues() {
     for (var element in _Key.values) {

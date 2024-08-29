@@ -4,6 +4,7 @@ import 'package:pic_share/view_model/chat/chat_bindings.dart';
 import 'package:pic_share/view_model/comments/comments_bindings.dart';
 import 'package:pic_share/view_model/conversations/conversations_bindings.dart';
 import 'package:pic_share/view_model/home/home_bidings.dart';
+import 'package:pic_share/view_model/language/language_bindings.dart';
 import 'package:pic_share/view_model/nav_bottom/nav_bottom_bidings.dart';
 import 'package:pic_share/view_model/new_post/new_post_biding.dart';
 import 'package:pic_share/view_model/notifications/notification_bindings.dart';
@@ -70,7 +71,7 @@ abstract class AppPages {
     GetPage(
       name: Routes.language,
       page: () => const LanguagePage(),
-      binding: SettingsBindings(),
+      binding: LanguageBindings(),
     ),
     GetPage(
       name: Routes.comments,
