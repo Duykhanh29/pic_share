@@ -1,19 +1,20 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pic_share/data/enums/role_type.dart';
 import 'package:pic_share/data/models/user/user_model.dart';
 
 abstract class UserRepository {
+  /* OLD VERSION ( USING FIREBASE TO GET USER DATA)
   Future<UserModel?> getCurrentUserModel();
   Future<void> createUser(User user);
   Future<void> updateUser(
       {required String uid, required Map<String, dynamic> userData});
   Future<void> deleteUser(String id);
   Future<void> checkUserExists({String? uid, String? email, String? phone});
+  */
 }
 
 class UserRepositoryImpl implements UserRepository {
+  /* OLD VERSION ( USING FIREBASE TO GET USER DATA)
   final FirebaseFirestore _firestore;
   final FirebaseAuth _firebaseAuth;
 
@@ -142,4 +143,5 @@ class UserRepositoryImpl implements UserRepository {
       {required String uid, required Map<String, dynamic> userData}) {
     throw UnimplementedError();
   }
+  */
 }

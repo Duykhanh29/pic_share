@@ -49,7 +49,7 @@ class SignInPage extends GetView<SignInController> {
               ),
             ),
             const SizedBox(
-              height: 20,
+              height: 40,
             ),
             _buildOrLine(t),
             const SizedBox(
@@ -57,7 +57,7 @@ class SignInPage extends GetView<SignInController> {
             ),
             _buildSignInOptions(t),
             const SizedBox(
-              height: 20,
+              height: 40,
             ),
           ],
         ),
