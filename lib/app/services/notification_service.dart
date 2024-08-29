@@ -69,6 +69,10 @@ class NotificationsService {
         payload: message.data['body']);
   }
 
+  void onTokenRefresh() {
+    FirebaseMessaging.instance.onTokenRefresh.listen((newToken) async {});
+  }
+
   Future<void> requestPermission() async {
     final messaging = FirebaseMessaging.instance;
 
@@ -123,5 +127,6 @@ class NotificationsService {
       debugPrint("messageType is ${message..messageType}");
       debugPrint("HEY MAN");
     });
+    onTokenRefresh();
   }
 }
