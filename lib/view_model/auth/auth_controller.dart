@@ -78,6 +78,7 @@ class AuthController extends GetxController {
     await authRepository.logout();
     currentUser.value = null;
     Get.offAllNamed(Routes.login);
+    localStorageService.removeAllSharedPreferencesValues();
     _tokenManager.deleteAll();
   }
 

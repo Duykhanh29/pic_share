@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:pic_share/app/constants/app_color.dart';
-import 'package:pic_share/app/constants/app_images.dart';
 import 'package:pic_share/app/constants/app_text_styles.dart';
+import 'package:pic_share/data/models/language.dart';
 
 class LanguageItemCard extends StatelessWidget {
-  const LanguageItemCard({super.key, required this.isSelected});
+  const LanguageItemCard(
+      {super.key,
+      required this.isSelected,
+      required this.onSelected,
+      required this.language});
   final bool isSelected;
+  final void Function() onSelected;
+  final Language language;
   @override
   Widget build(BuildContext context) {
     return ListTile(
@@ -13,15 +19,15 @@ class LanguageItemCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(8.0),
         side: BorderSide(color: AppColors.appBorder, width: 0.5),
       ),
-      onTap: () async {},
+      onTap: onSelected,
       leading: Container(
         height: 60,
         width: 60,
         padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 7),
-        child: Image.asset(AppImage.vietnameFlag),
+        child: Image.asset(language.image),
       ),
       title: Text(
-        "language.name!",
+        language.code,
         style: AppTextStyles.headingTextStyle(),
       ),
       trailing: buildCheckContainer(isSelected),

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:pic_share/data/models/user/user_model.dart';
@@ -69,7 +70,19 @@ class AuthRepositoryImpl extends AuthRepository {
 
   @override
   Future<UserModel?> signInWithGoogle() async {
-    try {} catch (e) {
+    try {
+      final GoogleSignIn _googleSignIn = GoogleSignIn();
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      if (googleUser == null) {
+        return null;
+      }
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+    } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
     }
     return null;
