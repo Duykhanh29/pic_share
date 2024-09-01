@@ -4,10 +4,10 @@ import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:pic_share/view_model/nav_bottom/nav_bottom_controller.dart';
 import 'package:pic_share/views/pages/conversations/conversations_page.dart';
 import 'package:pic_share/views/pages/home/home_page.dart';
-import 'package:pic_share/views/pages/languages/language_page.dart';
 import 'package:pic_share/views/pages/new_post/new_post_page.dart';
 import 'package:pic_share/views/pages/notification/notification_page.dart';
 import 'package:badges/badges.dart' as badges;
+import 'package:pic_share/views/pages/settings/settings_page.dart';
 
 class NavBottomPage extends GetView<NavBottomController> {
   NavBottomPage({super.key});
@@ -17,7 +17,7 @@ class NavBottomPage extends GetView<NavBottomController> {
     const NotificationPage(),
     const NewPostPage(),
     const ConversationPage(),
-    const LanguagePage(),
+    const SettinngsPage(),
   ];
   final List<PersistentBottomNavBarItem> _navBarsItems = [
     PersistentBottomNavBarItem(

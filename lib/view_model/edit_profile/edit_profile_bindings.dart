@@ -1,12 +1,12 @@
 import 'package:get/get.dart';
 import 'package:pic_share/view_model/auth/auth_controller.dart';
-import 'package:pic_share/view_model/settings/settings_controller.dart';
+import 'package:pic_share/view_model/edit_profile/edit_profile_controller.dart';
 
-class SettingsBindings extends Bindings {
+class EditProfileBindings extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<SettingsController>(
-      () => SettingsController(
+    Get.lazyPut<EditProfileController>(
+      () => EditProfileController(
         authController: Get.find<AuthController>(),
       ),
     );

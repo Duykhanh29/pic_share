@@ -74,5 +74,19 @@
     "name":"Tên",
     "password":"Mật khẩu",
     "passwordConfirmation":"Xác nhận mật khẩu",
-    "passwordDoesNotMmatch":"Mật khẩu không khớp"
+    "passwordDoesNotMmatch":"Mật khẩu không khớp",
+    "pleaseEnterNewPassword":"Vui lòng nhập mật khẩu mới",
+    "changePass":"Thay đổi mật khẩu",
+    "newPassword":"Mật khẩu mới",
+    "confirmNewPass":"Xác nhận mật khẩu mới",
+    "complete":"Hoàn thành",
+    "verifyAccount":"Xác minh tài khoản",
+    "pleaseEnterEmailForVerify":"Vui lòng nhập email để nhận link xác nhận",
+    "areYouSureToDeleteAcc":"Bạn có chắc muốn xóa tài khoản của bạn không?",
+    "areYouSureToLogout":"Bạn có chắc muốn đăng xuất không?",
+    "yes":"Có",
+    "no":"Không",
+    "warning":"Cảnh báo",
+    "currentPassword":"Mật khẩu hiện tại",
+    "editProfile":"Chỉnh sửa hồ sơ cá nhân"
 }

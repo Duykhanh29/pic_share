@@ -15,4 +15,9 @@ abstract class Routes {
   static const String reactedUsers = '/reacted_users';
   static const String chat = '/chat';
   static const String register = '/register';
+  static const String profile = '/profile';
+  static const String changePassword = '/change_password';
+  static const String verifyPage = '/verify_page';
+  static const String forgotPassword = '/forgot_password';
+  static const String editProfile = '/edit_profile';
 }

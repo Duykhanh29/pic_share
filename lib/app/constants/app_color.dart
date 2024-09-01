@@ -33,4 +33,11 @@ class AppColors {
 
   // post view
   static Color postViewColor = Colors.black87;
+
+  // origin colors
+
+  static Color white = Colors.white;
+  static Color black = Colors.black;
+  static Color blue = Colors.blue;
+  static Color orange = Colors.orange;
 }

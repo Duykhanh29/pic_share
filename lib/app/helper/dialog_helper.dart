@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DialogHelper {
   static void showConfirmDialog(
-      String title, String message, Function()? onConfirm) {
+    String title,
+    String message,
+    Function()? onConfirm,
+    BuildContext context,
+  ) {
+    final t = AppLocalizations.of(context)!;
     Get.dialog(
       AlertDialog(
-        title: const Text('Delete'),
-        content: const Text('Are you sure you want to delete this photo?'),
+        title: Text(title),
+        content: Text(message),
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(16),
@@ -20,7 +26,7 @@ class DialogHelper {
                 Get.back();
               }
             },
-            child: const Text('Cancel'),
+            child: Text(t.cancel),
           ),
           TextButton(
             onPressed: () {
@@ -29,7 +35,7 @@ class DialogHelper {
                 Get.back();
               }
             },
-            child: const Text('Yes'),
+            child: Text(t.yes),
           ),
         ],
       ),

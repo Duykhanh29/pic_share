@@ -1,9 +1,10 @@
 import 'dart:async';
 import 'dart:io';
-
+import 'package:get/get.dart' as g;
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:pic_share/app/services/token_manager.dart';
+import 'package:pic_share/app/helper/snack_bar_helper.dart';
 import 'package:pic_share/data/providers/network/api_request_representable.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
@@ -73,6 +74,10 @@ class APIProvider {
         reason: 'Network is not available',
       );
     } on DioException catch (e) {
+      final message = e.response?.data['message'];
+      if (g.Get.isSnackbarOpen == false) {
+        SnackbarHelper.errorSnackbar(message);
+      }
       debugPrint("Something went wrong: ${e.toString()}");
     } catch (e) {
       rethrow;
