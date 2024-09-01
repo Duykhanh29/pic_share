@@ -19,14 +19,23 @@ class RegisterController extends GetxController {
   });
 
   final formKey = GlobalKey<FormState>();
-  final emailController = TextEditingController();
-  final passController = TextEditingController();
-  final nameController = TextEditingController();
-  final confirmPasswordController = TextEditingController();
+  late TextEditingController emailController;
+  late TextEditingController passController;
+  late TextEditingController nameController;
+  late TextEditingController confirmPasswordController;
 
   Rx<UserModel?> user = Rx<UserModel?>(null);
   RxBool isPassVissibility = false.obs;
   RxBool isConfirmPassVissibility = false.obs;
+  @override
+  void onInit() {
+    emailController = TextEditingController();
+    passController = TextEditingController();
+    nameController = TextEditingController();
+    confirmPasswordController = TextEditingController();
+    super.onInit();
+  }
+
   @override
   void onClose() {
     emailController.dispose();
@@ -53,7 +62,7 @@ class RegisterController extends GetxController {
             password: passController.text,
             confirmPassword: confirmPasswordController.text,
             name: nameController.text.trim());
-        localStorageService.setUserModel = user.value;
+        localStorageService.setUserModel(value: user.value);
         _tokenManager.setAccessToken(user.value?.accessToken);
       } else {
         debugPrint("Form is not valid");

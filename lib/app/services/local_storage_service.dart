@@ -25,13 +25,18 @@ class LocalStorageService extends GetxService {
     return UserModel.fromJson(map);
   }
 
-  set setUserModel(UserModel? value) {
+  void setUserModel({UserModel? value, bool isUpdateUserNull = true}) {
     if (value != null) {
       _sharedPreferences?.setString(
           _Key.user.toString(), json.encode(value.toJson()));
-      isUserNull.value = false;
+      if (isUpdateUserNull) {
+        isUserNull.value = false;
+      }
     } else {
-      isUserNull.value = true;
+      if (isUpdateUserNull) {
+        isUserNull.value = true;
+      }
+
       _sharedPreferences?.remove(_Key.user.toString());
     }
   }
@@ -42,8 +47,10 @@ class LocalStorageService extends GetxService {
 
   set setLanguage(String? value) {
     if (value != null) {
-      setUserModel = userModel?.copyWith(
-          config: userModel?.config?.copyWith(language: value));
+      setUserModel(
+          value: userModel?.copyWith(
+              config: userModel?.config?.copyWith(language: value)),
+          isUpdateUserNull: false);
     }
   }
 

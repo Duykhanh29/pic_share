@@ -22,8 +22,8 @@ class LanguagePage extends GetView<LanguageController> {
                 () => LanguageItemCard(
                   isSelected: index == controller.selectedLanguage.value,
                   language: controller.languages[index],
-                  onSelected: () {
-                    controller.onChangeLanguage(index);
+                  onSelected: () async {
+                    await controller.onChangeLanguage(index);
                   },
                 ),
               );

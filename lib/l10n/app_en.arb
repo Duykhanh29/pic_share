@@ -74,5 +74,19 @@
     "name":"Name",
     "password":"Password",
     "passwordConfirmation":"Password confirmation",
-    "passwordDoesNotMmatch":"Password does not match"
+    "passwordDoesNotMmatch":"Password does not match",
+    "pleaseEnterNewPassword":"Please enter new password",
+    "changePass":"Change password",
+    "newPassword":"New password",
+    "confirmNewPass":"Confirm new password",
+    "complete":"Complete",
+    "verifyAccount":"Verify account",
+    "pleaseEnterEmailForVerify":"Please enter email to receive confirmation link",
+    "areYouSureToDeleteAcc":"Are you sure you want to delete your account?",
+    "areYouSureToLogout":"Are you sure you want to logout?",
+    "yes":"Yes",
+    "no":"No",
+    "warning":"Warnings",
+    "currentPassword":"Current password",
+    "editProfile":"Edit profile"
 }

@@ -17,9 +17,17 @@ class SignInController extends GetxController {
       required this.userRepository,
       required this.localStorageService});
   final formKey = GlobalKey<FormState>();
-  final emailController = TextEditingController();
-  final passController = TextEditingController();
+  late TextEditingController emailController;
+  late TextEditingController passController;
   RxBool isPassVissibility = false.obs;
+
+  @override
+  void onInit() {
+    emailController = TextEditingController();
+    passController = TextEditingController();
+    super.onInit();
+  }
+
   @override
   void onClose() {
     emailController.dispose();
@@ -37,7 +45,7 @@ class SignInController extends GetxController {
       if (isValid) {
         user.value = await authRepository.signInWithEmailPass(
             email: emailController.text.trim(), password: passController.text);
-        localStorageService.setUserModel = user.value;
+        localStorageService.setUserModel(value: user.value);
         _tokenManager.setAccessToken(user.value?.accessToken);
       } else {
         debugPrint('form is not valid');
@@ -50,6 +58,8 @@ class SignInController extends GetxController {
   Future<void> signInWithGoogle() async {
     try {
       user.value = await authRepository.signInWithGoogle();
+      localStorageService.setUserModel(value: user.value);
+      _tokenManager.setAccessToken(user.value?.accessToken);
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
     }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pic_share/data/enums/role_type.dart';
 import 'package:pic_share/data/models/user/user_model.dart';
+import 'package:pic_share/data/providers/network/apis/user/update_user_info_api.dart';
 
 abstract class UserRepository {
   /* OLD VERSION ( USING FIREBASE TO GET USER DATA)
@@ -11,9 +12,70 @@ abstract class UserRepository {
   Future<void> deleteUser(String id);
   Future<void> checkUserExists({String? uid, String? email, String? phone});
   */
+
+  Future<void> updateUserInfo(
+      {String? name, String? urlAvatar, String? language});
+  Future<void> changePassword(
+      {required String currentPassword,
+      required String newPassword,
+      required String passwordConfirmation});
+  Future<void> deleteUser();
+  Future<UserModel?> getCurrentUser();
 }
 
 class UserRepositoryImpl implements UserRepository {
+  @override
+  Future<void> changePassword(
+      {required String currentPassword,
+      required String newPassword,
+      required String passwordConfirmation}) async {
+    try {
+      final response = await ChangePasswordAPI(
+              currentPassword: currentPassword,
+              newPassword: newPassword,
+              passwordConfirmation: passwordConfirmation)
+          .request();
+      debugPrint("Message: ${response['message']}");
+    } catch (e) {
+      debugPrint("Something went wrong: ${e.toString()}");
+    }
+  }
+
+  @override
+  Future<void> deleteUser() async {
+    try {
+      final response = await DeleteUserAccAPI().request();
+      debugPrint("Message: ${response['message']}");
+    } catch (e) {
+      debugPrint("Something went wrong: ${e.toString()}");
+    }
+  }
+
+  @override
+  Future<void> updateUserInfo(
+      {String? name, String? urlAvatar, String? language}) async {
+    try {
+      final response = await UpdateUserInfo(
+              name: name, urlAvatar: urlAvatar, language: language)
+          .request();
+      debugPrint("Message: ${response['message']}");
+    } catch (e) {
+      debugPrint("Something went wrong: ${e.toString()}");
+    }
+  }
+
+  @override
+  Future<UserModel?> getCurrentUser() async {
+    try {
+      final response = await GetUserInfoAPI().request();
+      final userModel = UserModel.fromJson(response as Map<String, dynamic>);
+      return userModel;
+    } catch (e) {
+      debugPrint("Something went wrong: ${e.toString()}");
+    }
+    return null;
+  }
+
   /* OLD VERSION ( USING FIREBASE TO GET USER DATA)
   final FirebaseFirestore _firestore;
   final FirebaseAuth _firebaseAuth;

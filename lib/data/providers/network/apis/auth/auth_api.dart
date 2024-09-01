@@ -84,6 +84,24 @@ class LoginAPI extends APIRequestRepresentable {
   }
 }
 
+class LoginWithGoogleAPI extends APIRequestRepresentable {
+  LoginWithGoogleAPI({required this.accessToken});
+  final String accessToken;
+  @override
+  String get endpoint => '/api/auth/callback';
+
+  @override
+  HTTPMethod get method => HTTPMethod.post;
+  @override
+  // TODO: implement body
+  get body => {'access_token': accessToken};
+
+  @override
+  Future request() {
+    return APIProvider().request(this);
+  }
+}
+
 class LogoutAPI extends APIRequestRepresentable {
   LogoutAPI();
 
