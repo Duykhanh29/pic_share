@@ -1,11 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:pic_share/app/config/app_config.dart';
 
 class ImageCacheHelper {
   static Widget avatarImage(
       {required String url, double height = 30, double width = 30}) {
     return CachedNetworkImage(
-      imageUrl: url,
+      imageUrl: AppConfig.baseUrl + url,
       height: height,
       width: width,
       imageBuilder: (context, imageProvider) {

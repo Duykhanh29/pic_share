@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pic_share/app/services/local_storage_service.dart';
@@ -56,7 +58,7 @@ class AuthController extends GetxController {
   }
 
   Future<void> updateUserInfo(
-      {String? name, String? urlAvatar, String? lanaguage}) async {
+      {String? name, File? urlAvatar, String? lanaguage}) async {
     try {
       await userRepository.updateUserInfo(
           name: name, urlAvatar: urlAvatar, language: lanaguage);

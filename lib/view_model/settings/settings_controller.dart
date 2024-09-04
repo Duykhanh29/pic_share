@@ -29,7 +29,7 @@ class SettingsController extends GetxController {
   }
 
   void onNavToProfile() {
-    Get.toNamed(Routes.changePassword);
+    Get.toNamed(Routes.profile);
   }
 
   void onNavToLanguage() {

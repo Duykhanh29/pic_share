@@ -47,7 +47,7 @@ class AccountSettingsSection extends GetView<SettingsController> {
             onTap: () {
               DialogHelper.showConfirmDialog(t.warning, t.areYouSureToLogout,
                   () {
-                controller.deleteUser();
+                controller.logout();
               }, context);
             },
             title: t.logout,

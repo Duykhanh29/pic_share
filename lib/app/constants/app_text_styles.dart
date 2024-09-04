@@ -83,4 +83,13 @@ class AppTextStyles {
         fontWeight: FontWeight.normal,
         color: AppColors.selectedColor);
   }
+
+  // see more
+  static TextStyle seeMoreTextStyle() {
+    return const TextStyle(
+        fontSize: 14,
+        fontWeight: FontWeight.w400,
+        color: Colors.blue,
+        decoration: TextDecoration.underline);
+  }
 }

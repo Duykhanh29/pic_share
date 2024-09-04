@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -43,7 +45,7 @@ class EditProfileController extends GetxController {
         name: nameController.text.trim() != authController.getCurrentUser?.name
             ? nameController.text.trim()
             : null,
-        urlAvatar: isNewAvatar.value ? avatarFile.value!.path : null,
+        urlAvatar: isNewAvatar.value ? File(avatarFile.value!.path) : null,
       );
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");

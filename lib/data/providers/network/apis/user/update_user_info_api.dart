@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:pic_share/data/providers/network/api_provider.dart';
 import 'package:pic_share/data/providers/network/api_request_representable.dart';
 
@@ -15,24 +16,26 @@ class GetUserInfoAPI extends APIRequestRepresentable {
 }
 
 class UpdateUserInfo extends APIRequestRepresentable {
-  UpdateUserInfo({this.name, this.urlAvatar, this.language});
-  final String? name;
-  final String? urlAvatar;
-  final String? language;
+  UpdateUserInfo({required this.formData});
+  final FormData formData;
   @override
   String get endpoint => '/api/user/update';
 
   @override
-  HTTPMethod get method => HTTPMethod.patch;
+  HTTPMethod get method => HTTPMethod.post;
 
   @override
   get body {
-    return {
-      if (name != null) 'name': name,
-      if (urlAvatar != null) 'url_avatar': urlAvatar,
-      if (language != null) 'language': language,
-    };
+    return formData;
   }
+
+  @override
+  Map<String, String>? get headers => {
+        "Content-Type": "multipart/form-data",
+      };
+
+  @override
+  Map<String, dynamic>? get query => {"_method": 'PATCH'};
 
   @override
   Future request() {

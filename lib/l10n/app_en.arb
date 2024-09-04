@@ -88,5 +88,12 @@
     "no":"No",
     "warning":"Warnings",
     "currentPassword":"Current password",
-    "editProfile":"Edit profile"
+    "editProfile":"Edit profile",
+    "details":"Details",
+    "currentPosts":"Current posts",
+    "seeMore":"See more",
+    "userCode":"User code",
+    "likes":"Likes",
+    "posts":"Posts",
+    "views":"Views"
 }

@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:pic_share/data/enums/role_type.dart';
 import 'package:pic_share/data/models/user/user_model.dart';
 import 'package:pic_share/data/providers/network/apis/user/update_user_info_api.dart';
+import 'package:dio/dio.dart';
+import 'package:path/path.dart';
 
 abstract class UserRepository {
   /* OLD VERSION ( USING FIREBASE TO GET USER DATA)
@@ -14,7 +17,7 @@ abstract class UserRepository {
   */
 
   Future<void> updateUserInfo(
-      {String? name, String? urlAvatar, String? language});
+      {String? name, File? urlAvatar, String? language});
   Future<void> changePassword(
       {required String currentPassword,
       required String newPassword,
@@ -53,11 +56,20 @@ class UserRepositoryImpl implements UserRepository {
 
   @override
   Future<void> updateUserInfo(
-      {String? name, String? urlAvatar, String? language}) async {
+      {String? name, File? urlAvatar, String? language}) async {
     try {
-      final response = await UpdateUserInfo(
-              name: name, urlAvatar: urlAvatar, language: language)
-          .request();
+      FormData formData = FormData.fromMap({
+        if (name != null) "name": name,
+        if (urlAvatar != null)
+          "url_avatar": await MultipartFile.fromFile(
+            urlAvatar.path,
+            filename: basename(urlAvatar.path),
+          ),
+        if (language != null) "language": language
+      });
+      debugPrint(formData.fields.toString());
+      debugPrint(formData.files.toString());
+      final response = await UpdateUserInfo(formData: formData).request();
       debugPrint("Message: ${response['message']}");
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
