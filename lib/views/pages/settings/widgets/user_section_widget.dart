@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pic_share/app/config/app_config.dart';
 import 'package:pic_share/app/constants/app_color.dart';
+import 'package:pic_share/app/constants/app_images.dart';
 import 'package:pic_share/app/constants/app_text_styles.dart';
 import 'package:pic_share/app/helper/image_cache_helper.dart';
 import 'package:pic_share/view_model/settings/settings_controller.dart';
@@ -30,12 +32,17 @@ class UserSectionWidget extends GetView<SettingsController> {
                 shape: BoxShape.circle,
               ),
               alignment: Alignment.center,
-              child: ImageCacheHelper.avatarImage(
-                url: controller.currentUser?.urlAvatar ??
-                    "https://picsum.photos/200",
-                width: MediaQuery.of(context).size.height * 0.06,
-                height: MediaQuery.of(context).size.height * 0.06,
-              ),
+              child: controller.currentUser?.urlAvatar != null
+                  ? ImageCacheHelper.avatarImage(
+                      url: controller.currentUser!.urlAvatar!,
+                      width: MediaQuery.of(context).size.height * 0.06,
+                      height: MediaQuery.of(context).size.height * 0.06,
+                    )
+                  : CircleAvatar(
+                      radius: MediaQuery.of(context).size.height * 0.06,
+                      backgroundImage:
+                          const AssetImage(AppImage.userEmptyAvatar),
+                    ),
             ),
             const SizedBox(width: 16),
             Column(

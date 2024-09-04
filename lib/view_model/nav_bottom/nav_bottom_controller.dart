@@ -12,6 +12,9 @@ class NavBottomController extends GetxController {
   RxInt pageIndex = 0.obs;
   @override
   void onInit() {
+    if (pageIndex.value != 0) {
+      pageIndex.value = 0;
+    }
     Get.put(HomeController(), permanent: true);
     Get.put(NotificationController(), permanent: true);
     Get.put(NewPostController(), permanent: true);

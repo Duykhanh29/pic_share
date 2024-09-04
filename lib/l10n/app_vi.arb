@@ -88,5 +88,12 @@
     "no":"Không",
     "warning":"Cảnh báo",
     "currentPassword":"Mật khẩu hiện tại",
-    "editProfile":"Chỉnh sửa hồ sơ cá nhân"
+    "editProfile":"Chỉnh sửa hồ sơ cá nhân",
+    "details":"Chi tiết",
+    "currentPosts":"Các bài đăng gần đây",
+    "seeMore":"Xem thêm",
+    "userCode":"Mã người dùng",
+    "likes":"Lượt thích",
+    "posts":"Bài đăng",
+    "views":"Lượt xem"
 }

@@ -63,13 +63,14 @@ class EditProfilePage extends GetView<EditProfileController> {
                       child: GestureDetector(
                         onTap: controller.pickAvatar,
                         child: Container(
-                          padding: const EdgeInsets.all(3),
+                          padding: const EdgeInsets.all(5),
                           decoration: const BoxDecoration(
                             color: Colors.blue,
                             shape: BoxShape.circle,
                           ),
                           child: const Icon(
                             Icons.edit,
+                            size: 18,
                             color: Colors.white,
                           ),
                         ),
