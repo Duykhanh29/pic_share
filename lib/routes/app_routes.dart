@@ -20,4 +20,7 @@ abstract class Routes {
   static const String verifyPage = '/verify_page';
   static const String forgotPassword = '/forgot_password';
   static const String editProfile = '/edit_profile';
+  static const String friend = '/friend';
+  static const String search = '/search';
+  static const String security = '/security';
 }

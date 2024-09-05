@@ -25,6 +25,17 @@ class AccountSettingsSection extends GetView<SettingsController> {
             height: 2,
           ),
           ItemCard(
+            backgroundColor: AppColors.dardSecondaryColor,
+            icon: Icons.security_outlined,
+            iconColor: AppColors.white,
+            onTap: controller.onNavToSecurity,
+            title: t.security,
+          ),
+          Divider(
+            thickness: 0.4,
+            color: AppColors.lightBorderColor,
+          ),
+          ItemCard(
             backgroundColor: AppColors.warningColor,
             icon: Icons.delete,
             iconColor: AppColors.white,

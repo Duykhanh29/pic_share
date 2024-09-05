@@ -8,7 +8,7 @@
     "logout": "Đăng xuất",
     "sendMessage": "Gửi tin nhắn",
     "search": "Tìm kiếm",
-    "searchForAFriend": "Tìm kiếm bạn bè",
+    "searchForFriends": "Tìm kiếm bạn bè",
     "replyTo": "Trả lời ",
     "deleteMessage": "Xóa tin nhắn",
     "deleteFriend": "Xóa bạn",
@@ -95,5 +95,14 @@
     "userCode":"Mã người dùng",
     "likes":"Lượt thích",
     "posts":"Bài đăng",
-    "views":"Lượt xem"
+    "views":"Lượt xem",
+    "friendRequests":"Yêu cầu kết bạn",
+    "received":"Đã nhận",
+    "sent":"Đã gửi",
+    "recall":"Thu hồi",
+    "security":"Bảo mật",
+    "termConditions":"Điều khoản và điều kiện",
+    "searchWithCode":"Tìm theo mã người dùng",
+    "userCodeDesc":"Mã người dùng là mã duy nhất cho mỗi người dùng. Người dùng có thể lấy mã tại trang hồ sơ cá nhân và gửi cho bạn bè. Sau đó dán mã vào ô nhập.",
+    "searchForUserCode":"Tìm kiếm theo mã"
 }

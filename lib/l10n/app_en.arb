@@ -8,7 +8,7 @@
     "logout":"Logout",
     "sendMessage":"Send message",
     "search":"Search",
-    "searchForAFriend":"Search for a friend",
+    "searchForFriends":"Search for a friend",
     "replyTo":"Reply to ",
     "deleteMessage":"Delete message",
     "deleteFriend":"Delete friend",
@@ -95,5 +95,14 @@
     "userCode":"User code",
     "likes":"Likes",
     "posts":"Posts",
-    "views":"Views"
+    "views":"Views",
+    "friendRequests":"Friend requests",
+    "received":"Received",
+    "sent":"Sent",
+    "recall":"Recall",
+    "security":"Security",
+    "termConditions":"Terms and conditions",
+    "searchWithCode":"Search with user code",
+    "userCodeDesc":"User code is a unique code for each user. Users can get the code on their profile page and send it to their friends. Then paste the code into the input box",
+    "searchForUserCode":"Search by user code"
 }
