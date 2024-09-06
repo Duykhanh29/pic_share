@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:get/get.dart';
 import 'package:pic_share/app/custom/app_bar_custom.dart';
-import 'package:pic_share/routes/app_pages.dart';
+import 'package:pic_share/view_model/home/home_controller.dart';
 import 'package:pic_share/views/components/app_drawer.dart';
 import 'package:pic_share/views/pages/home/widgets/single_post_container.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends GetView<HomeController> {
   const HomePage({super.key});
 
   @override
@@ -20,9 +20,14 @@ class HomePage extends StatelessWidget {
         isLeadingShow: false,
         actions: [
           IconButton(
-            onPressed: () {
-              Get.toNamed(Routes.gridPostView);
-            },
+            onPressed: controller.onNavToNotification,
+            icon: const Icon(Icons.view_comfortable_outlined),
+          ),
+          const SizedBox(
+            width: 15,
+          ),
+          IconButton(
+            onPressed: controller.onNavToGridPostView,
             icon: const Icon(Icons.view_comfortable_outlined),
           ),
         ],

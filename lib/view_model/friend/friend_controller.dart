@@ -6,7 +6,7 @@ import 'package:pic_share/data/repositories/friend/friend_repository.dart';
 import 'package:pic_share/routes/app_pages.dart';
 
 class FriendController extends GetxController
-    with GetSingleTickerProviderStateMixin {
+    with GetSingleTickerProviderStateMixin, WidgetsBindingObserver {
   FriendRepository friendRepository;
 
   FriendController({required this.friendRepository});
@@ -30,6 +30,7 @@ class FriendController extends GetxController
   void onInit() {
     fetchFriends();
     fetchFriendRequests();
+    WidgetsBinding.instance.addObserver(this);
     tabController = TabController(length: 2, vsync: this)..index = 0;
     super.onInit();
   }
@@ -53,6 +54,19 @@ class FriendController extends GetxController
     } finally {
       isLoadingFriendRequests.value = false;
     }
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    fetchFriends();
+    fetchFriendRequests();
+    super.didChangeAppLifecycleState(state);
+  }
+
+  @override
+  void onClose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.onClose();
   }
 
   @override
