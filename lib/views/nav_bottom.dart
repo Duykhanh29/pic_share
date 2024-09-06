@@ -3,9 +3,9 @@ import 'package:get/get.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:pic_share/view_model/nav_bottom/nav_bottom_controller.dart';
 import 'package:pic_share/views/pages/conversations/conversations_page.dart';
+import 'package:pic_share/views/pages/friend/friend_page.dart';
 import 'package:pic_share/views/pages/home/home_page.dart';
 import 'package:pic_share/views/pages/new_post/new_post_page.dart';
-import 'package:pic_share/views/pages/notification/notification_page.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:pic_share/views/pages/settings/settings_page.dart';
 
@@ -14,7 +14,7 @@ class NavBottomPage extends GetView<NavBottomController> {
 
   final List<Widget> screens = [
     const HomePage(),
-    const NotificationPage(),
+    const FriendPage(),
     const NewPostPage(),
     const ConversationPage(),
     const SettinngsPage(),
@@ -22,6 +22,18 @@ class NavBottomPage extends GetView<NavBottomController> {
   final List<PersistentBottomNavBarItem> _navBarsItems = [
     PersistentBottomNavBarItem(
       icon: const Icon(Icons.home),
+      activeColorPrimary: Colors.indigo,
+      inactiveColorPrimary: Colors.grey,
+      inactiveColorSecondary: Colors.purple,
+    ),
+    PersistentBottomNavBarItem(
+      icon: const Icon(Icons.people_outline_sharp),
+      activeColorPrimary: Colors.indigo,
+      inactiveColorPrimary: Colors.grey,
+      inactiveColorSecondary: Colors.purple,
+    ),
+    PersistentBottomNavBarItem(
+      icon: const Icon(Icons.add_circle_outline),
       activeColorPrimary: Colors.indigo,
       inactiveColorPrimary: Colors.grey,
       inactiveColorSecondary: Colors.purple,
@@ -35,22 +47,10 @@ class NavBottomPage extends GetView<NavBottomController> {
         ),
         child: Center(
           child: const Icon(
-            Icons.notifications,
+            Icons.chat_bubble_outline_rounded,
           ),
         ),
       ),
-      activeColorPrimary: Colors.indigo,
-      inactiveColorPrimary: Colors.grey,
-      inactiveColorSecondary: Colors.purple,
-    ),
-    PersistentBottomNavBarItem(
-      icon: const Icon(Icons.add_circle_outline),
-      activeColorPrimary: Colors.indigo,
-      inactiveColorPrimary: Colors.grey,
-      inactiveColorSecondary: Colors.purple,
-    ),
-    PersistentBottomNavBarItem(
-      icon: const Icon(Icons.message),
       activeColorPrimary: Colors.indigo,
       inactiveColorPrimary: Colors.grey,
       inactiveColorSecondary: Colors.purple,

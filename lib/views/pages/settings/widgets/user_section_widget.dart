@@ -39,7 +39,7 @@ class UserSectionWidget extends GetView<SettingsController> {
                       height: MediaQuery.of(context).size.height * 0.06,
                     )
                   : CircleAvatar(
-                      radius: MediaQuery.of(context).size.height * 0.06,
+                      radius: MediaQuery.of(context).size.height * 0.03,
                       backgroundImage:
                           const AssetImage(AppImage.userEmptyAvatar),
                     ),

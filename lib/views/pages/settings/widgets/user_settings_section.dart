@@ -27,8 +27,19 @@ class UserSettingsSection extends GetView<SettingsController> {
             backgroundColor: AppColors.blue,
             icon: Icons.people,
             iconColor: AppColors.white,
-            onTap: () async {},
+            onTap: controller.onNavToFriend,
             title: t.friends,
+          ),
+          Divider(
+            thickness: 0.4,
+            color: AppColors.lightBorderColor,
+          ),
+          ItemCard(
+            backgroundColor: AppColors.blue,
+            icon: Icons.qr_code_outlined,
+            iconColor: AppColors.white,
+            onTap: controller.onNavToUserCode,
+            title: t.searchForUserCode,
           ),
           Divider(
             thickness: 0.4,
@@ -38,7 +49,7 @@ class UserSettingsSection extends GetView<SettingsController> {
             backgroundColor: AppColors.blue,
             icon: Icons.history,
             iconColor: AppColors.white,
-            onTap: controller.onNavToChangePassword,
+            onTap: controller.onNavToUserCode,
             title: t.history,
           ),
           Divider(

@@ -1,0 +1,4 @@
+enum FriendStatus {
+  friend,
+  pending,
+}
