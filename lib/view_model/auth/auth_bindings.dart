@@ -3,7 +3,6 @@ import 'package:pic_share/app/services/local_storage_service.dart';
 import 'package:pic_share/data/repositories/auth/auth_repository.dart';
 import 'package:pic_share/data/repositories/user/user_repository.dart';
 import 'package:pic_share/view_model/auth/auth_controller.dart';
-import 'package:pic_share/view_model/drawer/drawer_controller.dart';
 import 'package:pic_share/view_model/language/language_controller.dart';
 
 class AuthBindings extends Bindings {
@@ -21,9 +20,6 @@ class AuthBindings extends Bindings {
         authRepository: Get.find<AuthRepository>(),
         userRepository: Get.find<UserRepository>(),
       ),
-    );
-    Get.put(
-      AppDrawerController(authController: Get.find<AuthController>()),
     );
   }
 }

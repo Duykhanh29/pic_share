@@ -60,19 +60,29 @@ class AppDrawer extends GetView<AppDrawerController> {
             child: ListView.separated(
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
+                  final friend = controller.friendList[index];
                   return Container(
                     padding:
                         const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                     child: ListTile(
                       onTap: () {},
-                      title: Text("Friend $index"),
-                      leading: Text("data"),
+                      title: Text(
+                        friend.name ?? "",
+                        style: AppTextStyles.commonTextStyle(),
+                      ),
+                      leading: friend.avatar != null
+                          ? ImageCacheHelper.avatarImage(url: friend.avatar!)
+                          : const CircleAvatar(
+                              radius: 15,
+                              backgroundImage:
+                                  AssetImage(AppImage.userEmptyAvatar),
+                            ),
                     ),
                   );
                 },
                 separatorBuilder: (context, index) =>
                     DividerHelper.sizedboxDivider(),
-                itemCount: 10),
+                itemCount: controller.friendList.length),
           ),
           const Divider(),
           GestureDetector(

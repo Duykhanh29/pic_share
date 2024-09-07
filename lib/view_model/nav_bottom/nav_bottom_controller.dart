@@ -3,6 +3,7 @@ import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:pic_share/data/repositories/friend/friend_repository.dart';
 import 'package:pic_share/view_model/auth/auth_controller.dart';
 import 'package:pic_share/view_model/conversations/conversations_controller.dart';
+import 'package:pic_share/view_model/drawer/drawer_controller.dart';
 import 'package:pic_share/view_model/friend/friend_controller.dart';
 import 'package:pic_share/view_model/home/home_controller.dart';
 import 'package:pic_share/view_model/new_post/new_post_controller.dart';
@@ -17,20 +18,33 @@ class NavBottomController extends GetxController {
       pageIndex.value = 0;
     }
     Get.put(HomeController(), permanent: true);
-    Get.put(FriendController(friendRepository: Get.find<FriendRepository>()),
+    Get.put(
+        FriendController(
+          friendRepository: Get.find<FriendRepository>(),
+        ),
         permanent: true);
     Get.put(NewPostController(), permanent: true);
     Get.put(ConversationsController(), permanent: true);
     Get.put(
         SettingsController(
           authController: Get.find<AuthController>(),
+          friendController: Get.find<FriendController>(),
         ),
         permanent: true);
+    Get.put(
+      AppDrawerController(
+        authController: Get.find<AuthController>(),
+        friendController: Get.find<FriendController>(),
+      ),
+    );
     super.onInit();
   }
 
   void changeNavigationPage(int index) {
     pageIndex.value = index;
     pageController.index = index;
+    // if (index == 1) {
+    //   Get.find<FriendController>().onRefresh();
+    // }
   }
 }

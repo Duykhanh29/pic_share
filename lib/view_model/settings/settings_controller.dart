@@ -4,11 +4,14 @@ import 'package:pic_share/app/constants/strings.dart';
 import 'package:pic_share/data/models/user/user_model.dart';
 import 'package:pic_share/routes/app_pages.dart';
 import 'package:pic_share/view_model/auth/auth_controller.dart';
+import 'package:pic_share/view_model/friend/friend_controller.dart';
 
 class SettingsController extends GetxController {
   AuthController authController;
+  FriendController friendController;
 
-  SettingsController({required this.authController});
+  SettingsController(
+      {required this.authController, required this.friendController});
 
   UserModel? get currentUser => authController.getCurrentUser;
 
@@ -45,6 +48,7 @@ class SettingsController extends GetxController {
 
   void onNavToFriend() {
     Get.toNamed(Routes.friend);
+    friendController.onNavToPage();
   }
 
   void onNavToUserCode() {
