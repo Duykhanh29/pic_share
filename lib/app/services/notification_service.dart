@@ -1,6 +1,8 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:get/get.dart';
+import 'package:pic_share/app/services/local_storage_service.dart';
 
 const channel = AndroidNotificationChannel(
     'high_importance_channel', 'Hign Importance Notifications',
@@ -8,15 +10,22 @@ const channel = AndroidNotificationChannel(
     importance: Importance.max,
     playSound: true);
 
-class NotificationsService {
+class NotificationsService extends GetxService {
+  final LocalStorageService localStorageService =
+      Get.find<LocalStorageService>();
   // final GlobalKey<NavigatorState>? navigatorKey;
 
-  NotificationsService._();
-  static final NotificationsService _instance = NotificationsService._();
-  factory NotificationsService() => _instance;
-
   final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-  String? token = '';
+
+  void Function(String)?
+      onTokenRefreshCallback; // callback for onTokenRefresh to update fcm token in db
+
+  @override
+  void onInit() {
+    super.onInit();
+    _initLocalNotification();
+    _setupFirebaseMessaging();
+  }
 
   void _initLocalNotification() async {
     const androidSettings =
@@ -70,7 +79,13 @@ class NotificationsService {
   }
 
   void onTokenRefresh() {
-    FirebaseMessaging.instance.onTokenRefresh.listen((newToken) async {});
+    FirebaseMessaging.instance.onTokenRefresh.listen((newToken) async {
+      if (localStorageService.notificationPermission) {
+        if (onTokenRefreshCallback != null) {
+          onTokenRefreshCallback!(newToken);
+        }
+      }
+    });
   }
 
   Future<void> requestPermission() async {
@@ -88,22 +103,24 @@ class NotificationsService {
 
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
       debugPrint('User granted permission');
+      localStorageService.setNotificationPermission(true);
     } else if (settings.authorizationStatus ==
         AuthorizationStatus.provisional) {
       debugPrint('User granted provisional permission');
+      localStorageService
+          .setNotificationPermission(false); // temporary set false
     } else {
       debugPrint('User declined or has not accepted permission');
+      localStorageService.setNotificationPermission(false);
     }
   }
 
   Future<String?> getToken() async {
-    token = await FirebaseMessaging.instance.getToken();
+    String? token = await FirebaseMessaging.instance.getToken();
     return token;
   }
 
-  String receiverToken = '';
-
-  Future<void> firebaseNotification() async {
+  Future<void> _setupFirebaseMessaging() async {
     _initLocalNotification();
     FirebaseMessaging.instance.getInitialMessage().then((value) async {
       if (value?.notification != null) {

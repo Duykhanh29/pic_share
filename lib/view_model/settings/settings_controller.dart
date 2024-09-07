@@ -1,6 +1,8 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pic_share/app/constants/strings.dart';
+import 'package:pic_share/app/services/local_storage_service.dart';
 import 'package:pic_share/data/models/user/user_model.dart';
 import 'package:pic_share/routes/app_pages.dart';
 import 'package:pic_share/view_model/auth/auth_controller.dart';
@@ -9,13 +11,18 @@ import 'package:pic_share/view_model/friend/friend_controller.dart';
 class SettingsController extends GetxController {
   AuthController authController;
   FriendController friendController;
-
-  SettingsController(
-      {required this.authController, required this.friendController});
+  LocalStorageService localStorageService;
+  SettingsController({
+    required this.authController,
+    required this.friendController,
+    required this.localStorageService,
+  });
 
   UserModel? get currentUser => authController.getCurrentUser;
 
   String get language => authController.language;
+  RxBool isShowNotification = true.obs;
+  RxBool isShowNotificationWithSound = true.obs;
   Future<void> logout() async {
     try {
       await authController.logout();
@@ -42,9 +49,6 @@ class SettingsController extends GetxController {
   }
 
 // user settings
-  void onNavToLanguage() {
-    Get.toNamed(Routes.language);
-  }
 
   void onNavToFriend() {
     Get.toNamed(Routes.friend);
@@ -60,9 +64,68 @@ class SettingsController extends GetxController {
     );
   }
 
+  // general settings
+  void onNavToLanguage() {
+    Get.toNamed(Routes.language);
+  }
+
+  void onNavNotificationSettings() {
+    Get.toNamed(Routes.notificationSettings);
+  }
+
   // acc settings
 
   void onNavToSecurity() {
     Get.toNamed(Routes.security);
+  }
+
+  // notification settings
+  Future<void> onChangeShowNotification(bool value) async {
+    isShowNotification.value = value;
+    if (!isShowNotification.value) {
+      if (isShowNotificationWithSound.value) {
+        isShowNotificationWithSound.value = false;
+      }
+      await authController.updateFCMToken(isNull: true);
+    } else {
+      bool hasPermission = localStorageService.notificationPermission;
+
+      if (!hasPermission) {
+        NotificationSettings settings =
+            await FirebaseMessaging.instance.requestPermission();
+
+        if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+          debugPrint('User granted notification permission');
+          localStorageService.setNotificationPermission(true);
+          await authController.updateFCMToken();
+        } else {
+          debugPrint('User denied or did not grant permission');
+          localStorageService.setNotificationPermission(false);
+        }
+      }
+    }
+  }
+
+  void onChangeShowNotificationWithSound(bool value) {
+    isShowNotificationWithSound.value = value;
+  }
+
+  Future<void> checkNotificationPermission() async {
+    bool hasPermission = localStorageService.notificationPermission;
+
+    if (!hasPermission) {
+      NotificationSettings settings =
+          await FirebaseMessaging.instance.requestPermission();
+
+      if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+        debugPrint('User granted notification permission');
+        localStorageService.setNotificationPermission(true);
+      } else {
+        debugPrint('User denied or did not grant permission');
+        localStorageService.setNotificationPermission(false);
+      }
+    } else {
+      debugPrint('Notification permission already granted');
+    }
   }
 }

@@ -23,4 +23,5 @@ abstract class Routes {
   static const String friend = '/friend';
   static const String search = '/search';
   static const String security = '/security';
+  static const String notificationSettings = '/notification_settings';
 }

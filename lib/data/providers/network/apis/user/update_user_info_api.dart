@@ -82,3 +82,23 @@ class DeleteUserAccAPI extends APIRequestRepresentable {
     return APIProvider().request(this);
   }
 }
+
+class SetFcmTokenAPI extends APIRequestRepresentable {
+  final String? fcmToken;
+  SetFcmTokenAPI({required this.fcmToken});
+  @override
+  String get endpoint => '/api/set_fcm_token';
+
+  @override
+  HTTPMethod get method => HTTPMethod.post;
+
+  @override
+  get body => {
+        'fcm_token': fcmToken,
+      };
+
+  @override
+  Future request() {
+    return APIProvider().request(this);
+  }
+}

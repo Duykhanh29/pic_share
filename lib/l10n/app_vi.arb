@@ -106,5 +106,8 @@
     "userCodeDesc":"Mã người dùng là mã duy nhất cho mỗi người dùng. Người dùng có thể lấy mã tại trang hồ sơ cá nhân và gửi cho bạn bè. Sau đó dán mã vào ô nhập.",
     "searchForUserCode":"Tìm kiếm theo mã",
     "noFriends":"Bạn không có bạn bè nào",
-    "noFriendRequests":"Không có yêu cầu kết bạn nào"
+    "noFriendRequests":"Không có yêu cầu kết bạn nào",
+    "notiSettings":"Cài đặt thông báo",
+    "sound":"Âm thanh",
+    "showNotifications":"Hiển thị thông báo"
 }
