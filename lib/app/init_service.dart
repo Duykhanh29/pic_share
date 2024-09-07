@@ -8,9 +8,7 @@ initServices() async {
   await Get.putAsync<LocalStorageService>(LocalStorageService().init,
       permanent: true);
   await Get.putAsync<NotificationsService>(
-    () => Future.value(
-      NotificationsService(),
-    ),
+    NotificationsService().init,
   );
   cameras = await availableCameras();
 }

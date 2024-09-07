@@ -17,21 +17,25 @@ class NotificationSettingsPage extends GetView<SettingsController> {
         padding: const EdgeInsets.all(20),
         child: ListView(
           children: [
-            SwitchListTile(
-              value: controller.isShowNotification.value,
-              onChanged: controller.onChangeShowNotification,
-              title: Text(
-                t.showNotifications,
-                style: AppTextStyles.commonTextStyle(),
+            Obx(
+              () => SwitchListTile(
+                value: controller.isShowNotification.value,
+                onChanged: controller.onChangeShowNotification,
+                title: Text(
+                  t.showNotifications,
+                  style: AppTextStyles.commonTextStyle(),
+                ),
               ),
             ),
             const SizedBox(height: 10),
-            SwitchListTile(
-              value: controller.isShowNotificationWithSound.value,
-              onChanged: controller.onChangeShowNotificationWithSound,
-              title: Text(
-                t.sound,
-                style: AppTextStyles.commonTextStyle(),
+            Obx(
+              () => SwitchListTile(
+                value: controller.isShowNotificationWithSound.value,
+                onChanged: controller.onChangeShowNotificationWithSound,
+                title: Text(
+                  t.sound,
+                  style: AppTextStyles.commonTextStyle(),
+                ),
               ),
             ),
           ],

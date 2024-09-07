@@ -65,6 +65,7 @@ class RegisterController extends GetxController {
             password: passController.text,
             confirmPassword: confirmPasswordController.text,
             name: nameController.text.trim());
+        _tokenManager.setAccessToken(user.value?.accessToken);
         String? token = await notificationsService.getToken();
         if (token != null) {
           await userRepository.updateFcmToken(fcmToken: token);
@@ -72,7 +73,6 @@ class RegisterController extends GetxController {
               ?.copyWith(config: user.value?.config?.copyWith(fcmToken: token));
         }
         localStorageService.setUserModel(value: user.value);
-        _tokenManager.setAccessToken(user.value?.accessToken);
       } else {
         debugPrint("Form is not valid");
       }

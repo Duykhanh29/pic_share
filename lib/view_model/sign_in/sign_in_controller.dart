@@ -49,14 +49,16 @@ class SignInController extends GetxController {
       if (isValid) {
         user.value = await authRepository.signInWithEmailPass(
             email: emailController.text.trim(), password: passController.text);
+        _tokenManager.setAccessToken(user.value?.accessToken);
         String? token = await notificationsService.getToken();
+
         if (token != null) {
+          debugPrint("TOken of FCM is: $token");
           await userRepository.updateFcmToken(fcmToken: token);
           user.value = user.value
               ?.copyWith(config: user.value?.config?.copyWith(fcmToken: token));
         }
         localStorageService.setUserModel(value: user.value);
-        _tokenManager.setAccessToken(user.value?.accessToken);
       } else {
         debugPrint('form is not valid');
       }
@@ -68,7 +70,7 @@ class SignInController extends GetxController {
   Future<void> signInWithGoogle() async {
     try {
       user.value = await authRepository.signInWithGoogle();
-      localStorageService.setUserModel(value: user.value);
+      _tokenManager.setAccessToken(user.value?.accessToken);
       String? token = await notificationsService.getToken();
       if (token != null) {
         await userRepository.updateFcmToken(fcmToken: token);
@@ -76,7 +78,6 @@ class SignInController extends GetxController {
             ?.copyWith(config: user.value?.config?.copyWith(fcmToken: token));
       }
       localStorageService.setUserModel(value: user.value);
-      _tokenManager.setAccessToken(user.value?.accessToken);
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
     }

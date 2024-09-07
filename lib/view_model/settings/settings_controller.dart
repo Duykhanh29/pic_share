@@ -23,6 +23,23 @@ class SettingsController extends GetxController {
   String get language => authController.language;
   RxBool isShowNotification = true.obs;
   RxBool isShowNotificationWithSound = true.obs;
+
+  @override
+  void onInit() {
+    _initializeNotificationSettings();
+    super.onInit();
+  }
+
+  void _initializeNotificationSettings() {
+    bool hasPermission = localStorageService.notificationPermission;
+
+    if (hasPermission) {
+      isShowNotification.value = true;
+    } else {
+      isShowNotification.value = false;
+    }
+  }
+
   Future<void> logout() async {
     try {
       await authController.logout();
@@ -102,6 +119,8 @@ class SettingsController extends GetxController {
           debugPrint('User denied or did not grant permission');
           localStorageService.setNotificationPermission(false);
         }
+      } else {
+        await authController.updateFCMToken();
       }
     }
   }

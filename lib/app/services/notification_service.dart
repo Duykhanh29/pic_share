@@ -20,11 +20,11 @@ class NotificationsService extends GetxService {
   void Function(String)?
       onTokenRefreshCallback; // callback for onTokenRefresh to update fcm token in db
 
-  @override
-  void onInit() {
-    super.onInit();
+  Future<NotificationsService> init() async {
+    await requestPermission();
     _initLocalNotification();
     _setupFirebaseMessaging();
+    return this;
   }
 
   void _initLocalNotification() async {
