@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pic_share/app/services/local_storage_service.dart';
+import 'package:pic_share/app/services/notification_service.dart';
 import 'package:pic_share/app/services/token_manager.dart';
 import 'package:pic_share/data/models/user/user_model.dart';
 import 'package:pic_share/data/repositories/auth/auth_repository.dart';
@@ -15,10 +16,12 @@ class AuthController extends GetxController {
   final AuthRepository authRepository;
   final LocalStorageService localStorageService;
   final _tokenManager = TokenManager();
+  NotificationsService notificationsService;
   AuthController({
     required this.authRepository,
     required this.userRepository,
     required this.localStorageService,
+    required this.notificationsService,
   });
   Rx<UserModel?> currentUser = Rx<UserModel?>(null);
 
@@ -30,6 +33,14 @@ class AuthController extends GetxController {
   void onInit() async {
     currentUser.value = localStorageService.userModel;
     super.onInit();
+
+    notificationsService.onTokenRefreshCallback = (newToken) async {
+      await userRepository.updateFcmToken(fcmToken: newToken);
+      UserModel? user = currentUser.value?.copyWith(
+          config: currentUser.value?.config?.copyWith(fcmToken: newToken));
+      localStorageService.setUserModel(value: user, isUpdateUserNull: false);
+      debugPrint('Updated token and user model');
+    };
   }
 
   @override
@@ -92,6 +103,20 @@ class AuthController extends GetxController {
       Get.offAllNamed(Routes.login);
       localStorageService.removeAllSharedPreferencesValues();
       _tokenManager.deleteAll();
+    } catch (e) {
+      debugPrint("Something went wrong: ${e.toString()}");
+    }
+  }
+
+  Future<void> updateFCMToken({bool isNull = false}) async {
+    try {
+      String? fcmToken = await notificationsService.getToken();
+      if (isNull) fcmToken = null;
+      await userRepository.updateFcmToken(fcmToken: fcmToken);
+      UserModel? user = currentUser.value?.copyWith(
+          config:
+              currentUser.value?.config?.customCopyWith(fcmToken: fcmToken));
+      localStorageService.setUserModel(value: user, isUpdateUserNull: false);
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
     }

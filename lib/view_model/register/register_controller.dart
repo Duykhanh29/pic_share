@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pic_share/app/services/local_storage_service.dart';
+import 'package:pic_share/app/services/notification_service.dart';
 import 'package:pic_share/app/services/token_manager.dart';
 import 'package:pic_share/data/models/user/user_model.dart';
 import 'package:pic_share/data/repositories/auth/auth_repository.dart';
@@ -11,11 +12,13 @@ class RegisterController extends GetxController {
   final UserRepository userRepository;
   final LocalStorageService localStorageService;
   final _tokenManager = TokenManager();
+  NotificationsService notificationsService;
 
   RegisterController({
     required this.authRepository,
     required this.userRepository,
     required this.localStorageService,
+    required this.notificationsService,
   });
 
   final formKey = GlobalKey<FormState>();
@@ -62,8 +65,14 @@ class RegisterController extends GetxController {
             password: passController.text,
             confirmPassword: confirmPasswordController.text,
             name: nameController.text.trim());
-        localStorageService.setUserModel(value: user.value);
         _tokenManager.setAccessToken(user.value?.accessToken);
+        String? token = await notificationsService.getToken();
+        if (token != null) {
+          await userRepository.updateFcmToken(fcmToken: token);
+          user.value = user.value
+              ?.copyWith(config: user.value?.config?.copyWith(fcmToken: token));
+        }
+        localStorageService.setUserModel(value: user.value);
       } else {
         debugPrint("Form is not valid");
       }

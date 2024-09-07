@@ -35,6 +35,7 @@ import 'package:pic_share/views/pages/reacted_users/reacted_users_page.dart';
 import 'package:pic_share/views/pages/register/register_page.dart';
 import 'package:pic_share/views/pages/search/search_page.dart';
 import 'package:pic_share/views/pages/security/security_page.dart';
+import 'package:pic_share/views/pages/settings/notification_settings_page.dart';
 import 'package:pic_share/views/pages/settings/settings_page.dart';
 import 'package:pic_share/views/pages/sign_in/sign_in_page.dart';
 import 'package:pic_share/views/pages/verify/verify_page.dart';
@@ -144,6 +145,11 @@ abstract class AppPages {
     GetPage(
       name: Routes.security,
       page: () => const SecurityPage(),
+    ),
+    GetPage(
+      name: Routes.notificationSettings,
+      page: () => const NotificationSettingsPage(),
+      binding: SettingsBindings(),
     ),
   ];
 }

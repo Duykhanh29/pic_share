@@ -83,4 +83,13 @@ class Config {
   factory Config.fromJson(Map<String, dynamic> json) => _$ConfigFromJson(json);
 
   Map<String, dynamic> toJson() => _$ConfigToJson(this);
+  Config customCopyWith({
+    String? language,
+    String? fcmToken,
+  }) {
+    return Config(
+      language: language ?? this.language,
+      fcmToken: fcmToken,
+    );
+  }
 }

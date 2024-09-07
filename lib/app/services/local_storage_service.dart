@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:pic_share/data/models/user/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-enum _Key { user }
+enum _Key { user, notificationPermission }
 
 class LocalStorageService extends GetxService {
   SharedPreferences? _sharedPreferences;
@@ -52,6 +52,16 @@ class LocalStorageService extends GetxService {
               config: userModel?.config?.copyWith(language: value)),
           isUpdateUserNull: false);
     }
+  }
+
+  void setNotificationPermission(bool value) {
+    _sharedPreferences?.setBool(_Key.notificationPermission.toString(), value);
+  }
+
+  bool get notificationPermission {
+    return _sharedPreferences
+            ?.getBool(_Key.notificationPermission.toString()) ??
+        false;
   }
 
   void removeAllSharedPreferencesValues() {

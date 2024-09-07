@@ -22,6 +22,7 @@ abstract class UserRepository {
       {required String currentPassword,
       required String newPassword,
       required String passwordConfirmation});
+  Future<void> updateFcmToken({required String? fcmToken});
   Future<void> deleteUser();
   Future<UserModel?> getCurrentUser();
 }
@@ -86,6 +87,16 @@ class UserRepositoryImpl implements UserRepository {
       debugPrint("Something went wrong: ${e.toString()}");
     }
     return null;
+  }
+
+  @override
+  Future<void> updateFcmToken({required String? fcmToken}) async {
+    try {
+      final response = await SetFcmTokenAPI(fcmToken: fcmToken).request();
+      debugPrint("Message: ${response['message']}");
+    } catch (e) {
+      debugPrint("Something went wrong: ${e.toString()}");
+    }
   }
 
   /* OLD VERSION ( USING FIREBASE TO GET USER DATA)

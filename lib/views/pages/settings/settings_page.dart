@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:pic_share/app/custom/app_bar_custom.dart';
 import 'package:pic_share/view_model/settings/settings_controller.dart';
 import 'package:pic_share/views/pages/settings/widgets/account_settings_section.dart';
+import 'package:pic_share/views/pages/settings/widgets/general_settings_section.dart';
 import 'package:pic_share/views/pages/settings/widgets/user_section_widget.dart';
 import 'package:pic_share/views/pages/settings/widgets/user_settings_section.dart';
 
@@ -22,6 +23,7 @@ class SettinngsPage extends GetView<SettingsController> {
             children: [
               UserSectionWidget(),
               UserSettingsSection(),
+              GeneralSettingsSection(),
               AccountSettingsSection(),
             ],
           ),

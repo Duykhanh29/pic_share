@@ -106,5 +106,8 @@
     "userCodeDesc":"User code is a unique code for each user. Users can get the code on their profile page and send it to their friends. Then paste the code into the input box",
     "searchForUserCode":"Search by user code",
     "noFriends":"You don't have any friends",
-    "noFriendRequests":"No friend requests"
+    "noFriendRequests":"No friend requests",
+    "notiSettings":"Notification settings",
+    "sound":"Sound",
+    "showNotifications":"Show notifications"
 }
