@@ -22,8 +22,17 @@ class FriendController extends GetxController
   List<Friend> get friends => friendList;
   List<Friend> get getSentFriends => sentFriends;
   List<Friend> get requestFriends => requestedFriends;
+  RxBool isViewInTabbar = true.obs;
   void onChangeView() {
     isFriendShipView.value = !isFriendShipView.value;
+  }
+
+  void onNavToPage() {
+    isViewInTabbar = false.obs;
+  }
+
+  void onResetViewInTabBar() {
+    isViewInTabbar = true.obs;
   }
 
   @override
@@ -33,6 +42,11 @@ class FriendController extends GetxController
     WidgetsBinding.instance.addObserver(this);
     tabController = TabController(length: 2, vsync: this)..index = 0;
     super.onInit();
+  }
+
+  Future<void> onRefresh() async {
+    await fetchFriends();
+    await fetchFriendRequests();
   }
 
   Future<void> fetchFriends() async {
@@ -58,8 +72,7 @@ class FriendController extends GetxController
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    fetchFriends();
-    fetchFriendRequests();
+    // onRefresh();
     super.didChangeAppLifecycleState(state);
   }
 

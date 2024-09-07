@@ -17,10 +17,13 @@ class FriendPage extends GetView<FriendController> {
     final t = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: _buildAppBar(t),
-      body: Obx(
-        () => controller.isFriendShipView.value
-            ? _buildListFriendView(t)
-            : _buildFriendRequestsView(t),
+      body: RefreshIndicator(
+        onRefresh: controller.onRefresh,
+        child: Obx(
+          () => controller.isFriendShipView.value
+              ? _buildListFriendView(t)
+              : _buildFriendRequestsView(t),
+        ),
       ),
     );
   }
@@ -28,20 +31,25 @@ class FriendPage extends GetView<FriendController> {
   AppBar _buildAppBar(AppLocalizations t) {
     return AppBar(
       backgroundColor: AppColors.secondaryColor,
-      leading: Obx(() => controller.isFriendShipView.value
-          ? const CustomBackButton()
-          : SizedBox(
-              height: 45,
-              width: 45,
-              child: Center(
-                child: InkWell(
-                  onTap: () {
-                    controller.onChangeView();
-                  },
-                  child: const Icon(Icons.arrow_back),
-                ),
-              ),
-            )),
+      leading: Obx(() =>
+          controller.isViewInTabbar.value && controller.isFriendShipView.value
+              ? const SizedBox.shrink()
+              : controller.isFriendShipView.value
+                  ? CustomBackButton(
+                      onBack: controller.onResetViewInTabBar,
+                    )
+                  : SizedBox(
+                      height: 45,
+                      width: 45,
+                      child: Center(
+                        child: InkWell(
+                          onTap: () {
+                            controller.onChangeView();
+                          },
+                          child: const Icon(Icons.arrow_back),
+                        ),
+                      ),
+                    )),
       title: Obx(
         () => Text(
           controller.isFriendShipView.value ? t.friend : t.friendRequests,
