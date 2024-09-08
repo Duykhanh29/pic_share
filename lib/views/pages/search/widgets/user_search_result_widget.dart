@@ -19,8 +19,10 @@ class UserSearchResultWidget extends StatelessWidget {
   final void Function(int) onTap;
   final Future<void> Function(int)? onTapAddFriend;
   final void Function(int)? onChatTap;
-  final Future<void> Function(int)? onAcceptFriend;
-  final Future<void> Function(int)? onRejectFriend;
+  final Future<void> Function({required int userID, required int id})?
+      onAcceptFriend;
+  final Future<void> Function({required int userID, required int id})?
+      onRejectFriend;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -83,7 +85,9 @@ class UserSearchResultWidget extends StatelessWidget {
       return IconButton.outlined(
         onPressed: () async {
           if (onRejectFriend != null) {
-            await onRejectFriend!(userSummaryModel.user.id?.toInt() ?? 0);
+            await onRejectFriend!(
+                userID: userSummaryModel.user.id?.toInt() ?? 0,
+                id: userSummaryModel.id);
           }
         },
         icon: const Icon(Icons.cancel),
@@ -95,7 +99,9 @@ class UserSearchResultWidget extends StatelessWidget {
             color: AppColors.warningColor,
             onPressed: () async {
               if (onRejectFriend != null) {
-                await onRejectFriend!(userSummaryModel.user.id?.toInt() ?? 0);
+                await onRejectFriend!(
+                    userID: userSummaryModel.user.id?.toInt() ?? 0,
+                    id: userSummaryModel.id);
               }
             },
             icon: Icon(
@@ -107,7 +113,9 @@ class UserSearchResultWidget extends StatelessWidget {
             color: AppColors.secondaryColor,
             onPressed: () async {
               if (onAcceptFriend != null) {
-                await onAcceptFriend!(userSummaryModel.user.id?.toInt() ?? 0);
+                await onAcceptFriend!(
+                    userID: userSummaryModel.user.id?.toInt() ?? 0,
+                    id: userSummaryModel.id);
               }
             },
             icon: Icon(

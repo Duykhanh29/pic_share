@@ -170,21 +170,24 @@ class SearchPage extends GetView<SearchUserController> {
   }
 
   Widget _buildCodeSearchResult() {
-    return SliverToBoxAdapter(
-      child: controller.userSearchResult.value == null
-          ? Container()
-          : Padding(
-              padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 15),
-              child: UserSearchResultWidget(
-                userSummaryModel: controller.userSearchResult.value!,
-                onTap: controller.onItemCLick,
-                key: UniqueKey(),
-                onAcceptFriend: controller.onAcceptFriendRequest,
-                onChatTap: controller.onChatClick,
-                onRejectFriend: controller.onRejectFriendRequest,
-                onTapAddFriend: controller.onMakeFriendRequest,
+    return Obx(
+      () => SliverToBoxAdapter(
+        child: controller.userSearchResult.value == null
+            ? Container()
+            : Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 40, horizontal: 15),
+                child: UserSearchResultWidget(
+                  userSummaryModel: controller.userSearchResult.value!,
+                  onTap: controller.onItemCLick,
+                  key: UniqueKey(),
+                  onAcceptFriend: controller.onAcceptFriendRequest,
+                  onChatTap: controller.onChatClick,
+                  onRejectFriend: controller.onRejectFriendRequest,
+                  onTapAddFriend: controller.onMakeFriendRequest,
+                ),
               ),
-            ),
+      ),
     );
   }
 
@@ -207,21 +210,23 @@ class SearchPage extends GetView<SearchUserController> {
 
     return SliverPadding(
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-      sliver: SliverList.separated(
-        itemBuilder: (context, index) {
-          UserFriendShipModel user = controller.listSearchUser[index];
-          return UserSearchResultWidget(
-            userSummaryModel: user,
-            onTap: controller.onItemCLick,
-            key: UniqueKey(),
-            onAcceptFriend: controller.onAcceptFriendRequest,
-            onChatTap: controller.onChatClick,
-            onRejectFriend: controller.onRejectFriendRequest,
-            onTapAddFriend: controller.onMakeFriendRequest,
-          );
-        },
-        separatorBuilder: (context, index) => DividerHelper.sizedboxDivider(),
-        itemCount: controller.listSearchUser.length,
+      sliver: Obx(
+        () => SliverList.separated(
+          itemBuilder: (context, index) {
+            UserFriendShipModel user = controller.listSearchUser[index];
+            return UserSearchResultWidget(
+              userSummaryModel: user,
+              onTap: controller.onItemCLick,
+              key: UniqueKey(),
+              onAcceptFriend: controller.onAcceptFriendRequest,
+              onChatTap: controller.onChatClick,
+              onRejectFriend: controller.onRejectFriendRequest,
+              onTapAddFriend: controller.onMakeFriendRequest,
+            );
+          },
+          separatorBuilder: (context, index) => DividerHelper.sizedboxDivider(),
+          itemCount: controller.listSearchUser.length,
+        ),
       ),
     );
   }

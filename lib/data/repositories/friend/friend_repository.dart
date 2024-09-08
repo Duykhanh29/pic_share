@@ -4,7 +4,7 @@ import 'package:pic_share/data/models/user/friend.dart';
 import 'package:pic_share/data/providers/network/apis/friends/friend_apis.dart';
 
 abstract class FriendRepository {
-  Future<void> sendFriendRequest(int friendId);
+  Future<Friend?> sendFriendRequest(int friendId);
   Future<void> updateFriendStatus(
       {required int id, required FriendStatus status});
   Future<void> deleteFriend(int id);
@@ -18,13 +18,16 @@ abstract class FriendRepository {
 
 class FriendRepositoryImpl implements FriendRepository {
   @override
-  Future<void> sendFriendRequest(int friendId) async {
+  Future<Friend?> sendFriendRequest(int friendId) async {
     try {
       final response = await MakeFriendRequestAPI(friendId: friendId).request();
       debugPrint("Message: ${response['message']}");
+      final data = response['data'] as Map<String, dynamic>;
+      return Friend.fromJson(data);
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
     }
+    return null;
   }
 
   @override
