@@ -4,6 +4,7 @@ import 'package:pic_share/app/constants/strings.dart';
 import 'package:pic_share/data/enums/user_relationship.dart';
 import 'package:pic_share/data/models/user/friend.dart';
 import 'package:pic_share/data/models/user/user_friendship_model.dart';
+import 'package:pic_share/data/models/user/user_summary_model.dart';
 import 'package:pic_share/data/repositories/search/search_repository.dart';
 import 'package:pic_share/view_model/friend/friend_controller.dart';
 
@@ -31,9 +32,12 @@ class SearchUserController extends GetxController {
   RxBool isSearch = RxBool(false);
   RxBool isReadyToSearchWithCode = RxBool(false);
   @override
-  void onInit() {
+  void onInit() async {
     nameController = TextEditingController();
     codeController = TextEditingController();
+    if (isSearchWithCode.value) {
+      await friendController.onRefresh();
+    }
     super.onInit();
   }
 
@@ -53,11 +57,11 @@ class SearchUserController extends GetxController {
       final listUser = await searchRepository.searchByName(name: text);
       if (listUser.isNotEmpty) {
         for (var user in listUser) {
-          UserFriendShipModel userFriendShipModel;
-          UserRelationship relationship =
-              getRelationship(user.id?.toInt() ?? 0);
-          userFriendShipModel =
-              UserFriendShipModel(relationship: relationship, user: user);
+          UserFriendShipModel userFriendShipModel = getUserSearchResult(user);
+          // UserRelationship relationship =
+          //     getRelationship(user.id?.toInt() ?? 0);
+          // userFriendShipModel =
+          //     UserFriendShipModel(relationship: relationship, user: user);
           listSearchUser.add(userFriendShipModel);
         }
       }
@@ -74,9 +78,7 @@ class SearchUserController extends GetxController {
       isLoading.value = true;
       final user = await searchRepository.searchByUserCode(code: code);
       if (user != null) {
-        UserRelationship relationship = getRelationship(user.id?.toInt() ?? 0);
-        userSearchResult.value =
-            UserFriendShipModel(relationship: relationship, user: user);
+        userSearchResult.value = getUserSearchResult(user);
       }
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
@@ -91,6 +93,37 @@ class SearchUserController extends GetxController {
     } else {
       isReadyToSearchWithCode.value = false;
     }
+  }
+
+  UserFriendShipModel getUserSearchResult(UserSummaryModel user) {
+    UserRelationship userRelationship = UserRelationship.notFriend;
+    int id = 0;
+    for (var friend in friends) {
+      if (friend.userId == user.id || friend.friendId == user.id) {
+        userRelationship = UserRelationship.friend;
+        id = friend.id;
+        return UserFriendShipModel(
+            relationship: userRelationship, user: user, id: id);
+      }
+    }
+    for (var friend in requestFriends) {
+      if (friend.userId == user.id) {
+        userRelationship = UserRelationship.requested;
+        id = friend.id;
+        return UserFriendShipModel(
+            relationship: userRelationship, user: user, id: id);
+      }
+    }
+    for (var friend in sentFriends) {
+      if (friend.friendId == user.id) {
+        userRelationship = UserRelationship.sent;
+        id = friend.id;
+        return UserFriendShipModel(
+            relationship: userRelationship, user: user, id: id);
+      }
+    }
+    return UserFriendShipModel(
+        relationship: userRelationship, user: user, id: id);
   }
 
   UserRelationship getRelationship(int id) {
@@ -114,25 +147,54 @@ class SearchUserController extends GetxController {
 
   Future<void> onMakeFriendRequest(int id) async {
     try {
-      friendController.makeFriendRequest(id);
+      Friend? friend = await friendController.makeFriendRequest(id);
+      if (friend != null) {
+        onUpdateClick(UserRelationship.sent, id, friend.id);
+        await friendController.onRefresh();
+      }
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
     }
   }
 
-  Future<void> onRejectFriendRequest(int id) async {
+  Future<void> onRejectFriendRequest(
+      {required int userID, required int id}) async {
     try {
-      friendController.onRejectFriendRequest(id);
+      await friendController.onRejectFriendRequest(id);
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
+    } finally {
+      onUpdateClick(UserRelationship.notFriend, userID, 0);
+      await friendController.onRefresh();
     }
   }
 
-  Future<void> onAcceptFriendRequest(int id) async {
+  Future<void> onAcceptFriendRequest(
+      {required int userID, required int id}) async {
     try {
-      friendController.onAcceptFriendRequest(id);
+      await friendController.onAcceptFriendRequest(id);
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
+    } finally {
+      onUpdateClick(UserRelationship.friend, userID, id);
+      await friendController.onRefresh();
+    }
+  }
+
+  void onUpdateClick(UserRelationship relationship, int userID, int id) {
+    if (isSearchWithCode.value) {
+      userSearchResult.value = UserFriendShipModel(
+          relationship: relationship,
+          user: userSearchResult.value!.user,
+          id: id);
+    } else {
+      for (var i = 0; i < listSearchUser.length; i++) {
+        if (userID == listSearchUser[i].user.id) {
+          listSearchUser[i] = UserFriendShipModel(
+              relationship: relationship, user: listSearchUser[i].user, id: id);
+          break;
+        }
+      }
     }
   }
 

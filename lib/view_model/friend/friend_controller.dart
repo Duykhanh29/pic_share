@@ -134,12 +134,13 @@ class FriendController extends GetxController
     }
   }
 
-  Future<void> makeFriendRequest(int id) async {
+  Future<Friend?> makeFriendRequest(int id) async {
     try {
-      await friendRepository.sendFriendRequest(id);
+      return await friendRepository.sendFriendRequest(id);
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
     }
+    return null;
   }
 
   void onNavToChat(int id) {}

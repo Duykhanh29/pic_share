@@ -21,7 +21,7 @@ class FriendPage extends GetView<FriendController> {
         onRefresh: controller.onRefresh,
         child: Obx(
           () => controller.isFriendShipView.value
-              ? _buildListFriendView(t)
+              ? _buildListFriendView(t, context)
               : _buildFriendRequestsView(t),
         ),
       ),
@@ -68,7 +68,7 @@ class FriendPage extends GetView<FriendController> {
     );
   }
 
-  Widget _buildListFriendView(AppLocalizations t) {
+  Widget _buildListFriendView(AppLocalizations t, BuildContext context) {
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         child: ListView(
@@ -129,11 +129,16 @@ class FriendPage extends GetView<FriendController> {
                               itemCount: controller.friendList.length,
                             )
                           : SliverToBoxAdapter(
+                              child: SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.6,
                               child: Center(
-                              child: Text(
-                                t.noFriends,
-                                style: AppTextStyles.commonTextStyle().copyWith(
-                                    fontSize: 16, fontWeight: FontWeight.w500),
+                                child: Text(
+                                  t.noFriends,
+                                  style: AppTextStyles.commonTextStyle()
+                                      .copyWith(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500),
+                                ),
                               ),
                             )),
                 ),

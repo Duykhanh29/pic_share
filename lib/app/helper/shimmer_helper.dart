@@ -20,6 +20,7 @@ class ShimmerHelper {
 
   buildListViewShimmer() {
     return ListView.builder(
+      shrinkWrap: true,
       itemBuilder: (context, index) {
         return Shimmer.fromColors(
           baseColor: const Color.fromARGB(255, 243, 254, 255),
@@ -38,6 +39,7 @@ class ShimmerHelper {
 
   buildGridShimmer() {
     return GridView.builder(
+      shrinkWrap: true,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2, crossAxisSpacing: 10, mainAxisSpacing: 10),
       itemBuilder: (context, index) {
