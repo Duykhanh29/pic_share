@@ -3,6 +3,7 @@ import 'package:pic_share/data/models/conversation/message.dart';
 import 'package:pic_share/data/models/comment/comment.dart';
 import 'package:pic_share/data/models/comment/comment_user.dart';
 import 'package:pic_share/data/models/comment/reply.dart';
+import 'package:pic_share/data/models/user/user_summary_model.dart';
 
 MessageContent textContent1 = MessageContent(
   text: "Hello, how are you?",
@@ -144,38 +145,38 @@ final mockUser3 = CommentUser(
 
 // Mock data for Reply
 final mockReply1 = Reply(
-  id: "reply1",
+  id: 1,
   content: "This is a reply to your comment.",
-  createdAt: DateTime.now().millisecondsSinceEpoch,
-  user: mockUser1,
+  createdAt: DateTime.now().toIso8601String(),
+  user: UserSummaryModel(id: 1, name: "fa"),
 );
 
 final mockReply2 = Reply(
-  id: "reply2",
-  content: "Another reply.",
-  createdAt: DateTime.now().millisecondsSinceEpoch,
-  user: mockUser2,
+  id: 1,
+  content: "This is a reply to your comment.",
+  createdAt: DateTime.now().toIso8601String(),
+  user: UserSummaryModel(id: 1, name: "fa"),
 );
 
 final mockReply3 = Reply(
-  id: "reply3",
-  content: "Yet another reply.",
-  createdAt: DateTime.now().millisecondsSinceEpoch,
-  user: mockUser3,
+  id: 1,
+  content: "This is a reply to your comment.",
+  createdAt: DateTime.now().toIso8601String(),
+  user: UserSummaryModel(id: 1, name: "fa"),
 );
 
 final mockReply4 = Reply(
-  id: "reply4",
-  content: "Reply from a different user.",
-  createdAt: DateTime.now().millisecondsSinceEpoch,
-  user: mockUser1,
+  id: 1,
+  content: "This is a reply to your comment.",
+  createdAt: DateTime.now().toIso8601String(),
+  user: UserSummaryModel(id: 1, name: "fa"),
 );
 
 // Mock data for Comment
 final mockComment = Comment(
-  id: "comment1",
-  content: "This is a comment.",
-  createdAt: DateTime.now().millisecondsSinceEpoch,
+  id: 1,
+  content: "This is a reply to your comment.",
+  createdAt: DateTime.now().toIso8601String(),
   listReply: [mockReply1, mockReply2, mockReply3, mockReply4],
-  user: mockUser1,
+  user: UserSummaryModel(id: 1, name: "fa"),
 );

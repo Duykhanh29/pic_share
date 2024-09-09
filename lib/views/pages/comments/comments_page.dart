@@ -53,7 +53,7 @@ class CommentsPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        data.user?.userName ?? "",
+                        data.user?.name ?? "",
                         style: AppTextStyles.headingTextStyle(),
                       ),
                       const SizedBox(
@@ -102,7 +102,7 @@ class CommentsPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        data.user?.userName ?? "",
+                        data.user?.name ?? "",
                         style: AppTextStyles.headingTextStyle(),
                       ),
                       const SizedBox(

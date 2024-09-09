@@ -25,7 +25,7 @@ class ImageCacheHelper {
   static Widget showImage(
       {required String url, required double height, required double width}) {
     return CachedNetworkImage(
-      imageUrl: url,
+      imageUrl: AppConfig.baseUrl + url,
       fit: BoxFit.contain,
       height: height,
       width: width,

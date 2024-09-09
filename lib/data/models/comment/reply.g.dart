@@ -9,11 +9,13 @@ part of 'reply.dart';
 abstract class _$ReplyCWProxy {
   Reply content(String? content);
 
-  Reply createdAt(int? createdAt);
+  Reply createdAt(String? createdAt);
 
-  Reply id(String? id);
+  Reply id(int? id);
 
-  Reply user(CommentUser? user);
+  Reply user(UserSummaryModel? user);
+
+  Reply updatedAt(String? updatedAt);
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `Reply(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -23,9 +25,10 @@ abstract class _$ReplyCWProxy {
   /// ````
   Reply call({
     String? content,
-    int? createdAt,
-    String? id,
-    CommentUser? user,
+    String? createdAt,
+    int? id,
+    UserSummaryModel? user,
+    String? updatedAt,
   });
 }
 
@@ -39,13 +42,16 @@ class _$ReplyCWProxyImpl implements _$ReplyCWProxy {
   Reply content(String? content) => this(content: content);
 
   @override
-  Reply createdAt(int? createdAt) => this(createdAt: createdAt);
+  Reply createdAt(String? createdAt) => this(createdAt: createdAt);
 
   @override
-  Reply id(String? id) => this(id: id);
+  Reply id(int? id) => this(id: id);
 
   @override
-  Reply user(CommentUser? user) => this(user: user);
+  Reply user(UserSummaryModel? user) => this(user: user);
+
+  @override
+  Reply updatedAt(String? updatedAt) => this(updatedAt: updatedAt);
 
   @override
 
@@ -60,6 +66,7 @@ class _$ReplyCWProxyImpl implements _$ReplyCWProxy {
     Object? createdAt = const $CopyWithPlaceholder(),
     Object? id = const $CopyWithPlaceholder(),
     Object? user = const $CopyWithPlaceholder(),
+    Object? updatedAt = const $CopyWithPlaceholder(),
   }) {
     return Reply(
       content: content == const $CopyWithPlaceholder()
@@ -69,15 +76,19 @@ class _$ReplyCWProxyImpl implements _$ReplyCWProxy {
       createdAt: createdAt == const $CopyWithPlaceholder()
           ? _value.createdAt
           // ignore: cast_nullable_to_non_nullable
-          : createdAt as int?,
+          : createdAt as String?,
       id: id == const $CopyWithPlaceholder()
           ? _value.id
           // ignore: cast_nullable_to_non_nullable
-          : id as String?,
+          : id as int?,
       user: user == const $CopyWithPlaceholder()
           ? _value.user
           // ignore: cast_nullable_to_non_nullable
-          : user as CommentUser?,
+          : user as UserSummaryModel?,
+      updatedAt: updatedAt == const $CopyWithPlaceholder()
+          ? _value.updatedAt
+          // ignore: cast_nullable_to_non_nullable
+          : updatedAt as String?,
     );
   }
 }
@@ -98,12 +109,14 @@ extension $ReplyCopyWith on Reply {
     bool createdAt = false,
     bool id = false,
     bool user = false,
+    bool updatedAt = false,
   }) {
     return Reply(
       content: content == true ? null : this.content,
       createdAt: createdAt == true ? null : this.createdAt,
       id: id == true ? null : this.id,
       user: user == true ? null : this.user,
+      updatedAt: updatedAt == true ? null : this.updatedAt,
     );
   }
 }
@@ -114,16 +127,18 @@ extension $ReplyCopyWith on Reply {
 
 Reply _$ReplyFromJson(Map<String, dynamic> json) => Reply(
       content: json['content'] as String?,
-      createdAt: (json['createdAt'] as num?)?.toInt(),
-      id: json['id'] as String?,
+      createdAt: json['created_at'] as String?,
+      id: (json['replyId'] as num?)?.toInt(),
       user: json['user'] == null
           ? null
-          : CommentUser.fromJson(json['user'] as Map<String, dynamic>),
+          : UserSummaryModel.fromJson(json['user'] as Map<String, dynamic>),
+      updatedAt: json['updated_at'] as String?,
     );
 
 Map<String, dynamic> _$ReplyToJson(Reply instance) => <String, dynamic>{
-      'id': instance.id,
+      'replyId': instance.id,
       'content': instance.content,
-      'createdAt': instance.createdAt,
+      'created_at': instance.createdAt,
+      'updated_at': instance.updatedAt,
       'user': instance.user?.toJson(),
     };

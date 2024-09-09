@@ -6,4 +6,6 @@ class AppImage {
   static const String googleLogo = '$basePath/google.png';
   static const String userEmptyAvatar = '$basePath/user_empty_avatar.png';
   static const String picShareLogo = '$basePath/pic_share_logo.png';
+
+  static const String placeHolder = '$basePath/place_holder.jpg';
 }

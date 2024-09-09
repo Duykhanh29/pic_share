@@ -5,6 +5,7 @@ import 'package:pic_share/app/constants/app_images.dart';
 import 'package:pic_share/app/constants/app_text_styles.dart';
 import 'package:pic_share/app/custom/custom_back_button.dart';
 import 'package:pic_share/app/helper/image_cache_helper.dart';
+import 'package:pic_share/app/helper/shimmer_helper.dart';
 import 'package:pic_share/view_model/profile/profile_controller.dart';
 import 'package:pic_share/views/pages/profile/widgets/user_code_section.dart';
 import 'package:pic_share/views/pages/profile/widgets/user_detail_section.dart';
@@ -141,7 +142,7 @@ class ProfilePage extends GetView<ProfileController> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "${t.currentPosts} (18)",
+                      t.currentPosts,
                       style: AppTextStyles.commonTextStyle()
                           .copyWith(fontWeight: FontWeight.w600),
                     ),
@@ -156,19 +157,56 @@ class ProfilePage extends GetView<ProfileController> {
                 ),
               ),
             ),
-            SliverGrid.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3, mainAxisSpacing: 10, crossAxisSpacing: 10),
-              itemBuilder: (context, index) => GestureDetector(
-                onTap: () {},
-                child: ImageCacheHelper.showImage(
-                    url:
-                        "https://mrwallpaper.com/images/hd/beautiful-pink-tree-3vau5vtfa3qn7k8v.jpg",
-                    height: MediaQuery.of(context).size.height * 0.15,
-                    width: MediaQuery.of(context).size.width * 0.3),
-              ),
-              itemCount: 18,
-            ),
+            Obx(() => controller.isLoading.value
+                ? SliverToBoxAdapter(
+                    child: ShimmerHelper().buildGridShimmer(),
+                  )
+                : controller.latestPosts.isEmpty
+                    ? SliverToBoxAdapter(
+                        child: SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.15,
+                          child: Center(
+                            child: Text(
+                              t.noPosts,
+                              style: AppTextStyles.commonTextStyle(),
+                            ),
+                          ),
+                        ),
+                      )
+                    : SliverToBoxAdapter(
+                        child: GridView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 3,
+                                  mainAxisSpacing: 10,
+                                  crossAxisSpacing: 10),
+                          itemBuilder: (context, index) {
+                            final post = controller.latestPosts[index];
+                            return GestureDetector(
+                              onTap: () async {
+                                await controller.onTapDetail(post.id ?? 0);
+                              },
+                              child: post.urlImage != null
+                                  ? ImageCacheHelper.showImage(
+                                      url: post.urlImage ?? "",
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.15,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.3)
+                                  : Image.asset(AppImage.placeHolder,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.15,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.3),
+                            );
+                          },
+                          itemCount: controller.latestPosts.length,
+                        ),
+                      )),
           ],
         ),
       ),
