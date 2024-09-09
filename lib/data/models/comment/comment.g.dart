@@ -9,13 +9,15 @@ part of 'comment.dart';
 abstract class _$CommentCWProxy {
   Comment content(String? content);
 
-  Comment createdAt(int? createdAt);
+  Comment createdAt(String? createdAt);
 
-  Comment id(String? id);
+  Comment id(int? id);
 
   Comment listReply(List<Reply> listReply);
 
-  Comment user(CommentUser? user);
+  Comment user(UserSummaryModel? user);
+
+  Comment updatedAt(String? updatedAt);
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `Comment(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -25,10 +27,11 @@ abstract class _$CommentCWProxy {
   /// ````
   Comment call({
     String? content,
-    int? createdAt,
-    String? id,
+    String? createdAt,
+    int? id,
     List<Reply>? listReply,
-    CommentUser? user,
+    UserSummaryModel? user,
+    String? updatedAt,
   });
 }
 
@@ -42,16 +45,19 @@ class _$CommentCWProxyImpl implements _$CommentCWProxy {
   Comment content(String? content) => this(content: content);
 
   @override
-  Comment createdAt(int? createdAt) => this(createdAt: createdAt);
+  Comment createdAt(String? createdAt) => this(createdAt: createdAt);
 
   @override
-  Comment id(String? id) => this(id: id);
+  Comment id(int? id) => this(id: id);
 
   @override
   Comment listReply(List<Reply> listReply) => this(listReply: listReply);
 
   @override
-  Comment user(CommentUser? user) => this(user: user);
+  Comment user(UserSummaryModel? user) => this(user: user);
+
+  @override
+  Comment updatedAt(String? updatedAt) => this(updatedAt: updatedAt);
 
   @override
 
@@ -67,6 +73,7 @@ class _$CommentCWProxyImpl implements _$CommentCWProxy {
     Object? id = const $CopyWithPlaceholder(),
     Object? listReply = const $CopyWithPlaceholder(),
     Object? user = const $CopyWithPlaceholder(),
+    Object? updatedAt = const $CopyWithPlaceholder(),
   }) {
     return Comment(
       content: content == const $CopyWithPlaceholder()
@@ -76,11 +83,11 @@ class _$CommentCWProxyImpl implements _$CommentCWProxy {
       createdAt: createdAt == const $CopyWithPlaceholder()
           ? _value.createdAt
           // ignore: cast_nullable_to_non_nullable
-          : createdAt as int?,
+          : createdAt as String?,
       id: id == const $CopyWithPlaceholder()
           ? _value.id
           // ignore: cast_nullable_to_non_nullable
-          : id as String?,
+          : id as int?,
       listReply: listReply == const $CopyWithPlaceholder() || listReply == null
           ? _value.listReply
           // ignore: cast_nullable_to_non_nullable
@@ -88,7 +95,11 @@ class _$CommentCWProxyImpl implements _$CommentCWProxy {
       user: user == const $CopyWithPlaceholder()
           ? _value.user
           // ignore: cast_nullable_to_non_nullable
-          : user as CommentUser?,
+          : user as UserSummaryModel?,
+      updatedAt: updatedAt == const $CopyWithPlaceholder()
+          ? _value.updatedAt
+          // ignore: cast_nullable_to_non_nullable
+          : updatedAt as String?,
     );
   }
 }
@@ -109,6 +120,7 @@ extension $CommentCopyWith on Comment {
     bool createdAt = false,
     bool id = false,
     bool user = false,
+    bool updatedAt = false,
   }) {
     return Comment(
       content: content == true ? null : this.content,
@@ -116,6 +128,7 @@ extension $CommentCopyWith on Comment {
       id: id == true ? null : this.id,
       listReply: listReply,
       user: user == true ? null : this.user,
+      updatedAt: updatedAt == true ? null : this.updatedAt,
     );
   }
 }
@@ -126,21 +139,23 @@ extension $CommentCopyWith on Comment {
 
 Comment _$CommentFromJson(Map<String, dynamic> json) => Comment(
       content: json['content'] as String?,
-      createdAt: (json['createdAt'] as num?)?.toInt(),
-      id: json['id'] as String?,
+      createdAt: json['created_at'] as String?,
+      id: (json['commentId'] as num?)?.toInt(),
       listReply: (json['listReply'] as List<dynamic>?)
               ?.map((e) => Reply.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
       user: json['user'] == null
           ? null
-          : CommentUser.fromJson(json['user'] as Map<String, dynamic>),
+          : UserSummaryModel.fromJson(json['user'] as Map<String, dynamic>),
+      updatedAt: json['updated_at'] as String?,
     );
 
 Map<String, dynamic> _$CommentToJson(Comment instance) => <String, dynamic>{
-      'id': instance.id,
+      'commentId': instance.id,
       'content': instance.content,
-      'createdAt': instance.createdAt,
+      'created_at': instance.createdAt,
+      'updated_at': instance.updatedAt,
       'listReply': instance.listReply.map((e) => e.toJson()).toList(),
       'user': instance.user?.toJson(),
     };

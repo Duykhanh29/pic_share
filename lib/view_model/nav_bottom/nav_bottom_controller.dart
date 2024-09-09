@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:pic_share/app/services/local_storage_service.dart';
 import 'package:pic_share/data/repositories/friend/friend_repository.dart';
+import 'package:pic_share/data/repositories/posts/post_repository.dart';
 import 'package:pic_share/view_model/auth/auth_controller.dart';
 import 'package:pic_share/view_model/conversations/conversations_controller.dart';
 import 'package:pic_share/view_model/drawer/drawer_controller.dart';
@@ -24,7 +25,13 @@ class NavBottomController extends GetxController {
           friendRepository: Get.find<FriendRepository>(),
         ),
         permanent: true);
-    Get.put(NewPostController(), permanent: true);
+    Get.put(
+        NewPostController(
+          postRepository: Get.find<PostRepository>(),
+          friendController: Get.find<FriendController>(),
+          authController: Get.find<AuthController>(),
+        ),
+        permanent: true);
     Get.put(ConversationsController(), permanent: true);
     Get.put(
         SettingsController(
@@ -43,6 +50,9 @@ class NavBottomController extends GetxController {
   }
 
   void changeNavigationPage(int index) {
+    if (pageIndex.value == 2) {
+      Get.find<NewPostController>().onSetToDefault();
+    }
     pageIndex.value = index;
     pageController.index = index;
     // if (index == 1) {

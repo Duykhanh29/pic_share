@@ -39,19 +39,20 @@ class ShimmerHelper {
 
   buildGridShimmer() {
     return GridView.builder(
+      itemCount: 15,
       shrinkWrap: true,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2, crossAxisSpacing: 10, mainAxisSpacing: 10),
+          crossAxisCount: 3, crossAxisSpacing: 10, mainAxisSpacing: 10),
       itemBuilder: (context, index) {
         return Shimmer.fromColors(
           baseColor: const Color.fromARGB(255, 243, 254, 255),
           highlightColor: const Color.fromARGB(255, 197, 217, 215),
           child: Container(
-              height: 200,
-              width: 150,
+              height: 80,
+              width: 80,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
-                  color: const Color.fromARGB(255, 221, 201, 224))),
+                  color: const Color.fromARGB(255, 212, 244, 243))),
         );
       },
     );

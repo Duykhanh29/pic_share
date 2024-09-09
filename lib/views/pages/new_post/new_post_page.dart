@@ -44,8 +44,24 @@ class NewPostPage extends GetView<NewPostController> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               _buildCameraView(context),
+              const SizedBox(
+                height: 10,
+              ),
               _buildRowActions(),
-              _buildFriendShareOption(),
+              Obx(
+                () => controller.pictureFile.value != null
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        child: Divider(
+                          color: AppColors.lightBorderColor,
+                          thickness: 0.2,
+                        ),
+                      )
+                    : const SizedBox.shrink(),
+              ),
+              Obx(() => controller.pictureFile.value != null
+                  ? _buildFriendShareOption(t)
+                  : const SizedBox.shrink()),
             ],
           ),
         ),
@@ -129,7 +145,7 @@ class NewPostPage extends GetView<NewPostController> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        controller.resetTakePicture();
+                        controller.onSetToDefault();
                       },
                       child: const Icon(
                         Icons.clear,
@@ -138,19 +154,23 @@ class NewPostPage extends GetView<NewPostController> {
                         size: 30,
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () async {},
-                      child: Container(
-                        height: 50,
-                        width: 50,
-                        decoration: BoxDecoration(
-                          color: AppColors.secondaryColor,
-                          shape: BoxShape.circle,
-                        ),
-                        child: const Center(
-                          child: Icon(
-                            Icons.send,
-                            color: Colors.white,
+                    Obx(
+                      () => GestureDetector(
+                        onTap: controller.isReadyToUpload
+                            ? controller.createPost
+                            : null,
+                        child: Container(
+                          height: 50,
+                          width: 50,
+                          decoration: BoxDecoration(
+                            color: AppColors.secondaryColor,
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Center(
+                            child: Icon(
+                              Icons.send,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ),
@@ -219,22 +239,38 @@ class NewPostPage extends GetView<NewPostController> {
     );
   }
 
-  Widget _buildFriendShareOption() {
+  Widget _buildFriendShareOption(AppLocalizations t) {
     return Expanded(
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         shrinkWrap: true,
         itemBuilder: (context, index) {
-          return GestureDetector(
-              onTap: () {},
-              child: SharedUserWidget(
-                isSelected: index == 0,
-                name: "User $index",
-                url:
-                    "https://dailynews.co.tz/wp-content/uploads/2023/07/Jodie-Comer.jpg",
-              ));
+          return index == 0
+              ? Obx(
+                  () => GestureDetector(
+                    onTap: controller.onChangeSelectAllUser,
+                    child: SharedUserWidget(
+                      name: t.all,
+                      url: null,
+                      isSelected: controller.isSelectAllUser.value,
+                      isAll: true,
+                    ),
+                  ),
+                )
+              : Obx(
+                  () => GestureDetector(
+                    onTap: () {
+                      controller.onChangeSelectedUser(index - 1);
+                    },
+                    child: SharedUserWidget(
+                      isSelected: controller.listSelectedUser[index - 1],
+                      name: controller.friends[index - 1].name ?? "",
+                      url: controller.friends[index - 1].avatar,
+                    ),
+                  ),
+                );
         },
-        itemCount: 50,
+        itemCount: controller.friends.length + 1,
       ),
     );
   }

@@ -93,7 +93,6 @@ class LoginWithGoogleAPI extends APIRequestRepresentable {
   @override
   HTTPMethod get method => HTTPMethod.post;
   @override
-  // TODO: implement body
   get body => {'access_token': accessToken};
 
   @override

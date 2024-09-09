@@ -1,42 +1,45 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'post.dart';
+part of 'post_detail.dart';
 
 // **************************************************************************
 // CopyWithGenerator
 // **************************************************************************
 
-abstract class _$PostCWProxy {
-  Post caption(String? caption);
+abstract class _$PostDetailCWProxy {
+  PostDetail caption(String? caption);
 
-  Post cmtCount(int cmtCount);
+  PostDetail cmtCount(int cmtCount);
 
-  Post id(int? id);
+  PostDetail id(int? id);
 
-  Post isDeleted(bool isDeleted);
+  PostDetail isDeleted(bool isDeleted);
 
-  Post likeCount(int likeCount);
+  PostDetail likeCount(int likeCount);
 
-  Post userID(int? userID);
+  PostDetail listComment(List<Comment> listComment);
 
-  Post urlImage(String? urlImage);
+  PostDetail userID(int? userID);
 
-  Post createdAt(String? createdAt);
+  PostDetail urlImage(String? urlImage);
 
-  Post updatedAt(String? updatedAt);
+  PostDetail createdAt(String? createdAt);
 
-  /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `Post(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
+  PostDetail updatedAt(String? updatedAt);
+
+  /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `PostDetail(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
   /// Usage
   /// ```dart
-  /// Post(...).copyWith(id: 12, name: "My name")
+  /// PostDetail(...).copyWith(id: 12, name: "My name")
   /// ````
-  Post call({
+  PostDetail call({
     String? caption,
     int? cmtCount,
     int? id,
     bool? isDeleted,
     int? likeCount,
+    List<Comment>? listComment,
     int? userID,
     String? urlImage,
     String? createdAt,
@@ -44,59 +47,64 @@ abstract class _$PostCWProxy {
   });
 }
 
-/// Proxy class for `copyWith` functionality. This is a callable class and can be used as follows: `instanceOfPost.copyWith(...)`. Additionally contains functions for specific fields e.g. `instanceOfPost.copyWith.fieldName(...)`
-class _$PostCWProxyImpl implements _$PostCWProxy {
-  const _$PostCWProxyImpl(this._value);
+/// Proxy class for `copyWith` functionality. This is a callable class and can be used as follows: `instanceOfPostDetail.copyWith(...)`. Additionally contains functions for specific fields e.g. `instanceOfPostDetail.copyWith.fieldName(...)`
+class _$PostDetailCWProxyImpl implements _$PostDetailCWProxy {
+  const _$PostDetailCWProxyImpl(this._value);
 
-  final Post _value;
-
-  @override
-  Post caption(String? caption) => this(caption: caption);
+  final PostDetail _value;
 
   @override
-  Post cmtCount(int cmtCount) => this(cmtCount: cmtCount);
+  PostDetail caption(String? caption) => this(caption: caption);
 
   @override
-  Post id(int? id) => this(id: id);
+  PostDetail cmtCount(int cmtCount) => this(cmtCount: cmtCount);
 
   @override
-  Post isDeleted(bool isDeleted) => this(isDeleted: isDeleted);
+  PostDetail id(int? id) => this(id: id);
 
   @override
-  Post likeCount(int likeCount) => this(likeCount: likeCount);
+  PostDetail isDeleted(bool isDeleted) => this(isDeleted: isDeleted);
 
   @override
-  Post userID(int? userID) => this(userID: userID);
+  PostDetail likeCount(int likeCount) => this(likeCount: likeCount);
 
   @override
-  Post urlImage(String? urlImage) => this(urlImage: urlImage);
+  PostDetail listComment(List<Comment> listComment) =>
+      this(listComment: listComment);
 
   @override
-  Post createdAt(String? createdAt) => this(createdAt: createdAt);
+  PostDetail userID(int? userID) => this(userID: userID);
 
   @override
-  Post updatedAt(String? updatedAt) => this(updatedAt: updatedAt);
+  PostDetail urlImage(String? urlImage) => this(urlImage: urlImage);
+
+  @override
+  PostDetail createdAt(String? createdAt) => this(createdAt: createdAt);
+
+  @override
+  PostDetail updatedAt(String? updatedAt) => this(updatedAt: updatedAt);
 
   @override
 
-  /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `Post(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
+  /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `PostDetail(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
   /// Usage
   /// ```dart
-  /// Post(...).copyWith(id: 12, name: "My name")
+  /// PostDetail(...).copyWith(id: 12, name: "My name")
   /// ````
-  Post call({
+  PostDetail call({
     Object? caption = const $CopyWithPlaceholder(),
     Object? cmtCount = const $CopyWithPlaceholder(),
     Object? id = const $CopyWithPlaceholder(),
     Object? isDeleted = const $CopyWithPlaceholder(),
     Object? likeCount = const $CopyWithPlaceholder(),
+    Object? listComment = const $CopyWithPlaceholder(),
     Object? userID = const $CopyWithPlaceholder(),
     Object? urlImage = const $CopyWithPlaceholder(),
     Object? createdAt = const $CopyWithPlaceholder(),
     Object? updatedAt = const $CopyWithPlaceholder(),
   }) {
-    return Post(
+    return PostDetail(
       caption: caption == const $CopyWithPlaceholder()
           ? _value.caption
           // ignore: cast_nullable_to_non_nullable
@@ -117,6 +125,11 @@ class _$PostCWProxyImpl implements _$PostCWProxy {
           ? _value.likeCount
           // ignore: cast_nullable_to_non_nullable
           : likeCount as int,
+      listComment:
+          listComment == const $CopyWithPlaceholder() || listComment == null
+              ? _value.listComment
+              // ignore: cast_nullable_to_non_nullable
+              : listComment as List<Comment>,
       userID: userID == const $CopyWithPlaceholder()
           ? _value.userID
           // ignore: cast_nullable_to_non_nullable
@@ -137,18 +150,18 @@ class _$PostCWProxyImpl implements _$PostCWProxy {
   }
 }
 
-extension $PostCopyWith on Post {
-  /// Returns a callable class that can be used as follows: `instanceOfPost.copyWith(...)` or like so:`instanceOfPost.copyWith.fieldName(...)`.
+extension $PostDetailCopyWith on PostDetail {
+  /// Returns a callable class that can be used as follows: `instanceOfPostDetail.copyWith(...)` or like so:`instanceOfPostDetail.copyWith.fieldName(...)`.
   // ignore: library_private_types_in_public_api
-  _$PostCWProxy get copyWith => _$PostCWProxyImpl(this);
+  _$PostDetailCWProxy get copyWith => _$PostDetailCWProxyImpl(this);
 
-  /// Copies the object with the specific fields set to `null`. If you pass `false` as a parameter, nothing will be done and it will be ignored. Don't do it. Prefer `copyWith(field: null)` or `Post(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
+  /// Copies the object with the specific fields set to `null`. If you pass `false` as a parameter, nothing will be done and it will be ignored. Don't do it. Prefer `copyWith(field: null)` or `PostDetail(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
   /// Usage
   /// ```dart
-  /// Post(...).copyWithNull(firstField: true, secondField: true)
+  /// PostDetail(...).copyWithNull(firstField: true, secondField: true)
   /// ````
-  Post copyWithNull({
+  PostDetail copyWithNull({
     bool caption = false,
     bool id = false,
     bool userID = false,
@@ -156,12 +169,13 @@ extension $PostCopyWith on Post {
     bool createdAt = false,
     bool updatedAt = false,
   }) {
-    return Post(
+    return PostDetail(
       caption: caption == true ? null : this.caption,
       cmtCount: cmtCount,
       id: id == true ? null : this.id,
       isDeleted: isDeleted,
       likeCount: likeCount,
+      listComment: listComment,
       userID: userID == true ? null : this.userID,
       urlImage: urlImage == true ? null : this.urlImage,
       createdAt: createdAt == true ? null : this.createdAt,
@@ -174,28 +188,34 @@ extension $PostCopyWith on Post {
 // JsonSerializableGenerator
 // **************************************************************************
 
-Post _$PostFromJson(Map<String, dynamic> json) => Post(
+PostDetail _$PostDetailFromJson(Map<String, dynamic> json) => PostDetail(
       caption: json['caption'] as String?,
       cmtCount: (json['cmt_count'] as num?)?.toInt() ?? 0,
       id: (json['id'] as num?)?.toInt(),
       isDeleted: json['is_deleted'] == null
           ? false
-          : Post._fromJsonBool((json['is_deleted'] as num).toInt()),
+          : PostDetail._fromJsonBool((json['is_deleted'] as num).toInt()),
       likeCount: (json['like_count'] as num?)?.toInt() ?? 0,
+      listComment: (json['listCmt'] as List<dynamic>?)
+              ?.map((e) => Comment.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
       userID: (json['user_id'] as num?)?.toInt(),
       urlImage: json['url_image'] as String?,
       createdAt: json['created_at'] as String?,
       updatedAt: json['updated_at'] as String?,
     );
 
-Map<String, dynamic> _$PostToJson(Post instance) => <String, dynamic>{
+Map<String, dynamic> _$PostDetailToJson(PostDetail instance) =>
+    <String, dynamic>{
       'id': instance.id,
       'user_id': instance.userID,
       'url_image': instance.urlImage,
       'caption': instance.caption,
       'like_count': instance.likeCount,
-      'is_deleted': Post._toJsonBool(instance.isDeleted),
+      'is_deleted': PostDetail._toJsonBool(instance.isDeleted),
       'cmt_count': instance.cmtCount,
       'created_at': instance.createdAt,
       'updated_at': instance.updatedAt,
+      'listCmt': instance.listComment.map((e) => e.toJson()).toList(),
     };
