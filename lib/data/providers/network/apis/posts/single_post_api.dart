@@ -68,3 +68,23 @@ class GetPostHistoryAPI extends APIRequestRepresentable {
     return APIProvider().request(this);
   }
 }
+
+class ReportPostAPI extends APIRequestRepresentable {
+  ReportPostAPI({required this.id, required this.reason});
+  final int id;
+  final String reason;
+  @override
+  String get endpoint => '/api/post/$id/report';
+
+  @override
+  HTTPMethod get method => HTTPMethod.post;
+  @override
+  get body => {
+        'reason': reason,
+      };
+
+  @override
+  Future request() {
+    return APIProvider().request(this);
+  }
+}
