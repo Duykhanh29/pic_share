@@ -4,28 +4,48 @@ import 'package:get/get.dart';
 import 'package:pic_share/data/models/paging.dart';
 import 'package:pic_share/data/models/post/post.dart';
 import 'package:pic_share/data/models/post/post_detail.dart';
+import 'package:pic_share/data/models/user/user_log.dart';
 import 'package:pic_share/data/models/user/user_model.dart';
 import 'package:pic_share/data/repositories/posts/post_repository.dart';
+import 'package:pic_share/data/repositories/user/user_repository.dart';
 import 'package:pic_share/routes/app_pages.dart';
 import 'package:pic_share/view_model/auth/auth_controller.dart';
 
 class ProfileController extends GetxController {
   AuthController authController;
   PostRepository postRepository;
-  ProfileController(
-      {required this.authController, required this.postRepository});
+  UserRepository userRepository;
+  ProfileController({
+    required this.authController,
+    required this.postRepository,
+    required this.userRepository,
+  });
 
   UserModel? get currentUser => authController.getCurrentUser;
 
   RxList<Post> latestPosts = <Post>[].obs;
   RxBool isLoading = false.obs;
+  RxBool isUserLogLoading = false.obs;
   RxInt postCount = 0.obs;
   Rx<PostDetail?> postDetail = Rx<PostDetail?>(null);
+  Rx<UserLog?> userLog = Rx<UserLog?>(null);
 
   @override
   void onInit() async {
+    await fecthUserLog();
     await fetchData();
     super.onInit();
+  }
+
+  Future<void> fecthUserLog() async {
+    isUserLogLoading.value = true;
+    try {
+      userLog.value = await userRepository.getUserLog();
+    } catch (e) {
+      debugPrint("Something went wrong: ${e.toString()}");
+    } finally {
+      isUserLogLoading.value = false;
+    }
   }
 
   Future<void> fetchData() async {

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pic_share/app/constants/app_color.dart';
 import 'package:pic_share/app/constants/app_images.dart';
 import 'package:pic_share/app/constants/app_text_styles.dart';
 import 'package:pic_share/app/custom/custom_back_button.dart';
@@ -10,6 +9,7 @@ import 'package:pic_share/view_model/profile/profile_controller.dart';
 import 'package:pic_share/views/pages/profile/widgets/user_code_section.dart';
 import 'package:pic_share/views/pages/profile/widgets/user_detail_section.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:pic_share/views/pages/profile/widgets/user_log_widget.dart';
 
 class ProfilePage extends GetView<ProfileController> {
   const ProfilePage({super.key});
@@ -55,63 +55,17 @@ class ProfilePage extends GetView<ProfileController> {
                 const SizedBox(
                   height: 15,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Column(
-                      children: [
-                        Text(
-                          "45",
-                          style: AppTextStyles.headingTextStyle(),
+                Obx(
+                  () => controller.isUserLogLoading.value
+                      ? ShimmerHelper().buildBasicShimmer(
+                          height: 80,
+                          width: MediaQuery.of(context).size.width * 0.85)
+                      : UserLogWidget(
+                          likeCount: controller.userLog.value?.totalLikes ?? 0,
+                          postCount: controller.userLog.value?.totalPosts ?? 0,
+                          viewCount: controller.userLog.value?.totalView ?? 0,
                         ),
-                        Text(
-                          t.posts,
-                          style: AppTextStyles.smallTextStyle(),
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: VerticalDivider(
-                        width: 1,
-                        thickness: 0.5,
-                        color: AppColors.darkBorderColor,
-                      ),
-                    ),
-                    Column(
-                      children: [
-                        Text(
-                          "40",
-                          style: AppTextStyles.headingTextStyle(),
-                        ),
-                        Text(
-                          t.views,
-                          style: AppTextStyles.smallTextStyle(),
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: VerticalDivider(
-                        width: 1,
-                        thickness: 0.5,
-                        color: AppColors.darkBorderColor,
-                      ),
-                    ),
-                    Column(
-                      children: [
-                        Text(
-                          "34545",
-                          style: AppTextStyles.headingTextStyle(),
-                        ),
-                        Text(
-                          t.likes,
-                          style: AppTextStyles.smallTextStyle(),
-                        ),
-                      ],
-                    ),
-                  ],
-                )
+                ),
               ],
             ),
           ),

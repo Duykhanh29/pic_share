@@ -7,13 +7,17 @@ part of 'user_log.dart';
 // **************************************************************************
 
 abstract class _$UserLogCWProxy {
-  UserLog uid(String uid);
+  UserLog id(int id);
+
+  UserLog userId(int userId);
 
   UserLog totalDeletePosts(int totalDeletePosts);
 
   UserLog totalPosts(int totalPosts);
 
   UserLog totalView(int totalView);
+
+  UserLog totalLikes(int totalLikes);
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `UserLog(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -22,10 +26,12 @@ abstract class _$UserLogCWProxy {
   /// UserLog(...).copyWith(id: 12, name: "My name")
   /// ````
   UserLog call({
-    String? uid,
+    int? id,
+    int? userId,
     int? totalDeletePosts,
     int? totalPosts,
     int? totalView,
+    int? totalLikes,
   });
 }
 
@@ -36,7 +42,10 @@ class _$UserLogCWProxyImpl implements _$UserLogCWProxy {
   final UserLog _value;
 
   @override
-  UserLog uid(String uid) => this(uid: uid);
+  UserLog id(int id) => this(id: id);
+
+  @override
+  UserLog userId(int userId) => this(userId: userId);
 
   @override
   UserLog totalDeletePosts(int totalDeletePosts) =>
@@ -49,6 +58,9 @@ class _$UserLogCWProxyImpl implements _$UserLogCWProxy {
   UserLog totalView(int totalView) => this(totalView: totalView);
 
   @override
+  UserLog totalLikes(int totalLikes) => this(totalLikes: totalLikes);
+
+  @override
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `UserLog(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -57,16 +69,22 @@ class _$UserLogCWProxyImpl implements _$UserLogCWProxy {
   /// UserLog(...).copyWith(id: 12, name: "My name")
   /// ````
   UserLog call({
-    Object? uid = const $CopyWithPlaceholder(),
+    Object? id = const $CopyWithPlaceholder(),
+    Object? userId = const $CopyWithPlaceholder(),
     Object? totalDeletePosts = const $CopyWithPlaceholder(),
     Object? totalPosts = const $CopyWithPlaceholder(),
     Object? totalView = const $CopyWithPlaceholder(),
+    Object? totalLikes = const $CopyWithPlaceholder(),
   }) {
     return UserLog(
-      uid: uid == const $CopyWithPlaceholder() || uid == null
-          ? _value.uid
+      id: id == const $CopyWithPlaceholder() || id == null
+          ? _value.id
           // ignore: cast_nullable_to_non_nullable
-          : uid as String,
+          : id as int,
+      userId: userId == const $CopyWithPlaceholder() || userId == null
+          ? _value.userId
+          // ignore: cast_nullable_to_non_nullable
+          : userId as int,
       totalDeletePosts: totalDeletePosts == const $CopyWithPlaceholder() ||
               totalDeletePosts == null
           ? _value.totalDeletePosts
@@ -81,6 +99,11 @@ class _$UserLogCWProxyImpl implements _$UserLogCWProxy {
           ? _value.totalView
           // ignore: cast_nullable_to_non_nullable
           : totalView as int,
+      totalLikes:
+          totalLikes == const $CopyWithPlaceholder() || totalLikes == null
+              ? _value.totalLikes
+              // ignore: cast_nullable_to_non_nullable
+              : totalLikes as int,
     );
   }
 }
@@ -96,15 +119,19 @@ extension $UserLogCopyWith on UserLog {
 // **************************************************************************
 
 UserLog _$UserLogFromJson(Map<String, dynamic> json) => UserLog(
-      uid: json['uid'] as String,
-      totalDeletePosts: (json['totalDeletePosts'] as num?)?.toInt() ?? 0,
-      totalPosts: (json['totalPosts'] as num?)?.toInt() ?? 0,
-      totalView: (json['totalView'] as num?)?.toInt() ?? 0,
+      id: (json['id'] as num).toInt(),
+      userId: (json['user_id'] as num).toInt(),
+      totalDeletePosts: (json['total_deleted'] as num?)?.toInt() ?? 0,
+      totalPosts: (json['total_post'] as num?)?.toInt() ?? 0,
+      totalView: (json['total_view'] as num?)?.toInt() ?? 0,
+      totalLikes: (json['total_like'] as num?)?.toInt() ?? 0,
     );
 
 Map<String, dynamic> _$UserLogToJson(UserLog instance) => <String, dynamic>{
-      'uid': instance.uid,
-      'totalPosts': instance.totalPosts,
-      'totalView': instance.totalView,
-      'totalDeletePosts': instance.totalDeletePosts,
+      'id': instance.id,
+      'user_id': instance.userId,
+      'total_post': instance.totalPosts,
+      'total_view': instance.totalView,
+      'total_deleted': instance.totalDeletePosts,
+      'total_like': instance.totalLikes,
     };
