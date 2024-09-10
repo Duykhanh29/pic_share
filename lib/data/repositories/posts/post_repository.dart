@@ -6,6 +6,7 @@ import 'package:path/path.dart';
 import 'package:pic_share/data/enums/shared_post_type.dart';
 import 'package:pic_share/data/models/post/post.dart';
 import 'package:pic_share/data/models/post/post_detail.dart';
+import 'package:pic_share/data/models/post/report.dart';
 import 'package:pic_share/data/models/user/user_summary_model.dart';
 import 'package:pic_share/data/providers/network/apis/posts/get_user_like_api.dart';
 import 'package:pic_share/data/providers/network/apis/posts/get_viewer_api.dart';
@@ -21,6 +22,9 @@ abstract class PostRepository {
   });
   Future<Paging<Post>> getPostHistory(int? page);
   Future<PostDetail?> getPostDetail(int id);
+  Future<void> deletePost(int id);
+  Future<Report?> reportPost({required int id, required String reason});
+  //
   Future<List<UserSummaryModel>> getUserLikes(int id);
   Future<List<UserSummaryModel>> getUserViews(int id);
   Future<void> addNewUserLike(int id);
@@ -128,7 +132,14 @@ class PostRepositoryImpl implements PostRepository {
 
   @override
   Future<List<UserSummaryModel>> getUserLikes(int id) async {
-    try {} catch (e) {
+    try {
+      final response = await GetUserLikeAPI(id: id).request();
+      final data = response['data'] as Map<String, dynamic>;
+      final listUser = data['user_likes'] as List<dynamic>;
+      final listUserSummary =
+          listUser.map((e) => UserSummaryModel.fromJson(e)).toList();
+      return listUserSummary;
+    } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
     }
     return [];
@@ -136,9 +147,38 @@ class PostRepositoryImpl implements PostRepository {
 
   @override
   Future<List<UserSummaryModel>> getUserViews(int id) async {
-    try {} catch (e) {
+    try {
+      final response = await GetViewerAPI(id: id).request();
+      final data = response['data'] as Map<String, dynamic>;
+      final listUser = data['user_views'] as List<dynamic>;
+      final listUserSummary =
+          listUser.map((e) => UserSummaryModel.fromJson(e)).toList();
+      return listUserSummary;
+    } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
     }
     return [];
+  }
+
+  @override
+  Future<void> deletePost(int id) async {
+    try {
+      final response = await DeletePostAPI(id: id).request();
+      debugPrint("Message: ${response['message']}");
+    } catch (e) {
+      debugPrint("Something went wrong: ${e.toString()}");
+    }
+  }
+
+  @override
+  Future<Report?> reportPost({required int id, required String reason}) async {
+    try {
+      final response = await ReportPostAPI(id: id, reason: reason).request();
+      final data = response['data'] as Map<String, dynamic>;
+      return Report.fromJson(data);
+    } catch (e) {
+      debugPrint("Something went wrong: ${e.toString()}");
+    }
+    return null;
   }
 }

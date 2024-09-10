@@ -200,7 +200,7 @@ PostDetail _$PostDetailFromJson(Map<String, dynamic> json) => PostDetail(
               ?.map((e) => Comment.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
-      userID: (json['user_id'] as num?)?.toInt(),
+      userID: (json['userID'] as num?)?.toInt(),
       urlImage: json['url_image'] as String?,
       createdAt: json['created_at'] as String?,
       updatedAt: json['updated_at'] as String?,
@@ -209,7 +209,7 @@ PostDetail _$PostDetailFromJson(Map<String, dynamic> json) => PostDetail(
 Map<String, dynamic> _$PostDetailToJson(PostDetail instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'user_id': instance.userID,
+      'userID': instance.userID,
       'url_image': instance.urlImage,
       'caption': instance.caption,
       'like_count': instance.likeCount,
