@@ -1,10 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:pic_share/data/models/user/user_log.dart';
 import 'package:pic_share/data/models/user/user_model.dart';
 import 'package:pic_share/data/providers/network/apis/user/update_user_info_api.dart';
 import 'package:dio/dio.dart';
 import 'package:path/path.dart';
+import 'package:pic_share/data/providers/network/apis/user/user_log_api.dart';
 
 abstract class UserRepository {
   /* OLD VERSION ( USING FIREBASE TO GET USER DATA)
@@ -25,6 +27,7 @@ abstract class UserRepository {
   Future<void> updateFcmToken({required String? fcmToken});
   Future<void> deleteUser();
   Future<UserModel?> getCurrentUser();
+  Future<UserLog?> getUserLog();
 }
 
 class UserRepositoryImpl implements UserRepository {
@@ -97,6 +100,19 @@ class UserRepositoryImpl implements UserRepository {
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
     }
+  }
+
+  @override
+  Future<UserLog?> getUserLog() async {
+    try {
+      final response = await UserLogAPI().request();
+      final data = response['data'] as Map<String, dynamic>;
+      final userLog = UserLog.fromJson(data);
+      return userLog;
+    } catch (e) {
+      debugPrint("Something went wrong: ${e.toString()}");
+    }
+    return null;
   }
 
   /* OLD VERSION ( USING FIREBASE TO GET USER DATA)

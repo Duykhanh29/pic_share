@@ -5,15 +5,25 @@ part 'user_log.g.dart';
 @JsonSerializable()
 @CopyWith(copyWithNull: true)
 class UserLog {
-  final String uid;
+  final int id;
+  @JsonKey(name: "user_id")
+  final int userId;
+  @JsonKey(name: "total_post")
   final int totalPosts;
+  @JsonKey(name: "total_view")
   final int totalView;
+  @JsonKey(name: "total_deleted")
   final int totalDeletePosts;
-  UserLog(
-      {required this.uid,
-      this.totalDeletePosts = 0,
-      this.totalPosts = 0,
-      this.totalView = 0});
+  @JsonKey(name: "total_like")
+  final int totalLikes;
+  UserLog({
+    required this.id,
+    required this.userId,
+    this.totalDeletePosts = 0,
+    this.totalPosts = 0,
+    this.totalView = 0,
+    this.totalLikes = 0,
+  });
 
   factory UserLog.fromJson(Map<String, dynamic> json) =>
       _$UserLogFromJson(json);
