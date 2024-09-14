@@ -97,6 +97,19 @@ class DateUtils {
     return localDateToIsoStringAMPM(dateTime);
   }
 
+  static String formatDateTimeToString(String time) {
+    DateTime dateTime = DateTime.parse(time);
+    DateTime now = DateTime.now();
+
+    if (dateTime.year == now.year &&
+        dateTime.month == now.month &&
+        dateTime.day == now.day) {
+      return DateFormat('HH:mm').format(dateTime);
+    } else {
+      return DateFormat('HH:mm dd/MM/yyyy').format(dateTime);
+    }
+  }
+
   static String chatTime(DateTime time) {
     if (time.day == DateTime.now().day) {
       return DateFormat.jm().format(time);

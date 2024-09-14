@@ -40,10 +40,14 @@ class AccountSettingsSection extends GetView<SettingsController> {
             icon: Icons.delete,
             iconColor: AppColors.white,
             onTap: () {
-              DialogHelper.showConfirmDialog(t.warning, t.areYouSureToDeleteAcc,
-                  () {
-                controller.deleteUser();
-              }, context);
+              DialogHelper.showConfirmDialog(
+                title: t.warning,
+                message: t.areYouSureToDeleteAcc,
+                onConfirm: () {
+                  controller.deleteUser();
+                },
+                context: context,
+              );
             },
             title: t.deleteAccount,
           ),
@@ -56,10 +60,14 @@ class AccountSettingsSection extends GetView<SettingsController> {
             icon: Icons.logout_outlined,
             iconColor: AppColors.white,
             onTap: () {
-              DialogHelper.showConfirmDialog(t.warning, t.areYouSureToLogout,
-                  () {
-                controller.logout();
-              }, context);
+              DialogHelper.showConfirmDialog(
+                title: t.warning,
+                message: t.areYouSureToLogout,
+                onConfirm: () {
+                  controller.logout();
+                },
+                context: context,
+              );
             },
             title: t.logout,
           ),

@@ -15,3 +15,18 @@ extension StringSharedPostType on SharedPostType? {
     }
   }
 }
+
+SharedPostType? sharedPostTypeFromJson(String? value) {
+  switch (value) {
+    case 'all_friends':
+      return SharedPostType.allFriends;
+    case 'group_member':
+      return SharedPostType.groupMembers;
+    default:
+      return null;
+  }
+}
+
+String? sharedPostTypeToJson(SharedPostType? type) {
+  return type?.value;
+}

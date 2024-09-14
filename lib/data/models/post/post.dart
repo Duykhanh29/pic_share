@@ -1,5 +1,6 @@
 import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:pic_share/data/enums/shared_post_type.dart';
 
 part 'post.g.dart';
 
@@ -22,6 +23,11 @@ class Post {
   final String? createdAt;
   @JsonKey(name: 'updated_at')
   final String? updatedAt;
+  @JsonKey(
+      name: 'type',
+      fromJson: sharedPostTypeFromJson,
+      toJson: sharedPostTypeToJson)
+  final SharedPostType? type;
   Post({
     this.caption,
     this.cmtCount = 0,
@@ -32,6 +38,7 @@ class Post {
     this.urlImage,
     this.createdAt,
     this.updatedAt,
+    this.type,
   });
   factory Post.fromJson(Map<String, dynamic> json) => _$PostFromJson(json);
 

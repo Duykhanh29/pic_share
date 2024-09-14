@@ -8,6 +8,7 @@ import 'package:pic_share/data/models/post/post.dart';
 import 'package:pic_share/data/models/post/post_detail.dart';
 import 'package:pic_share/data/models/post/report.dart';
 import 'package:pic_share/data/models/user/user_summary_model.dart';
+import 'package:pic_share/data/providers/network/apis/posts/get_posts_for_user_api.dart';
 import 'package:pic_share/data/providers/network/apis/posts/get_user_like_api.dart';
 import 'package:pic_share/data/providers/network/apis/posts/get_viewer_api.dart';
 import 'package:pic_share/data/providers/network/apis/posts/single_post_api.dart';
@@ -29,6 +30,8 @@ abstract class PostRepository {
   Future<List<UserSummaryModel>> getUserViews(int id);
   Future<void> addNewUserLike(int id);
   Future<void> addNewUserView(int id);
+  Future<void> dislikePost({required int id, required int userId});
+  Future<List<PostDetail>> getPostsForUser({int? userId});
 }
 
 class PostRepositoryImpl implements PostRepository {
@@ -52,7 +55,7 @@ class PostRepositoryImpl implements PostRepository {
           filename: basename(urlImage.path),
         ),
         "caption": caption,
-        "type": type,
+        "type": type.value,
         ...sharedWithData,
       });
 
@@ -180,5 +183,29 @@ class PostRepositoryImpl implements PostRepository {
       debugPrint("Something went wrong: ${e.toString()}");
     }
     return null;
+  }
+
+  @override
+  Future<List<PostDetail>> getPostsForUser({int? userId}) async {
+    try {
+      final response = await GetPostsForUserAPI(userId: userId).request();
+      final data = response['data'] as Map<String, dynamic>;
+      final postsData = data['posts'] as List<dynamic>;
+      final posts = postsData.map((e) => PostDetail.fromJson(e)).toList();
+      return posts;
+    } catch (e) {
+      debugPrint("Something went wrong: ${e.toString()}");
+    }
+    return [];
+  }
+
+  @override
+  Future<void> dislikePost({required int id, required int userId}) async {
+    try {
+      final response = await DisLikeAPI(id: id, userId: userId).request();
+      debugPrint("Message: $response");
+    } catch (e) {
+      debugPrint("Something went wrong: ${e.toString()}");
+    }
   }
 }

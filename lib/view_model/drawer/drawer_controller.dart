@@ -12,7 +12,12 @@ class AppDrawerController extends GetxController {
 
   UserModel? get currentUser => authController.getCurrentUser;
   List<Friend> get friendList => friendController.friends;
+  Rx<int?> selectedUserId = Rx<int?>(null);
   Future<void> logout() async {
     await authController.logout();
+  }
+
+  void onChangeSelectedUserId(int? id) {
+    selectedUserId.value = id;
   }
 }
