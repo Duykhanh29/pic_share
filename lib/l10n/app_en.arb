@@ -110,5 +110,9 @@
     "notiSettings":"Notification settings",
     "sound":"Sound",
     "showNotifications":"Show notifications",
-    "noPosts":"No posts"
+    "noPosts":"No posts",
+    "areYouSureToDeleteThisPost":"Are you sure you want to delete this post?",
+    "reason":"Reason",
+    "inputReason":"Input reason",
+    "submit":"Submit"
 }

@@ -19,10 +19,23 @@ class NavBottomController extends GetxController {
     if (pageIndex.value != 0) {
       pageIndex.value = 0;
     }
-    Get.put(HomeController(), permanent: true);
+
     Get.put(
         FriendController(
           friendRepository: Get.find<FriendRepository>(),
+        ),
+        permanent: true);
+    Get.put(
+      AppDrawerController(
+        authController: Get.find<AuthController>(),
+        friendController: Get.find<FriendController>(),
+      ),
+    );
+    Get.put(
+        HomeController(
+          postRepository: Get.find<PostRepository>(),
+          authController: Get.find<AuthController>(),
+          appDrawerController: Get.find<AppDrawerController>(),
         ),
         permanent: true);
     Get.put(
@@ -40,12 +53,7 @@ class NavBottomController extends GetxController {
           localStorageService: Get.find<LocalStorageService>(),
         ),
         permanent: true);
-    Get.put(
-      AppDrawerController(
-        authController: Get.find<AuthController>(),
-        friendController: Get.find<FriendController>(),
-      ),
-    );
+
     super.onInit();
   }
 

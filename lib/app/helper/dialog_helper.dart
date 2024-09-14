@@ -3,12 +3,13 @@ import 'package:get/get.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DialogHelper {
-  static void showConfirmDialog(
-    String title,
-    String message,
+  static void showConfirmDialog({
+    required String title,
+    required String message,
     Function()? onConfirm,
-    BuildContext context,
-  ) {
+    Function()? onCancel,
+    required BuildContext context,
+  }) {
     final t = AppLocalizations.of(context)!;
     Get.dialog(
       AlertDialog(
@@ -23,6 +24,9 @@ class DialogHelper {
           TextButton(
             onPressed: () {
               if (Get.isDialogOpen == true) {
+                if (onCancel != null) {
+                  onCancel();
+                }
                 Get.back();
               }
             },

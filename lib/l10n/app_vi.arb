@@ -110,5 +110,9 @@
     "notiSettings":"Cài đặt thông báo",
     "sound":"Âm thanh",
     "showNotifications":"Hiển thị thông báo",
-    "noPosts":"Không có bài đăng nào"
+    "noPosts":"Không có bài đăng nào",
+    "areYouSureToDeleteThisPost":"Bạn có chắc muốn xóa bài đăng này không?",
+    "reason":"Lý do",
+    "inputReason":"Nhập lý do",
+    "submit":"Gửi đi"
 }

@@ -24,8 +24,8 @@ class ProfileController extends GetxController {
   UserModel? get currentUser => authController.getCurrentUser;
 
   RxList<Post> latestPosts = <Post>[].obs;
-  RxBool isLoading = false.obs;
-  RxBool isUserLogLoading = false.obs;
+  RxBool isLoading = true.obs;
+  RxBool isUserLogLoading = true.obs;
   RxInt postCount = 0.obs;
   Rx<PostDetail?> postDetail = Rx<PostDetail?>(null);
   Rx<UserLog?> userLog = Rx<UserLog?>(null);

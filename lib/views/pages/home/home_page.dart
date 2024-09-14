@@ -21,7 +21,7 @@ class HomePage extends GetView<HomeController> {
         actions: [
           IconButton(
             onPressed: controller.onNavToNotification,
-            icon: const Icon(Icons.view_comfortable_outlined),
+            icon: const Icon(Icons.notifications),
           ),
           const SizedBox(
             width: 15,
@@ -32,34 +32,44 @@ class HomePage extends GetView<HomeController> {
           ),
         ],
       ).show(),
-      body: Container(
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.black12, width: 2),
-        ),
-        child: CarouselSlider.builder(
-          options: CarouselOptions(
-            autoPlayAnimationDuration: const Duration(seconds: 1),
-            autoPlayCurve: Curves.linear,
-            enlargeCenterPage: true,
-            enlargeStrategy: CenterPageEnlargeStrategy.height,
-            initialPage: 0,
-            pageSnapping: true,
-            autoPlay: false,
-            // autoPlay: true,
-            height: MediaQuery.of(context).size.height,
-            viewportFraction: 1.0,
-            enableInfiniteScroll: false,
-            autoPlayInterval: const Duration(seconds: 4),
-            scrollDirection: Axis.vertical,
-            onPageChanged: (
-              index,
-              reason,
-            ) {},
+      body: RefreshIndicator(
+        onRefresh: controller.onRefresh,
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.black12, width: 2),
           ),
-          itemCount: 12,
-          itemBuilder: (context, index, realIndex) {
-            return const SinglePostContainer();
-          },
+          child: Obx(
+            () => controller.isLoading.value
+                ? const Center(child: CircularProgressIndicator())
+                : CarouselSlider.builder(
+                    options: CarouselOptions(
+                      autoPlayAnimationDuration: const Duration(seconds: 1),
+                      autoPlayCurve: Curves.linear,
+                      enlargeCenterPage: true,
+                      enlargeStrategy: CenterPageEnlargeStrategy.height,
+                      initialPage: 0,
+                      pageSnapping: true,
+                      autoPlay: false,
+                      // autoPlay: true,
+                      height: MediaQuery.of(context).size.height,
+                      viewportFraction: 1.0,
+                      enableInfiniteScroll: false,
+                      autoPlayInterval: const Duration(seconds: 4),
+                      scrollDirection: Axis.vertical,
+                      onPageChanged: (
+                        index,
+                        reason,
+                      ) {},
+                    ),
+                    itemCount: controller.posts.length,
+                    itemBuilder: (context, index, realIndex) {
+                      final post = controller.posts[index];
+                      return SinglePostContainer(
+                        postData: post,
+                      );
+                    },
+                  ),
+          ),
         ),
       ),
     );

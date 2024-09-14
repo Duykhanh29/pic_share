@@ -17,8 +17,6 @@ abstract class _$PostDetailCWProxy {
 
   PostDetail likeCount(int likeCount);
 
-  PostDetail listComment(List<Comment> listComment);
-
   PostDetail userID(int? userID);
 
   PostDetail urlImage(String? urlImage);
@@ -26,6 +24,14 @@ abstract class _$PostDetailCWProxy {
   PostDetail createdAt(String? createdAt);
 
   PostDetail updatedAt(String? updatedAt);
+
+  PostDetail user(UserSummaryModel? user);
+
+  PostDetail type(SharedPostType? type);
+
+  PostDetail userLikes(List<UserSummaryModel> userLikes);
+
+  PostDetail userViews(List<UserSummaryModel>? userViews);
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `PostDetail(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -39,11 +45,14 @@ abstract class _$PostDetailCWProxy {
     int? id,
     bool? isDeleted,
     int? likeCount,
-    List<Comment>? listComment,
     int? userID,
     String? urlImage,
     String? createdAt,
     String? updatedAt,
+    UserSummaryModel? user,
+    SharedPostType? type,
+    List<UserSummaryModel>? userLikes,
+    List<UserSummaryModel>? userViews,
   });
 }
 
@@ -69,10 +78,6 @@ class _$PostDetailCWProxyImpl implements _$PostDetailCWProxy {
   PostDetail likeCount(int likeCount) => this(likeCount: likeCount);
 
   @override
-  PostDetail listComment(List<Comment> listComment) =>
-      this(listComment: listComment);
-
-  @override
   PostDetail userID(int? userID) => this(userID: userID);
 
   @override
@@ -83,6 +88,20 @@ class _$PostDetailCWProxyImpl implements _$PostDetailCWProxy {
 
   @override
   PostDetail updatedAt(String? updatedAt) => this(updatedAt: updatedAt);
+
+  @override
+  PostDetail user(UserSummaryModel? user) => this(user: user);
+
+  @override
+  PostDetail type(SharedPostType? type) => this(type: type);
+
+  @override
+  PostDetail userLikes(List<UserSummaryModel> userLikes) =>
+      this(userLikes: userLikes);
+
+  @override
+  PostDetail userViews(List<UserSummaryModel>? userViews) =>
+      this(userViews: userViews);
 
   @override
 
@@ -98,11 +117,14 @@ class _$PostDetailCWProxyImpl implements _$PostDetailCWProxy {
     Object? id = const $CopyWithPlaceholder(),
     Object? isDeleted = const $CopyWithPlaceholder(),
     Object? likeCount = const $CopyWithPlaceholder(),
-    Object? listComment = const $CopyWithPlaceholder(),
     Object? userID = const $CopyWithPlaceholder(),
     Object? urlImage = const $CopyWithPlaceholder(),
     Object? createdAt = const $CopyWithPlaceholder(),
     Object? updatedAt = const $CopyWithPlaceholder(),
+    Object? user = const $CopyWithPlaceholder(),
+    Object? type = const $CopyWithPlaceholder(),
+    Object? userLikes = const $CopyWithPlaceholder(),
+    Object? userViews = const $CopyWithPlaceholder(),
   }) {
     return PostDetail(
       caption: caption == const $CopyWithPlaceholder()
@@ -125,11 +147,6 @@ class _$PostDetailCWProxyImpl implements _$PostDetailCWProxy {
           ? _value.likeCount
           // ignore: cast_nullable_to_non_nullable
           : likeCount as int,
-      listComment:
-          listComment == const $CopyWithPlaceholder() || listComment == null
-              ? _value.listComment
-              // ignore: cast_nullable_to_non_nullable
-              : listComment as List<Comment>,
       userID: userID == const $CopyWithPlaceholder()
           ? _value.userID
           // ignore: cast_nullable_to_non_nullable
@@ -146,6 +163,22 @@ class _$PostDetailCWProxyImpl implements _$PostDetailCWProxy {
           ? _value.updatedAt
           // ignore: cast_nullable_to_non_nullable
           : updatedAt as String?,
+      user: user == const $CopyWithPlaceholder()
+          ? _value.user
+          // ignore: cast_nullable_to_non_nullable
+          : user as UserSummaryModel?,
+      type: type == const $CopyWithPlaceholder()
+          ? _value.type
+          // ignore: cast_nullable_to_non_nullable
+          : type as SharedPostType?,
+      userLikes: userLikes == const $CopyWithPlaceholder() || userLikes == null
+          ? _value.userLikes
+          // ignore: cast_nullable_to_non_nullable
+          : userLikes as List<UserSummaryModel>,
+      userViews: userViews == const $CopyWithPlaceholder()
+          ? _value.userViews
+          // ignore: cast_nullable_to_non_nullable
+          : userViews as List<UserSummaryModel>?,
     );
   }
 }
@@ -168,6 +201,9 @@ extension $PostDetailCopyWith on PostDetail {
     bool urlImage = false,
     bool createdAt = false,
     bool updatedAt = false,
+    bool user = false,
+    bool type = false,
+    bool userViews = false,
   }) {
     return PostDetail(
       caption: caption == true ? null : this.caption,
@@ -175,11 +211,14 @@ extension $PostDetailCopyWith on PostDetail {
       id: id == true ? null : this.id,
       isDeleted: isDeleted,
       likeCount: likeCount,
-      listComment: listComment,
       userID: userID == true ? null : this.userID,
       urlImage: urlImage == true ? null : this.urlImage,
       createdAt: createdAt == true ? null : this.createdAt,
       updatedAt: updatedAt == true ? null : this.updatedAt,
+      user: user == true ? null : this.user,
+      type: type == true ? null : this.type,
+      userLikes: userLikes,
+      userViews: userViews == true ? null : this.userViews,
     );
   }
 }
@@ -196,20 +235,29 @@ PostDetail _$PostDetailFromJson(Map<String, dynamic> json) => PostDetail(
           ? false
           : PostDetail._fromJsonBool((json['is_deleted'] as num).toInt()),
       likeCount: (json['like_count'] as num?)?.toInt() ?? 0,
-      listComment: (json['listCmt'] as List<dynamic>?)
-              ?.map((e) => Comment.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          const [],
-      userID: (json['userID'] as num?)?.toInt(),
+      userID: (json['user_id'] as num?)?.toInt(),
       urlImage: json['url_image'] as String?,
       createdAt: json['created_at'] as String?,
       updatedAt: json['updated_at'] as String?,
+      user: json['user'] == null
+          ? null
+          : UserSummaryModel.fromJson(json['user'] as Map<String, dynamic>),
+      type: sharedPostTypeFromJson(json['type'] as String?),
+      userLikes: (json['user_likes'] as List<dynamic>?)
+              ?.map((e) => UserSummaryModel.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
+      userViews: (json['user_views'] as List<dynamic>?)
+          ?.map((e) => UserSummaryModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$PostDetailToJson(PostDetail instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'userID': instance.userID,
+      'user_id': instance.userID,
+      'user': instance.user?.toJson(),
+      'type': sharedPostTypeToJson(instance.type),
       'url_image': instance.urlImage,
       'caption': instance.caption,
       'like_count': instance.likeCount,
@@ -217,5 +265,6 @@ Map<String, dynamic> _$PostDetailToJson(PostDetail instance) =>
       'cmt_count': instance.cmtCount,
       'created_at': instance.createdAt,
       'updated_at': instance.updatedAt,
-      'listCmt': instance.listComment.map((e) => e.toJson()).toList(),
+      'user_views': instance.userViews?.map((e) => e.toJson()).toList(),
+      'user_likes': instance.userLikes.map((e) => e.toJson()).toList(),
     };

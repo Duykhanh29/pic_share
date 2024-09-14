@@ -25,6 +25,8 @@ abstract class _$PostCWProxy {
 
   Post updatedAt(String? updatedAt);
 
+  Post type(SharedPostType? type);
+
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `Post(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
   /// Usage
@@ -41,6 +43,7 @@ abstract class _$PostCWProxy {
     String? urlImage,
     String? createdAt,
     String? updatedAt,
+    SharedPostType? type,
   });
 }
 
@@ -78,6 +81,9 @@ class _$PostCWProxyImpl implements _$PostCWProxy {
   Post updatedAt(String? updatedAt) => this(updatedAt: updatedAt);
 
   @override
+  Post type(SharedPostType? type) => this(type: type);
+
+  @override
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `Post(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -95,6 +101,7 @@ class _$PostCWProxyImpl implements _$PostCWProxy {
     Object? urlImage = const $CopyWithPlaceholder(),
     Object? createdAt = const $CopyWithPlaceholder(),
     Object? updatedAt = const $CopyWithPlaceholder(),
+    Object? type = const $CopyWithPlaceholder(),
   }) {
     return Post(
       caption: caption == const $CopyWithPlaceholder()
@@ -133,6 +140,10 @@ class _$PostCWProxyImpl implements _$PostCWProxy {
           ? _value.updatedAt
           // ignore: cast_nullable_to_non_nullable
           : updatedAt as String?,
+      type: type == const $CopyWithPlaceholder()
+          ? _value.type
+          // ignore: cast_nullable_to_non_nullable
+          : type as SharedPostType?,
     );
   }
 }
@@ -155,6 +166,7 @@ extension $PostCopyWith on Post {
     bool urlImage = false,
     bool createdAt = false,
     bool updatedAt = false,
+    bool type = false,
   }) {
     return Post(
       caption: caption == true ? null : this.caption,
@@ -166,6 +178,7 @@ extension $PostCopyWith on Post {
       urlImage: urlImage == true ? null : this.urlImage,
       createdAt: createdAt == true ? null : this.createdAt,
       updatedAt: updatedAt == true ? null : this.updatedAt,
+      type: type == true ? null : this.type,
     );
   }
 }
@@ -186,6 +199,7 @@ Post _$PostFromJson(Map<String, dynamic> json) => Post(
       urlImage: json['url_image'] as String?,
       createdAt: json['created_at'] as String?,
       updatedAt: json['updated_at'] as String?,
+      type: sharedPostTypeFromJson(json['type'] as String?),
     );
 
 Map<String, dynamic> _$PostToJson(Post instance) => <String, dynamic>{
@@ -198,4 +212,5 @@ Map<String, dynamic> _$PostToJson(Post instance) => <String, dynamic>{
       'cmt_count': instance.cmtCount,
       'created_at': instance.createdAt,
       'updated_at': instance.updatedAt,
+      'type': sharedPostTypeToJson(instance.type),
     };
