@@ -39,6 +39,8 @@ class NewPostController extends GetxController {
       isSelectAllUser.value == true ||
       !listSelectedUser.every((element) => element == false);
   late TextEditingController captionController;
+
+  Rx<FocusNode> focusNode = FocusNode().obs;
   @override
   void onInit() async {
     await initCamera();
@@ -176,5 +178,13 @@ class NewPostController extends GetxController {
     captionController.dispose();
     cameraController.dispose();
     super.onClose();
+  }
+
+  void onFocusOnCaptionTextField() {
+    focusNode.value.requestFocus();
+  }
+
+  void onClearFocus() {
+    focusNode.value.unfocus();
   }
 }

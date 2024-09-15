@@ -26,6 +26,7 @@ class HomeController extends GetxController {
   RxList<UserSummaryModel> listViews = <UserSummaryModel>[].obs;
   RxBool isLoading = false.obs;
   RxBool isUserViewsLoading = false.obs;
+  Rx<int> currentIndex = 0.obs;
 
   UserModel? get currentUser => authController.getCurrentUser;
   @override
@@ -149,5 +150,10 @@ class HomeController extends GetxController {
 
   void onNavToGridPostView() {
     Get.toNamed(Routes.gridPostView);
+  }
+
+  void onNavigateToHomeWithIndex(int index) {
+    currentIndex.value = index;
+    Get.back();
   }
 }

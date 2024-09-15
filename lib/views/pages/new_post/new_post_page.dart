@@ -100,18 +100,28 @@ class NewPostPage extends GetView<NewPostController> {
                                 vertical: 5, horizontal: 20),
                             height: 45,
                             width: MediaQuery.of(context).size.width * 0.6,
-                            child: TextField(
-                              textAlign: TextAlign.center,
-                              controller: controller.captionController,
-                              decoration: InputDecoration(
-                                contentPadding: const EdgeInsets.symmetric(
-                                    vertical: 2, horizontal: 5),
-                                border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: AppColors.darkBorderColor,
-                                        width: 2),
-                                    borderRadius: BorderRadius.circular(10)),
-                                hintText: t.addCaption,
+                            child: Obx(
+                              () => TextField(
+                                onTapOutside: (event) {
+                                  controller.onClearFocus();
+                                },
+                                onEditingComplete: controller.onClearFocus,
+                                onSubmitted: (value) {
+                                  controller.onClearFocus();
+                                },
+                                focusNode: controller.focusNode.value,
+                                textAlign: TextAlign.center,
+                                controller: controller.captionController,
+                                decoration: InputDecoration(
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      vertical: 2, horizontal: 5),
+                                  border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: AppColors.darkBorderColor,
+                                          width: 2),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  hintText: t.addCaption,
+                                ),
                               ),
                             ),
                           ),
@@ -176,7 +186,7 @@ class NewPostPage extends GetView<NewPostController> {
                       ),
                     ),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: controller.onFocusOnCaptionTextField,
                       child: const Icon(
                         Icons.abc_outlined,
                         color: Colors.white,
