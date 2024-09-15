@@ -59,7 +59,8 @@ class HomeController extends GetxController {
   Future<void> fetchPosts({int? userId}) async {
     isLoading.value = true;
     try {
-      List<PostDetail> listPost = await postRepository.getPostsForUser();
+      List<PostDetail> listPost =
+          await postRepository.getPostsForUser(userId: userId);
       for (var post in listPost) {
         PostData postData = PostData(post: post);
         if (post.userLikes.any((element) => element.id == currentUser?.id)) {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:get/get.dart';
 import 'package:pic_share/app/custom/app_bar_custom.dart';
+import 'package:pic_share/app/helper/shimmer_helper.dart';
 import 'package:pic_share/view_model/home/home_controller.dart';
 import 'package:pic_share/views/components/app_drawer.dart';
 import 'package:pic_share/views/pages/home/widgets/single_post_container.dart';
@@ -40,7 +41,7 @@ class HomePage extends GetView<HomeController> {
           ),
           child: Obx(
             () => controller.isLoading.value
-                ? const Center(child: CircularProgressIndicator())
+                ? ShimmerHelper().buildCarouselSliderShimmer(context)
                 : CarouselSlider.builder(
                     options: CarouselOptions(
                       autoPlayAnimationDuration: const Duration(seconds: 1),
