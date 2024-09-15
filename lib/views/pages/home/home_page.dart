@@ -42,33 +42,38 @@ class HomePage extends GetView<HomeController> {
           child: Obx(
             () => controller.isLoading.value
                 ? ShimmerHelper().buildCarouselSliderShimmer(context)
-                : CarouselSlider.builder(
-                    options: CarouselOptions(
-                      autoPlayAnimationDuration: const Duration(seconds: 1),
-                      autoPlayCurve: Curves.linear,
-                      enlargeCenterPage: true,
-                      enlargeStrategy: CenterPageEnlargeStrategy.height,
-                      initialPage: 0,
-                      pageSnapping: true,
-                      autoPlay: false,
-                      // autoPlay: true,
-                      height: MediaQuery.of(context).size.height,
-                      viewportFraction: 1.0,
-                      enableInfiniteScroll: false,
-                      autoPlayInterval: const Duration(seconds: 4),
-                      scrollDirection: Axis.vertical,
-                      onPageChanged: (
-                        index,
-                        reason,
-                      ) {},
+                : Obx(
+                    () => CarouselSlider.builder(
+                      key: ValueKey(controller.currentIndex.value),
+                      options: CarouselOptions(
+                        autoPlayAnimationDuration: const Duration(seconds: 1),
+                        autoPlayCurve: Curves.linear,
+                        enlargeCenterPage: true,
+                        enlargeStrategy: CenterPageEnlargeStrategy.height,
+                        initialPage: controller.currentIndex.value,
+                        pageSnapping: true,
+                        autoPlay: false,
+                        // autoPlay: true,
+                        height: MediaQuery.of(context).size.height,
+                        viewportFraction: 1.0,
+                        enableInfiniteScroll: false,
+                        autoPlayInterval: const Duration(seconds: 4),
+                        scrollDirection: Axis.vertical,
+                        onPageChanged: (
+                          index,
+                          reason,
+                        ) {
+                          controller.currentIndex.value = index;
+                        },
+                      ),
+                      itemCount: controller.posts.length,
+                      itemBuilder: (context, index, realIndex) {
+                        final post = controller.posts[index];
+                        return SinglePostContainer(
+                          postData: post,
+                        );
+                      },
                     ),
-                    itemCount: controller.posts.length,
-                    itemBuilder: (context, index, realIndex) {
-                      final post = controller.posts[index];
-                      return SinglePostContainer(
-                        postData: post,
-                      );
-                    },
                   ),
           ),
         ),
