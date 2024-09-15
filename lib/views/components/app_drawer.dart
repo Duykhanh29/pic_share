@@ -47,42 +47,86 @@ class AppDrawer extends GetView<AppDrawerController> {
           ),
           Container(
             padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-            child: ListTile(
-              onTap: () {},
-              title: Text(
-                t.all,
-                style: AppTextStyles.commonTextStyle(),
+            child: Obx(
+              () => ListTile(
+                selectedColor: controller.selectedUserId.value == null
+                    ? AppColors.selectedColor
+                    : null,
+                selected: controller.selectedUserId.value == null,
+                onTap: () {
+                  if (controller.selectedUserId.value != null) {
+                    controller.onChangeSelectedUserId(null);
+                  }
+                },
+                title: Text(
+                  t.all,
+                  style: AppTextStyles.commonTextStyle(),
+                ),
+                leading: const Icon(Icons.people_alt_sharp),
               ),
-              leading: const Icon(Icons.people_alt_sharp),
             ),
           ),
           Expanded(
-            child: ListView.separated(
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  final friend = controller.friendList[index];
-                  return Container(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                    child: ListTile(
-                      onTap: () {},
-                      title: Text(
-                        friend.name ?? "",
-                        style: AppTextStyles.commonTextStyle(),
-                      ),
-                      leading: friend.avatar != null
-                          ? ImageCacheHelper.avatarImage(url: friend.avatar!)
-                          : const CircleAvatar(
-                              radius: 15,
-                              backgroundImage:
-                                  AssetImage(AppImage.userEmptyAvatar),
+            child: Obx(
+              () => ListView.separated(
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    final friend = controller.friendList[index];
+                    return Obx(
+                      () => Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 10),
+                        child: ListTile(
+                          onTap: () {
+                            controller.onChangeSelectedUserId(
+                              friend.userId != controller.currentUser?.id
+                                  ? friend.userId
+                                  : friend.friendId,
+                            );
+                          },
+                          title: Text(
+                            friend.name ?? "",
+                            style: AppTextStyles.commonTextStyle().copyWith(
+                              color:
+                                  (friend.userId != controller.currentUser?.id
+                                          ? controller.selectedUserId.value ==
+                                              friend.userId
+                                          : controller.selectedUserId.value ==
+                                              friend.friendId)
+                                      ? AppColors.selectedColor
+                                      : null,
                             ),
-                    ),
-                  );
-                },
-                separatorBuilder: (context, index) =>
-                    DividerHelper.sizedboxDivider(),
-                itemCount: controller.friendList.length),
+                          ),
+                          leading: Container(
+                            padding: const EdgeInsets.all(4),
+                            decoration: BoxDecoration(
+                              color:
+                                  (friend.userId != controller.currentUser?.id
+                                          ? controller.selectedUserId.value ==
+                                              friend.userId
+                                          : controller.selectedUserId.value ==
+                                              friend.friendId)
+                                      ? AppColors.selectedColor
+                                      : null,
+                              shape: BoxShape.circle,
+                            ),
+                            child: friend.avatar != null
+                                ? ImageCacheHelper.avatarImage(
+                                    url: friend.avatar!)
+                                : const CircleAvatar(
+                                    radius: 15,
+                                    backgroundImage:
+                                        AssetImage(AppImage.userEmptyAvatar),
+                                  ),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                  separatorBuilder: (context, index) =>
+                      DividerHelper.sizedboxDivider(),
+                  itemCount: controller.friendList.length),
+            ),
           ),
           const Divider(),
           GestureDetector(

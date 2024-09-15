@@ -4,7 +4,7 @@ import 'package:pic_share/data/providers/network/api_request_representable.dart'
 class GetPostsForUserAPI extends APIRequestRepresentable {
   int? userId;
 
-  GetPostsForUserAPI({int? userId});
+  GetPostsForUserAPI({this.userId});
   @override
   String get endpoint => userId != null
       ? '/api/post/posts_for_user?friend_id=$userId'

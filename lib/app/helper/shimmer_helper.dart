@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -34,6 +35,37 @@ class ShimmerHelper {
         );
       },
       itemCount: 10,
+    );
+  }
+
+  buildCarouselSliderShimmer(BuildContext context) {
+    return CarouselSlider.builder(
+      options: CarouselOptions(
+        autoPlayAnimationDuration: const Duration(seconds: 1),
+        autoPlayCurve: Curves.linear,
+        enlargeCenterPage: true,
+        enlargeStrategy: CenterPageEnlargeStrategy.height,
+        initialPage: 0,
+        pageSnapping: true,
+        autoPlay: false,
+        // autoPlay: true,
+        height: MediaQuery.of(context).size.height,
+        viewportFraction: 1.0,
+        enableInfiniteScroll: false,
+        autoPlayInterval: const Duration(seconds: 4),
+        scrollDirection: Axis.vertical,
+        onPageChanged: (
+          index,
+          reason,
+        ) {},
+      ),
+      itemCount: 8,
+      itemBuilder: (context, index, realIndex) {
+        return buildBasicShimmer(
+          height: MediaQuery.of(context).size.height * 0.8,
+          width: MediaQuery.of(context).size.width * 0.9,
+        );
+      },
     );
   }
 

@@ -25,7 +25,7 @@ class SinglePostContainer extends GetView<HomeController> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 10, top: 10, bottom: 10),
+            padding: const EdgeInsets.only(left: 5, top: 10, bottom: 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -38,9 +38,9 @@ class SinglePostContainer extends GetView<HomeController> {
                           AppImage.userEmptyAvatar,
                         ),
                       ),
-                const SizedBox(width: 28),
+                const SizedBox(width: 20),
                 Container(
-                  padding: const EdgeInsets.all(5),
+                  padding: const EdgeInsets.all(4),
                   decoration: BoxDecoration(
                       color: const Color.fromARGB(255, 223, 219, 219),
                       borderRadius: BorderRadius.circular(5)),
@@ -51,9 +51,9 @@ class SinglePostContainer extends GetView<HomeController> {
                     ),
                   ),
                 ),
-                const SizedBox(width: 28),
+                const SizedBox(width: 20),
                 Container(
-                  padding: const EdgeInsets.all(5),
+                  padding: const EdgeInsets.all(4),
                   decoration: BoxDecoration(
                       color: const Color.fromARGB(255, 223, 219, 219),
                       borderRadius: BorderRadius.circular(5)),
@@ -63,7 +63,7 @@ class SinglePostContainer extends GetView<HomeController> {
                           ? helper.DateUtils.formatDateTimeToString(
                               postData.post.createdAt!)
                           : "",
-                      style: AppTextStyles.commonTextStyle(),
+                      style: AppTextStyles.smallTextStyle(),
                     ),
                   ),
                 ),
@@ -153,7 +153,7 @@ class SinglePostContainer extends GetView<HomeController> {
               child: Icon(
                 postData.isLike ? Icons.favorite : Icons.favorite_outline,
                 size: 25,
-                color: Colors.white.withOpacity(0.9),
+                color: Colors.red.withOpacity(0.9),
               ),
             ),
           ),
