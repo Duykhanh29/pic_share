@@ -24,4 +24,6 @@ abstract class Routes {
   static const String search = '/search';
   static const String security = '/security';
   static const String notificationSettings = '/notification_settings';
+  static const String postHistory = '/post_history';
+  static const String postDetail = '/post_detail';
 }

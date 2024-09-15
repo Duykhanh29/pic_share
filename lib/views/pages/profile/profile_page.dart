@@ -95,13 +95,16 @@ class ProfilePage extends GetView<ProfileController> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      t.currentPosts,
-                      style: AppTextStyles.commonTextStyle()
-                          .copyWith(fontWeight: FontWeight.w600),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 5),
+                      child: Text(
+                        t.currentPosts,
+                        style: AppTextStyles.commonTextStyle()
+                            .copyWith(fontWeight: FontWeight.w600),
+                      ),
                     ),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: controller.onNavToPostHistory,
                       child: Text(
                         t.seeMore,
                         style: AppTextStyles.seeMoreTextStyle(),
@@ -139,8 +142,8 @@ class ProfilePage extends GetView<ProfileController> {
                           itemBuilder: (context, index) {
                             final post = controller.latestPosts[index];
                             return GestureDetector(
-                              onTap: () async {
-                                await controller.onTapDetail(post.id ?? 0);
+                              onTap: () {
+                                controller.onTapDetail(post.id ?? 0);
                               },
                               child: post.urlImage != null
                                   ? ImageCacheHelper.showImage(

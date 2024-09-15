@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:pic_share/app/constants/strings.dart';
 import 'package:pic_share/data/models/paging.dart';
 import 'package:pic_share/data/models/post/post.dart';
 import 'package:pic_share/data/models/post/post_detail.dart';
@@ -65,16 +66,20 @@ class ProfileController extends GetxController {
     Get.toNamed(Routes.editProfile);
   }
 
+  void onNavToPostHistory() {
+    Get.toNamed(Routes.postHistory);
+  }
+
   void onCopyUserCode() {
     Clipboard.setData(ClipboardData(text: currentUser?.userCode ?? ""));
   }
 
-  Future<void> onTapDetail(int id) async {
-    try {
-      postDetail.value = await postRepository.getPostDetail(id);
-      debugPrint("Data is: ${postDetail.value?.id}");
-    } catch (e) {
-      debugPrint("Something went wrong: ${e.toString()}");
-    } finally {}
+  void onTapDetail(int id) async {
+    final result = await Get.toNamed(Routes.postDetail, arguments: {
+      Strings.postId: id,
+    });
+    if (result == true) {
+      latestPosts.removeWhere((post) => post.id == id);
+    }
   }
 }

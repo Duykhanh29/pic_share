@@ -114,5 +114,8 @@
     "areYouSureToDeleteThisPost":"Are you sure you want to delete this post?",
     "reason":"Reason",
     "inputReason":"Input reason",
-    "submit":"Submit"
+    "submit":"Submit",
+    "writeAComment":"Write a comment",
+    "postDetail":"Post detail",
+    "postHistories":"Post histories"
 }

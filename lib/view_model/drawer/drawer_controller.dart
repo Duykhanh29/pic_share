@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pic_share/data/models/user/friend.dart';
 import 'package:pic_share/data/models/user/user_model.dart';
@@ -19,5 +20,9 @@ class AppDrawerController extends GetxController {
 
   void onChangeSelectedUserId(int? id) {
     selectedUserId.value = id;
+  }
+
+  void closeDrawer(BuildContext context) {
+    Scaffold.of(context).closeDrawer();
   }
 }

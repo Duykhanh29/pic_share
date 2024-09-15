@@ -13,6 +13,7 @@ import 'package:pic_share/data/models/user/user_summary_model.dart';
 import 'package:pic_share/routes/app_pages.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pic_share/view_model/home/home_controller.dart';
+import 'package:pic_share/app/constants/strings.dart';
 
 class SinglePostContainer extends GetView<HomeController> {
   const SinglePostContainer({super.key, required this.postData});
@@ -166,7 +167,9 @@ class SinglePostContainer extends GetView<HomeController> {
           ),
           GestureDetector(
             onTap: () {
-              Get.toNamed(Routes.comments);
+              Get.toNamed(Routes.comments, arguments: {
+                Strings.postId: postData.post.id,
+              });
             },
             child: DecoratedBox(
               decoration: BoxDecoration(
@@ -322,7 +325,11 @@ class SinglePostContainer extends GetView<HomeController> {
                 color: Colors.blueGrey,
               ),
               InkWell(
-                onTap: () {},
+                onTap: () async {
+                  Get.back();
+                  await controller
+                      .onDownloadImageToGallery(postData.post.urlImage ?? "");
+                },
                 child: Center(
                   child: Text(t.download),
                 ),

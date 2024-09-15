@@ -10,29 +10,48 @@ import 'package:device_info_plus/device_info_plus.dart';
 
 class FileUtils {
   // gallery saver
-  Future<void> saveImageFromUrlToGallery(String imageUrl) async {
-    // Kiểm tra và yêu cầu quyền
+  Future<bool?> saveImageFromUrlToGallery(String imageUrl) async {
+    // Check and request permissions
     await Permission.storage.request();
 
     try {
-      final response = await Dio()
-          .get(imageUrl, options: Options(responseType: ResponseType.bytes));
-      final imageBytes = response.data;
+      await Future.delayed(
+          const Duration(seconds: 5)); // add delay to completely load image
+      final response = await Dio().get(
+        imageUrl,
+        options: Options(responseType: ResponseType.bytes, headers: {
+          "Connection": "Keep-Alive",
+          "Keep-Alive": "timeout=5, max=1000"
+        }),
+      );
 
-      // Lưu ảnh bằng gallery_saver_plus
-      final result = await GallerySaver.saveImage(imageBytes);
-      debugPrint('Image saved to gallery: $result');
+      if (response.statusCode == 200) {
+        final imageBytes = response.data;
+
+        // Save image to temporary file
+        final tempDir = await getTemporaryDirectory();
+        final tempFile = File(
+            '${tempDir.path}/image_${DateTime.now().millisecondsSinceEpoch}.jpg');
+        await tempFile.writeAsBytes(imageBytes);
+
+        // Save image to gallery
+        final result = await GallerySaver.saveImage(tempFile.path);
+        debugPrint('Image saved to gallery: $result');
+        return result;
+      } else {
+        debugPrint('Failed to load image: ${response.statusCode}');
+      }
     } catch (e) {
       debugPrint('Error saving image: $e');
     }
+    return null;
   }
 
   Future<void> saveImageFromFileToGallery(File imageFile) async {
-    // Kiểm tra và yêu cầu quyền
+    //Check and request permissions
     await Permission.storage.request();
 
     try {
-      // Lưu ảnh bằng gallery_saver_plus
       final result = await GallerySaver.saveImage(imageFile.path);
       debugPrint('Image saved to gallery: $result');
     } catch (e) {
