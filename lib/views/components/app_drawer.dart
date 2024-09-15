@@ -56,6 +56,7 @@ class AppDrawer extends GetView<AppDrawerController> {
                 onTap: () {
                   if (controller.selectedUserId.value != null) {
                     controller.onChangeSelectedUserId(null);
+                    controller.closeDrawer(context);
                   }
                 },
                 title: Text(
@@ -83,6 +84,7 @@ class AppDrawer extends GetView<AppDrawerController> {
                                   ? friend.userId
                                   : friend.friendId,
                             );
+                            controller.closeDrawer(context);
                           },
                           title: Text(
                             friend.name ?? "",

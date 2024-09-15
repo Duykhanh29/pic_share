@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pic_share/app/config/app_config.dart';
+import 'package:pic_share/app/helper/snack_bar_helper.dart';
+import 'package:pic_share/app/utils/file_utils.dart';
 import 'package:pic_share/data/models/post/post_data.dart';
 import 'package:pic_share/data/models/post/post_detail.dart';
 import 'package:pic_share/data/models/user/user_model.dart';
@@ -155,5 +158,19 @@ class HomeController extends GetxController {
   void onNavigateToHomeWithIndex(int index) {
     currentIndex.value = index;
     Get.back();
+  }
+
+  Future<void> onDownloadImageToGallery(String urlPath) async {
+    try {
+      String url = AppConfig.baseUrl + urlPath;
+      bool? result = await FileUtils().saveImageFromUrlToGallery(url);
+      if (result == true) {
+        SnackbarHelper.successSnackbar("Downloaded successfully");
+      } else {
+        SnackbarHelper.errorSnackbar("Download failed");
+      }
+    } catch (e) {
+      debugPrint('Error occured while downloading picture: $e');
+    }
   }
 }

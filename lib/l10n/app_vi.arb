@@ -114,5 +114,8 @@
     "areYouSureToDeleteThisPost":"Bạn có chắc muốn xóa bài đăng này không?",
     "reason":"Lý do",
     "inputReason":"Nhập lý do",
-    "submit":"Gửi đi"
+    "submit":"Gửi đi",
+    "writeAComment":"Nhập bình luận",
+    "postDetail":"Chi tiết bài đăng",
+    "postHistories":"Lịch sử các bài đăng"
 }

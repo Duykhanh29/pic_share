@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:pic_share/app/config/app_config.dart';
+import 'package:pic_share/app/constants/app_color.dart';
 
 class ImageCacheHelper {
   static Widget avatarImage(
@@ -34,6 +35,8 @@ class ImageCacheHelper {
           height: height,
           width: width,
           decoration: BoxDecoration(
+            border: Border.all(color: AppColors.backgroundColor, width: 0.4),
+            // borderRadius: BorderRadius.circular(80),
             image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
           ),
         );
