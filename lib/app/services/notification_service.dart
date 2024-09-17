@@ -91,6 +91,11 @@ class NotificationsService extends GetxService {
   Future<void> requestPermission() async {
     final messaging = FirebaseMessaging.instance;
 
+    NotificationSettings currentSettings =
+        await messaging.getNotificationSettings();
+    if (currentSettings.authorizationStatus == AuthorizationStatus.authorized) {
+      return;
+    }
     final settings = await messaging.requestPermission(
       alert: true,
       announcement: false,

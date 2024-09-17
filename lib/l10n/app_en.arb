@@ -117,5 +117,6 @@
     "submit":"Submit",
     "writeAComment":"Write a comment",
     "postDetail":"Post detail",
-    "postHistories":"Post histories"
+    "postHistories":"Post histories",
+    "reply":"Reply"
 }

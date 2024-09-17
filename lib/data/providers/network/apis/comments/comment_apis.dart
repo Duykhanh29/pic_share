@@ -30,7 +30,9 @@ class AddCommentAPI extends APIRequestRepresentable {
   HTTPMethod get method => HTTPMethod.post;
 
   @override
-  get body => {'content': content};
+  get body => {
+        'content': content,
+      };
   @override
   Future request() {
     return APIProvider().request(this);

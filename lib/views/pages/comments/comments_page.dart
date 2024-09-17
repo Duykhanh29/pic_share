@@ -3,9 +3,9 @@ import 'package:get/get.dart';
 import 'package:pic_share/app/constants/app_color.dart';
 import 'package:pic_share/app/custom/app_bar_custom.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:pic_share/app/helper/shimmer_helper.dart';
 import 'package:pic_share/view_model/comments/comments_controller.dart';
 import 'package:pic_share/views/pages/comments/widgets/comment_section.dart';
+import 'package:pic_share/views/widgets/keyboard_dismiss.dart';
 
 class CommentsPage extends GetView<CommentsController> {
   const CommentsPage({super.key});
@@ -13,61 +13,74 @@ class CommentsPage extends GetView<CommentsController> {
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context)!;
-    return Scaffold(
-      appBar: CustomAppBar(title: t.comment).show(),
-      body: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Column(
-          children: [
-            Expanded(
-              child: Obx(
-                () => controller.isLoading.value
-                    ? const Center(
-                        child: CircularProgressIndicator(),
-                      )
-                    : ListView.builder(
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          final comment = controller.listComments[index];
-                          return CommentSection(comment: comment);
-                        },
-                        itemCount: controller.listComments.length,
-                      ),
+    return KeyboardDismiss(
+      child: Scaffold(
+        appBar: CustomAppBar(title: t.comment).show(),
+        body: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            children: [
+              Expanded(
+                child: Obx(
+                  () => controller.isLoading.value
+                      ? const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : ListView.builder(
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            return Obx(
+                              () => CommentSection(
+                                comment: controller.listComments[index],
+                                onReply: () {
+                                  controller.onClickReplyTo(index);
+                                },
+                              ),
+                            );
+                          },
+                          itemCount: controller.listComments.length,
+                        ),
+                ),
               ),
-            ),
-            Positioned(
-              bottom: 10,
-              child: TextField(
-                onSubmitted: controller.sendComment,
-                controller: controller.commentController,
-                decoration: InputDecoration(
-                  contentPadding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  hintText: t.writeAComment,
-                  suffixIcon: GestureDetector(
-                    onTap: () async {
-                      await controller
-                          .sendComment(controller.commentController.text);
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(2),
-                      margin: const EdgeInsets.all(5),
-                      decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Color.fromARGB(255, 227, 232, 235)),
-                      child: Icon(
-                        Icons.send,
-                        color: AppColors.backgroundColor,
+              Container(
+                padding: const EdgeInsets.only(top: 10),
+                child: Obx(
+                  () => TextField(
+                    focusNode: controller.focusNode,
+                    // onSubmitted: controller.onSubmit,
+                    controller: controller.commentController,
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 5),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      hintText: controller.commentId.value == 0
+                          ? t.writeAComment
+                          : t.replyTo,
+                      suffixIcon: GestureDetector(
+                        onTap: () async {
+                          await controller
+                              .onSubmit(controller.commentController.text);
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(2),
+                          margin: const EdgeInsets.all(5),
+                          decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Color.fromARGB(255, 227, 232, 235)),
+                          child: Icon(
+                            Icons.send,
+                            color: AppColors.backgroundColor,
+                          ),
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
-            )
-          ],
+            ],
+          ),
         ),
       ),
     );

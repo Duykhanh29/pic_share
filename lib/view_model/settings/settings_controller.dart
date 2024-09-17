@@ -81,6 +81,10 @@ class SettingsController extends GetxController {
     );
   }
 
+  void onNavToHistory() {
+    Get.toNamed(Routes.postHistory);
+  }
+
   // general settings
   void onNavToLanguage() {
     Get.toNamed(Routes.language);
