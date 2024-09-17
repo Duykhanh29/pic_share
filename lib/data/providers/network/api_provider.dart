@@ -60,7 +60,7 @@ class APIProvider {
           debugPrint("WHAT HAPPEND: $val1, $val2");
         },
       );
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         return response.data;
       }
       return null;

@@ -1,11 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:pic_share/data/models/comment/comment.dart';
+import 'package:pic_share/data/models/comment/reply.dart';
 import 'package:pic_share/data/providers/network/apis/comments/comment_apis.dart';
 
 abstract class CommentRepository {
   Future<List<Comment>> getComments(int id);
   Future<Comment?> addComment({required int id, required String content});
-  Future<void> addReply(
+  Future<Reply?> addReply(
       {required int id, required int cmtId, required String content});
 }
 
@@ -39,15 +40,17 @@ class CommentRepositoryImpl implements CommentRepository {
   }
 
   @override
-  Future<void> addReply(
+  Future<Reply?> addReply(
       {required int id, required int cmtId, required String content}) async {
     try {
       final response =
           await AddReplyAPI(id: id, cmtId: cmtId, content: content).request();
       final data = response['data'] as Map<String, dynamic>;
-      // final comment = Comment.fromJson(data);
+      final comment = Reply.fromJson(data);
+      return comment;
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
     }
+    return null;
   }
 }

@@ -15,7 +15,7 @@ class Comment {
   @JsonKey(name: 'updated_at')
   final String? updatedAt;
   @JsonKey(name: 'listReply')
-  final List<Reply> listReply;
+  List<Reply> listReply;
   final UserSummaryModel? user;
   Comment({
     this.content,

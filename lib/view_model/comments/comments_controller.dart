@@ -19,6 +19,8 @@ class CommentsController extends GetxController {
   RxList<Comment> listComments = RxList<Comment>([]);
   RxBool isLoading = true.obs;
   late TextEditingController commentController;
+  Rx<int> commentId = 0.obs;
+  FocusNode focusNode = FocusNode();
 
   @override
   void onInit() async {
@@ -29,6 +31,8 @@ class CommentsController extends GetxController {
 
   @override
   void dispose() {
+    commentId.value = 0;
+    focusNode.unfocus();
     commentController.dispose();
     super.dispose();
   }
@@ -36,7 +40,8 @@ class CommentsController extends GetxController {
   Future<void> fetchComments() async {
     isLoading.value = true;
     try {
-      listComments.value = await commentRepository.getComments(postId.value);
+      final list = await commentRepository.getComments(postId.value);
+      listComments.assignAll(list);
     } catch (e) {
       debugPrint('Something went wrong: $e');
     } finally {
@@ -52,9 +57,44 @@ class CommentsController extends GetxController {
         if (comment != null) {
           listComments.add(comment);
         }
+        commentController.clear();
       }
     } catch (e) {
       debugPrint('Something went wrong: $e');
     }
+  }
+
+  Future<void> onSubmit(String text) async {
+    focusNode.unfocus();
+    if (commentId.value != 0) {
+      await replyToComment(commentId.value, text);
+      commentId.value = 0;
+    } else {
+      await sendComment(text);
+    }
+  }
+
+  Future<void> replyToComment(int commentId, String text) async {
+    try {
+      if (text.isNotEmpty) {
+        final reply = await commentRepository.addReply(
+            cmtId: commentId, content: text, id: postId.value);
+        if (reply != null) {
+          listComments
+              .firstWhere((element) => element.id == commentId)
+              .listReply
+              .add(reply);
+        }
+        commentController.clear();
+      }
+    } catch (e) {
+      debugPrint('Something went wrong: $e');
+    }
+  }
+
+  void onClickReplyTo(int index) {
+    final value = listComments[index].id;
+    commentId.value = value ?? 0;
+    focusNode.requestFocus();
   }
 }

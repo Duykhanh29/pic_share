@@ -22,101 +22,105 @@ class SinglePostContainer extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 5, top: 10, bottom: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                postData.post.user?.urlAvatar != null
-                    ? ImageCacheHelper.avatarImage(
-                        url: postData.post.user!.urlAvatar!)
-                    : const CircleAvatar(
-                        radius: 20,
-                        backgroundImage: AssetImage(
-                          AppImage.userEmptyAvatar,
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 5, top: 10, bottom: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  postData.post.user?.urlAvatar != null
+                      ? ImageCacheHelper.avatarImage(
+                          url: postData.post.user!.urlAvatar!)
+                      : const CircleAvatar(
+                          radius: 20,
+                          backgroundImage: AssetImage(
+                            AppImage.userEmptyAvatar,
+                          ),
                         ),
+                  const SizedBox(width: 20),
+                  Container(
+                    padding: const EdgeInsets.all(4),
+                    decoration: BoxDecoration(
+                        color: const Color.fromARGB(255, 223, 219, 219),
+                        borderRadius: BorderRadius.circular(5)),
+                    child: Center(
+                      child: Text(
+                        postData.post.user?.name ?? "",
+                        style: AppTextStyles.headingTextStyle(),
                       ),
-                const SizedBox(width: 20),
-                Container(
-                  padding: const EdgeInsets.all(4),
-                  decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 223, 219, 219),
-                      borderRadius: BorderRadius.circular(5)),
-                  child: Center(
-                    child: Text(
-                      postData.post.user?.name ?? "",
-                      style: AppTextStyles.headingTextStyle(),
                     ),
                   ),
-                ),
-                const SizedBox(width: 20),
-                Container(
-                  padding: const EdgeInsets.all(4),
-                  decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 223, 219, 219),
-                      borderRadius: BorderRadius.circular(5)),
-                  child: Center(
-                    child: Text(
-                      postData.post.createdAt != null
-                          ? helper.DateUtils.formatDateTimeToString(
-                              postData.post.createdAt!)
-                          : "",
-                      style: AppTextStyles.smallTextStyle(),
+                  const SizedBox(width: 20),
+                  Container(
+                    padding: const EdgeInsets.all(4),
+                    decoration: BoxDecoration(
+                        color: const Color.fromARGB(255, 223, 219, 219),
+                        borderRadius: BorderRadius.circular(5)),
+                    child: Center(
+                      child: Text(
+                        postData.post.createdAt != null
+                            ? helper.DateUtils.formatDateTimeToString(
+                                postData.post.createdAt!)
+                            : "",
+                        style: AppTextStyles.smallTextStyle(),
+                      ),
                     ),
                   ),
+                  const Spacer(),
+                  IconButton(
+                      onPressed: () async {
+                        await showActionSheet(
+                            context, postData.post.userID ?? 0);
+                      },
+                      padding: const EdgeInsets.symmetric(horizontal: 2),
+                      icon: const Icon(Icons.more_vert_outlined))
+                ],
+              ),
+            ),
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                ImageCacheHelper.showImage(
+                    url: postData.post.urlImage ??
+                        "https://picsum.photos/seed/picsum/200/300",
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height * 0.55),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: _buildActionsWidget(),
                 ),
-                const Spacer(),
-                IconButton(
-                    onPressed: () async {
-                      await showActionSheet(context, postData.post.userID ?? 0);
-                    },
-                    padding: const EdgeInsets.symmetric(horizontal: 2),
-                    icon: const Icon(Icons.more_vert_outlined))
+                postData.post.caption != null
+                    ? Positioned(
+                        bottom: 20,
+                        child: Center(
+                          child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                color: Colors.black.withOpacity(0.6)),
+                            padding: const EdgeInsets.all(10),
+                            child: Center(
+                                child: Text(
+                              postData.post.caption ?? "",
+                              style: AppTextStyles.headingLightTextStyle(),
+                            )),
+                          ),
+                        ),
+                      )
+                    : const Positioned(
+                        bottom: 20,
+                        child: SizedBox.shrink(),
+                      )
               ],
             ),
-          ),
-          Stack(
-            alignment: Alignment.center,
-            children: [
-              ImageCacheHelper.showImage(
-                  url: postData.post.urlImage ??
-                      "https://picsum.photos/seed/picsum/200/300",
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height * 0.55),
-              Align(
-                alignment: Alignment.centerRight,
-                child: _buildActionsWidget(),
-              ),
-              postData.post.caption != null
-                  ? Positioned(
-                      bottom: 20,
-                      child: Center(
-                        child: Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              color: Colors.black.withOpacity(0.6)),
-                          padding: const EdgeInsets.all(10),
-                          child: Center(
-                              child: Text(
-                            postData.post.caption ?? "",
-                            style: AppTextStyles.headingLightTextStyle(),
-                          )),
-                        ),
-                      ),
-                    )
-                  : const Positioned(
-                      bottom: 20,
-                      child: SizedBox.shrink(),
-                    )
-            ],
-          ),
-          postData.post.userViews != null && postData.post.userViews!.isNotEmpty
-              ? _buildUsersView(context, postData.post.userViews!)
-              : const SizedBox.shrink(),
-        ],
+            postData.post.userViews != null &&
+                    postData.post.userViews!.isNotEmpty
+                ? _buildUsersView(context, postData.post.userViews!)
+                : const SizedBox.shrink(),
+          ],
+        ),
       ),
     );
   }
