@@ -1,0 +1,4 @@
+enum LinkToType {
+  comment,
+  friend,
+}
