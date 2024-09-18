@@ -11,7 +11,8 @@ class DependenciesInjector {
   static Future<void> initDependencies() async {
     Get.put<AuthRepository>(AuthRepositoryImpl(), permanent: true);
     Get.put<UserRepository>(UserRepositoryImpl(), permanent: true);
-    Get.put<NotificationRepository>(NotificationRepository(), permanent: true);
+    Get.put<NotificationRepository>(NotificationRepositoryImpl(),
+        permanent: true);
     Get.put<FriendRepository>(FriendRepositoryImpl(), permanent: true);
     Get.put<SearchRepository>(SearchRepositoryImpl(), permanent: true);
     Get.put<PostRepository>(PostRepositoryImpl(), permanent: true);
