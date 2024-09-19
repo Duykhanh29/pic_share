@@ -13,6 +13,9 @@ class SearchRepositoryImpl implements SearchRepository {
   Future<List<UserSummaryModel>> searchByName({required String name}) async {
     try {
       final response = await SearchByNameAPI(name: name).request();
+      if (response['data'] is List) {
+        return [];
+      }
       final data = response['data'] as Map<String, dynamic>;
       final userData = data['users'] as List<dynamic>;
       final listUser =

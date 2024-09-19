@@ -9,15 +9,23 @@ part of 'notification.dart';
 abstract class _$NotificationCWProxy {
   Notification content(String? content);
 
-  Notification createdAt(int? createdAt);
+  Notification createdAt(String? createdAt);
 
-  Notification id(String? id);
+  Notification id(int? id);
 
   Notification isSeen(bool isSeen);
 
   Notification notificationType(NotificationType notificationType);
 
-  Notification senderID(String? senderID);
+  Notification user(UserSummaryModel? user);
+
+  Notification linkTo(LinkToModel? linkTo);
+
+  Notification sender(UserSummaryModel? sender);
+
+  Notification title(String? title);
+
+  Notification updatedAt(String? updatedAt);
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `Notification(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -27,11 +35,15 @@ abstract class _$NotificationCWProxy {
   /// ````
   Notification call({
     String? content,
-    int? createdAt,
-    String? id,
+    String? createdAt,
+    int? id,
     bool? isSeen,
     NotificationType? notificationType,
-    String? senderID,
+    UserSummaryModel? user,
+    LinkToModel? linkTo,
+    UserSummaryModel? sender,
+    String? title,
+    String? updatedAt,
   });
 }
 
@@ -45,10 +57,10 @@ class _$NotificationCWProxyImpl implements _$NotificationCWProxy {
   Notification content(String? content) => this(content: content);
 
   @override
-  Notification createdAt(int? createdAt) => this(createdAt: createdAt);
+  Notification createdAt(String? createdAt) => this(createdAt: createdAt);
 
   @override
-  Notification id(String? id) => this(id: id);
+  Notification id(int? id) => this(id: id);
 
   @override
   Notification isSeen(bool isSeen) => this(isSeen: isSeen);
@@ -58,7 +70,19 @@ class _$NotificationCWProxyImpl implements _$NotificationCWProxy {
       this(notificationType: notificationType);
 
   @override
-  Notification senderID(String? senderID) => this(senderID: senderID);
+  Notification user(UserSummaryModel? user) => this(user: user);
+
+  @override
+  Notification linkTo(LinkToModel? linkTo) => this(linkTo: linkTo);
+
+  @override
+  Notification sender(UserSummaryModel? sender) => this(sender: sender);
+
+  @override
+  Notification title(String? title) => this(title: title);
+
+  @override
+  Notification updatedAt(String? updatedAt) => this(updatedAt: updatedAt);
 
   @override
 
@@ -74,7 +98,11 @@ class _$NotificationCWProxyImpl implements _$NotificationCWProxy {
     Object? id = const $CopyWithPlaceholder(),
     Object? isSeen = const $CopyWithPlaceholder(),
     Object? notificationType = const $CopyWithPlaceholder(),
-    Object? senderID = const $CopyWithPlaceholder(),
+    Object? user = const $CopyWithPlaceholder(),
+    Object? linkTo = const $CopyWithPlaceholder(),
+    Object? sender = const $CopyWithPlaceholder(),
+    Object? title = const $CopyWithPlaceholder(),
+    Object? updatedAt = const $CopyWithPlaceholder(),
   }) {
     return Notification(
       content: content == const $CopyWithPlaceholder()
@@ -84,11 +112,11 @@ class _$NotificationCWProxyImpl implements _$NotificationCWProxy {
       createdAt: createdAt == const $CopyWithPlaceholder()
           ? _value.createdAt
           // ignore: cast_nullable_to_non_nullable
-          : createdAt as int?,
+          : createdAt as String?,
       id: id == const $CopyWithPlaceholder()
           ? _value.id
           // ignore: cast_nullable_to_non_nullable
-          : id as String?,
+          : id as int?,
       isSeen: isSeen == const $CopyWithPlaceholder() || isSeen == null
           ? _value.isSeen
           // ignore: cast_nullable_to_non_nullable
@@ -98,10 +126,26 @@ class _$NotificationCWProxyImpl implements _$NotificationCWProxy {
           ? _value.notificationType
           // ignore: cast_nullable_to_non_nullable
           : notificationType as NotificationType,
-      senderID: senderID == const $CopyWithPlaceholder()
-          ? _value.senderID
+      user: user == const $CopyWithPlaceholder()
+          ? _value.user
           // ignore: cast_nullable_to_non_nullable
-          : senderID as String?,
+          : user as UserSummaryModel?,
+      linkTo: linkTo == const $CopyWithPlaceholder()
+          ? _value.linkTo
+          // ignore: cast_nullable_to_non_nullable
+          : linkTo as LinkToModel?,
+      sender: sender == const $CopyWithPlaceholder()
+          ? _value.sender
+          // ignore: cast_nullable_to_non_nullable
+          : sender as UserSummaryModel?,
+      title: title == const $CopyWithPlaceholder()
+          ? _value.title
+          // ignore: cast_nullable_to_non_nullable
+          : title as String?,
+      updatedAt: updatedAt == const $CopyWithPlaceholder()
+          ? _value.updatedAt
+          // ignore: cast_nullable_to_non_nullable
+          : updatedAt as String?,
     );
   }
 }
@@ -121,7 +165,11 @@ extension $NotificationCopyWith on Notification {
     bool content = false,
     bool createdAt = false,
     bool id = false,
-    bool senderID = false,
+    bool user = false,
+    bool linkTo = false,
+    bool sender = false,
+    bool title = false,
+    bool updatedAt = false,
   }) {
     return Notification(
       content: content == true ? null : this.content,
@@ -129,7 +177,11 @@ extension $NotificationCopyWith on Notification {
       id: id == true ? null : this.id,
       isSeen: isSeen,
       notificationType: notificationType,
-      senderID: senderID == true ? null : this.senderID,
+      user: user == true ? null : this.user,
+      linkTo: linkTo == true ? null : this.linkTo,
+      sender: sender == true ? null : this.sender,
+      title: title == true ? null : this.title,
+      updatedAt: updatedAt == true ? null : this.updatedAt,
     );
   }
 }
@@ -140,23 +192,40 @@ extension $NotificationCopyWith on Notification {
 
 Notification _$NotificationFromJson(Map<String, dynamic> json) => Notification(
       content: json['content'] as String?,
-      createdAt: (json['createdAt'] as num?)?.toInt(),
-      id: json['id'] as String?,
-      isSeen: json['isSeen'] as bool? ?? false,
+      createdAt: json['created_at'] as String?,
+      id: (json['id'] as num?)?.toInt(),
+      isSeen: json['is_seen'] == null
+          ? false
+          : Notification._fromJsonBool((json['is_seen'] as num).toInt()),
       notificationType: $enumDecodeNullable(
-              _$NotificationTypeEnumMap, json['notificationType']) ??
+              _$NotificationTypeEnumMap, json['notification_type']) ??
           NotificationType.user,
-      senderID: json['senderID'] as String?,
+      user: json['user'] == null
+          ? null
+          : UserSummaryModel.fromJson(json['user'] as Map<String, dynamic>),
+      linkTo: json['link_to'] == null
+          ? null
+          : LinkToModel.fromJson(json['link_to'] as Map<String, dynamic>),
+      sender: json['sender'] == null
+          ? null
+          : UserSummaryModel.fromJson(json['sender'] as Map<String, dynamic>),
+      title: json['title'] as String?,
+      updatedAt: json['updated_at'] as String?,
     );
 
 Map<String, dynamic> _$NotificationToJson(Notification instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'user': instance.user,
+      'sender': instance.sender,
       'content': instance.content,
-      'isSeen': instance.isSeen,
-      'senderID': instance.senderID,
-      'createdAt': instance.createdAt,
-      'notificationType': _$NotificationTypeEnumMap[instance.notificationType]!,
+      'title': instance.title,
+      'is_seen': Notification._toJsonBool(instance.isSeen),
+      'created_at': instance.createdAt,
+      'updated_at': instance.updatedAt,
+      'notification_type':
+          _$NotificationTypeEnumMap[instance.notificationType]!,
+      'link_to': instance.linkTo,
     };
 
 const _$NotificationTypeEnumMap = {
