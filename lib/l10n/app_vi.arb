@@ -118,5 +118,7 @@
     "writeAComment":"Nhập bình luận",
     "postDetail":"Chi tiết bài đăng",
     "postHistories":"Lịch sử các bài đăng",
-    "reply":"Trả lời"
+    "reply":"Trả lời",
+    "noNotifications":"Không có thông báo nào",
+    "markAsRead":"Đánh dấu là đã đọc"
 }

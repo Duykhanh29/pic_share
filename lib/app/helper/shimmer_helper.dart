@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:pic_share/app/helper/divider_helper.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ShimmerHelper {
@@ -35,6 +36,26 @@ class ShimmerHelper {
         );
       },
       itemCount: 10,
+    );
+  }
+
+  buildNotificationListViewShimmer() {
+    return ListView.separated(
+      separatorBuilder: (context, index) => DividerHelper.sizedboxDivider(),
+      shrinkWrap: true,
+      itemBuilder: (context, index) {
+        return Shimmer.fromColors(
+          baseColor: const Color.fromARGB(255, 243, 254, 255),
+          highlightColor: const Color.fromARGB(255, 197, 217, 215),
+          child: Container(
+              height: MediaQuery.of(context).size.width * 0.18,
+              width: MediaQuery.of(context).size.width * 0.9,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  color: const Color.fromARGB(255, 221, 201, 224))),
+        );
+      },
+      itemCount: 18,
     );
   }
 

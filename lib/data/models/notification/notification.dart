@@ -14,7 +14,7 @@ class Notification {
   final String? content;
   final String? title;
   @JsonKey(name: 'is_seen', fromJson: _fromJsonBool, toJson: _toJsonBool)
-  final bool isSeen;
+   bool isSeen;
   @JsonKey(name: 'created_at')
   final String? createdAt;
   @JsonKey(name: 'updated_at')
