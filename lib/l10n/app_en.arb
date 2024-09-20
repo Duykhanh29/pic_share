@@ -118,5 +118,7 @@
     "writeAComment":"Write a comment",
     "postDetail":"Post detail",
     "postHistories":"Post histories",
-    "reply":"Reply"
+    "reply":"Reply",
+    "noNotifications":"No notifications",
+    "markAsRead":"Mark as read"
 }
