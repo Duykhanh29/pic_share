@@ -6,10 +6,12 @@ import 'package:pic_share/app/constants/app_images.dart';
 import 'package:pic_share/app/services/local_storage_service.dart';
 import 'package:pic_share/data/models/language.dart';
 import 'package:pic_share/data/repositories/user/user_repository.dart';
+import 'package:pic_share/view_model/auth/auth_controller.dart';
 
 class LanguageController extends GetxController {
   LocalStorageService localStorageService;
   UserRepository userRepository;
+  AuthController authController;
 
   List<Language> languages = [
     Language(code: 'en', image: AppImage.ukFlag, countryCode: 'UK'),
@@ -22,11 +24,22 @@ class LanguageController extends GetxController {
   LanguageController({
     required this.localStorageService,
     required this.userRepository,
+    required this.authController,
   });
 
   @override
   void onInit() {
     getLanguageIndex();
+    ever(authController.currentUser, (user) {
+      if (user != null) {
+        if (user.config != null && user.config!.language != currentLanguage) {
+          String code = user.config!.language;
+          Get.updateLocale(Locale(code));
+          localStorageService.setLanguage = code;
+          selectedLanguage.value = user.config!.language == 'en' ? 0 : 1;
+        }
+      }
+    });
     super.onInit();
   }
 

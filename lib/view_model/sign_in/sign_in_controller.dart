@@ -49,7 +49,7 @@ class SignInController extends GetxController {
       if (isValid) {
         user.value = await authRepository.signInWithEmailPass(
             email: emailController.text.trim(), password: passController.text);
-        _tokenManager.setAccessToken(user.value?.accessToken);
+        await _tokenManager.setAccessToken(user.value?.accessToken);
         String? token = await notificationsService.getToken();
 
         if (token != null) {
@@ -70,7 +70,7 @@ class SignInController extends GetxController {
   Future<void> signInWithGoogle() async {
     try {
       user.value = await authRepository.signInWithGoogle();
-      _tokenManager.setAccessToken(user.value?.accessToken);
+      await _tokenManager.setAccessToken(user.value?.accessToken);
       String? token = await notificationsService.getToken();
       if (token != null) {
         await userRepository.updateFcmToken(fcmToken: token);

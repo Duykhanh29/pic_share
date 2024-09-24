@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:pic_share/data/repositories/friend/friend_repository.dart';
+import 'package:pic_share/view_model/auth/auth_controller.dart';
 import 'package:pic_share/view_model/friend/friend_controller.dart';
 
 class FriendBinding extends Bindings {
@@ -8,6 +9,7 @@ class FriendBinding extends Bindings {
     Get.lazyPut<FriendController>(
       () => FriendController(
         friendRepository: Get.find<FriendRepository>(),
+        authController: Get.find<AuthController>(),
       ),
     );
   }

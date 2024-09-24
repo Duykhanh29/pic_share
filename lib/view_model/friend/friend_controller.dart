@@ -2,14 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pic_share/data/enums/friend_status.dart';
 import 'package:pic_share/data/models/user/friend.dart';
+import 'package:pic_share/data/models/user/user_model.dart';
 import 'package:pic_share/data/repositories/friend/friend_repository.dart';
 import 'package:pic_share/routes/app_pages.dart';
+import 'package:pic_share/view_model/auth/auth_controller.dart';
 
 class FriendController extends GetxController
-    with GetSingleTickerProviderStateMixin, WidgetsBindingObserver {
+    with GetSingleTickerProviderStateMixin {
   FriendRepository friendRepository;
+  AuthController authController;
 
-  FriendController({required this.friendRepository});
+  FriendController({
+    required this.friendRepository,
+    required this.authController,
+  });
 
   late TabController tabController;
   RxBool isFriendShipView = true.obs;
@@ -37,9 +43,14 @@ class FriendController extends GetxController
 
   @override
   void onInit() {
+    ever(authController.currentUser, (UserModel? user) async {
+      if (user != null) {
+        await fetchFriends();
+        await fetchFriendRequests();
+      }
+    });
     fetchFriends();
     fetchFriendRequests();
-    WidgetsBinding.instance.addObserver(this);
     tabController = TabController(length: 2, vsync: this)..index = 0;
     super.onInit();
   }
@@ -68,18 +79,6 @@ class FriendController extends GetxController
     } finally {
       isLoadingFriendRequests.value = false;
     }
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    // onRefresh();
-    super.didChangeAppLifecycleState(state);
-  }
-
-  @override
-  void onClose() {
-    WidgetsBinding.instance.removeObserver(this);
-    super.onClose();
   }
 
   @override

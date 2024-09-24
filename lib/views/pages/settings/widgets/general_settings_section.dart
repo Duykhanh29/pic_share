@@ -29,7 +29,7 @@ class GeneralSettingsSection extends GetView<SettingsController> {
             iconColor: AppColors.white,
             onTap: controller.onNavToLanguage,
             title: t.language,
-            subtitle: controller.language,
+            // subtitle: controller.language,
           ),
           Divider(
             thickness: 0.4,
