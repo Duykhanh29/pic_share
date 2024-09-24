@@ -41,6 +41,11 @@ class HomeController extends GetxController {
         await fetchPosts(userId: userID);
       },
     );
+    ever(authController.currentUser, (UserModel? user) async {
+      if (user != null) {
+        await fetchPosts();
+      }
+    });
     await fetchPosts();
     super.onInit();
   }

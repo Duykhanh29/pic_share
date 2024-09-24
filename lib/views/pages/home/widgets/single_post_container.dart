@@ -40,7 +40,7 @@ class SinglePostContainer extends GetView<HomeController> {
                             AppImage.userEmptyAvatar,
                           ),
                         ),
-                  const SizedBox(width: 20),
+                  const SizedBox(width: 15),
                   Container(
                     padding: const EdgeInsets.all(4),
                     decoration: BoxDecoration(
@@ -53,20 +53,22 @@ class SinglePostContainer extends GetView<HomeController> {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 20),
+                  const SizedBox(width: 15),
                   Container(
+                    constraints: BoxConstraints(
+                        maxWidth: MediaQuery.of(context).size.width * 0.3),
                     padding: const EdgeInsets.all(4),
                     decoration: BoxDecoration(
                         color: const Color.fromARGB(255, 223, 219, 219),
                         borderRadius: BorderRadius.circular(5)),
-                    child: Center(
-                      child: Text(
-                        postData.post.createdAt != null
-                            ? helper.DateUtils.formatDateTimeToString(
-                                postData.post.createdAt!)
-                            : "",
-                        style: AppTextStyles.smallTextStyle(),
-                      ),
+                    alignment: Alignment.center,
+                    child: Text(
+                      postData.post.createdAt != null
+                          ? helper.DateUtils.formatDateTimeToString(
+                              postData.post.createdAt!)
+                          : "",
+                      maxLines: 3,
+                      style: AppTextStyles.smallTextStyle(),
                     ),
                   ),
                   const Spacer(),

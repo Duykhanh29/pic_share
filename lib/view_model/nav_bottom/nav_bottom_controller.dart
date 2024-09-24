@@ -23,6 +23,7 @@ class NavBottomController extends GetxController {
     Get.put(
         FriendController(
           friendRepository: Get.find<FriendRepository>(),
+          authController: Get.find<AuthController>(),
         ),
         permanent: true);
     Get.put(
