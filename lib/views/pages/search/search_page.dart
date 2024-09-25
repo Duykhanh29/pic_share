@@ -9,6 +9,7 @@ import 'package:pic_share/data/models/user/user_friendship_model.dart';
 import 'package:pic_share/view_model/search/search_controller.dart';
 import 'package:pic_share/views/pages/search/widgets/user_search_result_widget.dart';
 import 'package:pic_share/views/widgets/keyboard_dismiss.dart';
+import 'package:pic_share/views/widgets/loading_widget.dart';
 
 class SearchPage extends GetView<SearchUserController> {
   const SearchPage({super.key});
@@ -18,17 +19,22 @@ class SearchPage extends GetView<SearchUserController> {
     final t = AppLocalizations.of(context)!;
     return KeyboardDismiss(
       child: Scaffold(
-        body: CustomScrollView(
-          shrinkWrap: true,
-          slivers: [
-            Obx(() => _buildSliverAppBar(t)),
-            Obx(
-              () => controller.isSearchWithCode.value
-                  ? _buildCodeSearchResult()
-                  : _buildNameSearchResult(),
-            ),
-          ],
-        ),
+        body: Obx(() => Stack(
+              children: [
+                CustomScrollView(
+                  shrinkWrap: true,
+                  slivers: [
+                    Obx(() => _buildSliverAppBar(t)),
+                    Obx(
+                      () => controller.isSearchWithCode.value
+                          ? _buildCodeSearchResult()
+                          : _buildNameSearchResult(),
+                    ),
+                  ],
+                ),
+                if (controller.isLoading.value) const LoadingWidget(),
+              ],
+            )),
       ),
     );
   }
@@ -196,17 +202,17 @@ class SearchPage extends GetView<SearchUserController> {
       return SliverFillRemaining(child: Container());
     }
 
-    if (controller.isLoading.value) {
-      return const SliverFillRemaining(
-        child: Center(
-          child: SizedBox(
-            height: 50,
-            width: 50,
-            child: CircularProgressIndicator(),
-          ),
-        ),
-      );
-    }
+    // if (controller.isLoading.value) {
+    //   return const SliverFillRemaining(
+    //     child: Center(
+    //       child: SizedBox(
+    //         height: 50,
+    //         width: 50,
+    //         child: CircularProgressIndicator(),
+    //       ),
+    //     ),
+    //   );
+    // }
 
     return SliverPadding(
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),

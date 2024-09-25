@@ -14,6 +14,17 @@ class AppDrawerController extends GetxController {
   UserModel? get currentUser => authController.getCurrentUser;
   List<Friend> get friendList => friendController.friends;
   Rx<int?> selectedUserId = Rx<int?>(null);
+
+  @override
+  void onInit() {
+    ever(authController.currentUser, (user) {
+      if (user != null) {
+        selectedUserId.value = null;
+      }
+    });
+    super.onInit();
+  }
+
   Future<void> logout() async {
     await authController.logout();
   }

@@ -50,6 +50,7 @@ class CommentsController extends GetxController {
   }
 
   Future<void> sendComment(String text) async {
+    isLoading.value = true;
     try {
       if (text.isNotEmpty) {
         final comment =
@@ -61,6 +62,8 @@ class CommentsController extends GetxController {
       }
     } catch (e) {
       debugPrint('Something went wrong: $e');
+    } finally {
+      isLoading.value = false;
     }
   }
 
@@ -75,6 +78,7 @@ class CommentsController extends GetxController {
   }
 
   Future<void> replyToComment(int commentId, String text) async {
+    isLoading.value = true;
     try {
       if (text.isNotEmpty) {
         final reply = await commentRepository.addReply(
@@ -89,6 +93,8 @@ class CommentsController extends GetxController {
       }
     } catch (e) {
       debugPrint('Something went wrong: $e');
+    } finally {
+      isLoading.value = false;
     }
   }
 

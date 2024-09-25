@@ -41,6 +41,7 @@ class NewPostController extends GetxController {
   late TextEditingController captionController;
 
   Rx<FocusNode> focusNode = FocusNode().obs;
+  RxBool isLoading = false.obs;
   @override
   void onInit() async {
     await initCamera();
@@ -133,6 +134,7 @@ class NewPostController extends GetxController {
   // api operation
 
   Future<void> createPost() async {
+    isLoading.value = true;
     try {
       if (isReadyToUpload) {
         SharedPostType type = getType();
@@ -148,6 +150,7 @@ class NewPostController extends GetxController {
       debugPrint('Error occured while downloading picture: $e');
     } finally {
       onSetToDefault();
+      isLoading.value = false;
     }
   }
 

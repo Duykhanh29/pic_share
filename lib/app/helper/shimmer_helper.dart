@@ -28,14 +28,14 @@ class ShimmerHelper {
           baseColor: const Color.fromARGB(255, 243, 254, 255),
           highlightColor: const Color.fromARGB(255, 197, 217, 215),
           child: Container(
-              height: MediaQuery.of(context).size.width * 0.08,
+              height: MediaQuery.of(context).size.width * 0.18,
               width: MediaQuery.of(context).size.width * 0.9,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
                   color: const Color.fromARGB(255, 221, 201, 224))),
         );
       },
-      itemCount: 10,
+      itemCount: 18,
     );
   }
 

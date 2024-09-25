@@ -9,6 +9,7 @@ import 'package:pic_share/app/custom/app_bar_custom.dart';
 import 'package:pic_share/view_model/new_post/new_post_controller.dart';
 import 'package:pic_share/views/pages/new_post/widgets/shared_user_widget.dart';
 import 'package:pic_share/views/widgets/keyboard_dismiss.dart';
+import 'package:pic_share/views/widgets/loading_widget.dart';
 
 class NewPostPage extends GetView<NewPostController> {
   const NewPostPage({super.key});
@@ -35,33 +36,41 @@ class NewPostPage extends GetView<NewPostController> {
             ),
           ],
         ).show(),
-        body: Container(
-          decoration: BoxDecoration(
-            color: AppColors.postViewColor,
-          ),
-          padding: const EdgeInsets.symmetric(vertical: 15),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+        body: Obx(
+          () => Stack(
             children: [
-              _buildCameraView(context),
-              const SizedBox(
-                height: 10,
+              Container(
+                decoration: BoxDecoration(
+                  color: AppColors.postViewColor,
+                ),
+                padding: const EdgeInsets.symmetric(vertical: 15),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    _buildCameraView(context),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    _buildRowActions(),
+                    Obx(
+                      () => controller.pictureFile.value != null
+                          ? Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 15),
+                              child: Divider(
+                                color: AppColors.lightBorderColor,
+                                thickness: 0.2,
+                              ),
+                            )
+                          : const SizedBox.shrink(),
+                    ),
+                    Obx(() => controller.pictureFile.value != null
+                        ? _buildFriendShareOption(t)
+                        : const SizedBox.shrink()),
+                  ],
+                ),
               ),
-              _buildRowActions(),
-              Obx(
-                () => controller.pictureFile.value != null
-                    ? Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15),
-                        child: Divider(
-                          color: AppColors.lightBorderColor,
-                          thickness: 0.2,
-                        ),
-                      )
-                    : const SizedBox.shrink(),
-              ),
-              Obx(() => controller.pictureFile.value != null
-                  ? _buildFriendShareOption(t)
-                  : const SizedBox.shrink()),
+              if (controller.isLoading.value) const LoadingWidget(),
             ],
           ),
         ),

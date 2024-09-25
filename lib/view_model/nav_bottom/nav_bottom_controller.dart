@@ -20,18 +20,18 @@ class NavBottomController extends GetxController {
       pageIndex.value = 0;
     }
 
-    Get.put(
-        FriendController(
-          friendRepository: Get.find<FriendRepository>(),
-          authController: Get.find<AuthController>(),
-        ),
-        permanent: true);
-    Get.put(
-      AppDrawerController(
-        authController: Get.find<AuthController>(),
-        friendController: Get.find<FriendController>(),
-      ),
-    );
+    // Get.put(
+    //     FriendController(
+    //       friendRepository: Get.find<FriendRepository>(),
+    //       authController: Get.find<AuthController>(),
+    //     ),
+    //     permanent: true);
+    // Get.put(
+    //   AppDrawerController(
+    //     authController: Get.find<AuthController>(),
+    //     friendController: Get.find<FriendController>(),
+    //   ),
+    // );
     Get.put(
         HomeController(
           postRepository: Get.find<PostRepository>(),
