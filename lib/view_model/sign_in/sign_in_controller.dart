@@ -24,6 +24,7 @@ class SignInController extends GetxController {
   late TextEditingController emailController;
   late TextEditingController passController;
   RxBool isPassVissibility = false.obs;
+  RxBool isLoading = false.obs;
 
   @override
   void onInit() {
@@ -44,6 +45,7 @@ class SignInController extends GetxController {
   }
 
   Future<void> signInWithEmailPass() async {
+    isLoading.value = true;
     try {
       var isValid = formKey.currentState!.validate();
       if (isValid) {
@@ -64,10 +66,13 @@ class SignInController extends GetxController {
       }
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
+    } finally {
+      isLoading.value = false;
     }
   }
 
   Future<void> signInWithGoogle() async {
+    isLoading.value = true;
     try {
       user.value = await authRepository.signInWithGoogle();
       await _tokenManager.setAccessToken(user.value?.accessToken);
@@ -80,6 +85,8 @@ class SignInController extends GetxController {
       localStorageService.setUserModel(value: user.value);
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
+    } finally {
+      isLoading.value = false;
     }
   }
 }

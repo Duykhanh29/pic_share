@@ -30,6 +30,7 @@ class RegisterController extends GetxController {
   Rx<UserModel?> user = Rx<UserModel?>(null);
   RxBool isPassVissibility = false.obs;
   RxBool isConfirmPassVissibility = false.obs;
+  RxBool isLoading = false.obs;
   @override
   void onInit() {
     emailController = TextEditingController();
@@ -57,6 +58,7 @@ class RegisterController extends GetxController {
   }
 
   Future<void> registerUserByEmailAndPass() async {
+    isLoading.value = true;
     try {
       var isValid = formKey.currentState!.validate();
       if (isValid) {
@@ -78,6 +80,8 @@ class RegisterController extends GetxController {
       }
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
+    }finally {
+      isLoading.value = false;
     }
   }
 }

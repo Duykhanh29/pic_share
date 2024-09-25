@@ -7,6 +7,7 @@ import 'package:pic_share/routes/app_pages.dart';
 import 'package:pic_share/view_model/sign_in/sign_in_controller.dart';
 import 'package:pic_share/views/pages/auth/auth_view.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:pic_share/views/widgets/loading_widget.dart';
 
 class SignInPage extends GetView<SignInController> {
   const SignInPage({super.key});
@@ -15,52 +16,57 @@ class SignInPage extends GetView<SignInController> {
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context)!;
     return Obx(
-      () => AuthView(
-        title: t.signIn,
-        emailController: controller.emailController,
-        onSubmitted: controller.signInWithEmailPass,
-        passwordController: controller.passController,
-        formKey: controller.formKey,
-        isPassVissibility: controller.isPassVissibility.value,
-        onChangePassVissibility: controller.onChangePassVissibility,
-        child: Column(
-          children: [
-            const SizedBox(
-              height: 20,
-            ),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: TextButton(
-                style: ButtonStyle(
-                  shape: MaterialStateProperty.all(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
+      () => Stack(
+        children: [
+          AuthView(
+            title: t.signIn,
+            emailController: controller.emailController,
+            onSubmitted: controller.signInWithEmailPass,
+            passwordController: controller.passController,
+            formKey: controller.formKey,
+            isPassVissibility: controller.isPassVissibility.value,
+            onChangePassVissibility: controller.onChangePassVissibility,
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  child: TextButton(
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                      ),
+                    ),
+                    onPressed: () {
+                      Get.toNamed(Routes.register);
+                    },
+                    child: Text(
+                      t.register,
+                      style: AppTextStyles.commonTextStyle()
+                          .copyWith(decoration: TextDecoration.underline),
                     ),
                   ),
                 ),
-                onPressed: () {
-                  Get.toNamed(Routes.register);
-                },
-                child: Text(
-                  t.register,
-                  style: AppTextStyles.commonTextStyle()
-                      .copyWith(decoration: TextDecoration.underline),
+                const SizedBox(
+                  height: 40,
                 ),
-              ),
+                _buildOrLine(t),
+                const SizedBox(
+                  height: 20,
+                ),
+                _buildSignInOptions(t),
+                const SizedBox(
+                  height: 40,
+                ),
+              ],
             ),
-            const SizedBox(
-              height: 40,
-            ),
-            _buildOrLine(t),
-            const SizedBox(
-              height: 20,
-            ),
-            _buildSignInOptions(t),
-            const SizedBox(
-              height: 40,
-            ),
-          ],
-        ),
+          ),
+          if (controller.isLoading.value) const LoadingWidget(),
+        ],
       ),
     );
   }

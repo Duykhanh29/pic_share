@@ -146,6 +146,7 @@ class SearchUserController extends GetxController {
   }
 
   Future<void> onMakeFriendRequest(int id) async {
+    isLoading.value = true;
     try {
       Friend? friend = await friendController.makeFriendRequest(id);
       if (friend != null) {
@@ -154,11 +155,14 @@ class SearchUserController extends GetxController {
       }
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
+    } finally {
+      isLoading.value = false;
     }
   }
 
   Future<void> onRejectFriendRequest(
       {required int userID, required int id}) async {
+    isLoading.value = true;
     try {
       await friendController.onRejectFriendRequest(id);
     } catch (e) {
@@ -166,11 +170,13 @@ class SearchUserController extends GetxController {
     } finally {
       onUpdateClick(UserRelationship.notFriend, userID, 0);
       await friendController.onRefresh();
+      isLoading.value = false;
     }
   }
 
   Future<void> onAcceptFriendRequest(
       {required int userID, required int id}) async {
+    isLoading.value = true;
     try {
       await friendController.onAcceptFriendRequest(id);
     } catch (e) {
@@ -178,6 +184,7 @@ class SearchUserController extends GetxController {
     } finally {
       onUpdateClick(UserRelationship.friend, userID, id);
       await friendController.onRefresh();
+      isLoading.value = false;
     }
   }
 

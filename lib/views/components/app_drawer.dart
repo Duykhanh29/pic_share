@@ -54,10 +54,8 @@ class AppDrawer extends GetView<AppDrawerController> {
                     : null,
                 selected: controller.selectedUserId.value == null,
                 onTap: () {
-                  if (controller.selectedUserId.value != null) {
-                    controller.onChangeSelectedUserId(null);
-                    controller.closeDrawer(context);
-                  }
+                  controller.onChangeSelectedUserId(null);
+                  controller.closeDrawer(context);
                 },
                 title: Text(
                   t.all,

@@ -14,6 +14,7 @@ class EditProfileController extends GetxController {
   EditProfileController({required this.authController});
   Rx<XFile?> avatarFile = Rx<XFile?>(null);
   RxBool isNewAvatar = false.obs;
+  RxBool isLoading = false.obs;
   @override
   void onInit() {
     nameController =
@@ -39,6 +40,7 @@ class EditProfileController extends GetxController {
   }
 
   Future<void> updateUserInfo() async {
+    isLoading.value = true;
     try {
       if (nameController.text.isEmpty) return;
       await authController.updateUserInfo(
@@ -49,6 +51,8 @@ class EditProfileController extends GetxController {
       );
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
+    } finally {
+      isLoading.value = false;
     }
   }
 }
