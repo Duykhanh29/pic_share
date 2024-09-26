@@ -8,21 +8,26 @@ import 'package:pic_share/view_model/nav_bottom/nav_bottom_controller.dart';
 class NavBottomBindinngs extends Bindings {
   @override
   void dependencies() {
-    Get.put(
-        FriendController(
-          friendRepository: Get.find<FriendRepository>(),
-          authController: Get.find<AuthController>(),
-        ),
-        permanent: true);
+    if (!Get.isRegistered<FriendController>()) {
+      Get.put(
+          FriendController(
+            friendRepository: Get.find<FriendRepository>(),
+            authController: Get.find<AuthController>(),
+          ),
+          permanent: true);
+    }
+
     Get.put<AppDrawerController>(
       AppDrawerController(
         authController: Get.find<AuthController>(),
         friendController: Get.find<FriendController>(),
       ),
     );
-    Get.put<NavBottomController>(
-      NavBottomController(),
-      permanent: true,
-    );
+    if (!Get.isRegistered<NavBottomController>()) {
+      Get.put<NavBottomController>(
+        NavBottomController(),
+        permanent: true,
+      );
+    }
   }
 }
