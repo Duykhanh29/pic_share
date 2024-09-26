@@ -9,14 +9,17 @@ import 'package:pic_share/view_model/language/language_controller.dart';
 class AuthBindings extends Bindings {
   @override
   void dependencies() {
-    Get.put<AuthController>(
-      AuthController(
-        localStorageService: Get.find<LocalStorageService>(),
-        authRepository: Get.find<AuthRepository>(),
-        userRepository: Get.find<UserRepository>(),
-        notificationsService: Get.find<NotificationsService>(),
-      ),
-    );
+    if (!Get.isRegistered<AuthController>()) {
+      Get.put<AuthController>(
+        AuthController(
+          localStorageService: Get.find<LocalStorageService>(),
+          authRepository: Get.find<AuthRepository>(),
+          userRepository: Get.find<UserRepository>(),
+          notificationsService: Get.find<NotificationsService>(),
+        ),
+      );
+    }
+
     Get.put(
       LanguageController(
         localStorageService: Get.find<LocalStorageService>(),

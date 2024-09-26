@@ -1,8 +1,22 @@
+import 'dart:convert';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:pic_share/app/constants/strings.dart';
 import 'package:pic_share/app/services/local_storage_service.dart';
+import 'package:pic_share/data/enums/friend_noti_type.dart';
+import 'package:pic_share/data/enums/link_to_type.dart';
+import 'package:pic_share/data/models/notification/notification_data.dart';
+import 'package:pic_share/data/repositories/auth/auth_repository.dart';
+import 'package:pic_share/data/repositories/friend/friend_repository.dart';
+import 'package:pic_share/data/repositories/user/user_repository.dart';
+import 'package:pic_share/routes/app_pages.dart';
+import 'package:pic_share/view_model/auth/auth_controller.dart';
+import 'package:pic_share/view_model/friend/friend_controller.dart';
+import 'package:pic_share/view_model/home/home_controller.dart';
+import 'package:pic_share/view_model/nav_bottom/nav_bottom_controller.dart';
 
 const channel = AndroidNotificationChannel(
     'high_importance_channel', 'Hign Importance Notifications',
@@ -13,7 +27,6 @@ const channel = AndroidNotificationChannel(
 class NotificationsService extends GetxService {
   final LocalStorageService localStorageService =
       Get.find<LocalStorageService>();
-  // final GlobalKey<NavigatorState>? navigatorKey;
 
   final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
@@ -44,10 +57,14 @@ class NotificationsService extends GetxService {
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);
-    flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onDidReceiveNotificationResponse: (response) {
-      debugPrint(response.payload.toString());
-    });
+    flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+      onDidReceiveNotificationResponse: (response) async {
+        debugPrint("Payload ${response.payload.toString()}");
+        await handleNotificationClick(response.payload.toString());
+      },
+      onDidReceiveBackgroundNotificationResponse: (details) {},
+    );
   }
 
   Future<void> _showLocalNotification(RemoteMessage message) async {
@@ -73,9 +90,13 @@ class NotificationsService extends GetxService {
       android: androidDetails,
       iOS: iosDetails,
     );
-    await flutterLocalNotificationsPlugin.show(0, message.notification!.title,
-        message.notification!.body, notificationDetails,
-        payload: message.data['body']);
+    await flutterLocalNotificationsPlugin.show(
+      message.notification?.hashCode ?? 0,
+      message.notification!.title,
+      message.notification!.body,
+      notificationDetails,
+      payload: jsonEncode(message.data),
+    );
   }
 
   void onTokenRefresh() {
@@ -127,28 +148,97 @@ class NotificationsService extends GetxService {
 
   Future<void> _setupFirebaseMessaging() async {
     _initLocalNotification();
-    FirebaseMessaging.instance.getInitialMessage().then((value) async {
-      if (value?.notification != null) {
-        debugPrint("Data received: ${value?.data}");
+
+    // it not work as expected
+    FirebaseMessaging.instance.getInitialMessage().then((message) async {
+      if (message?.notification != null) {
+        debugPrint("Data received: ${message?.data}");
+      }
+      if (message != null) {
+        await handleClick(message);
       }
     });
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
       debugPrint("Data received: ${message.data}");
+      await handleClick(message);
     });
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
       await _showLocalNotification(message);
-      debugPrint("Data received: ${message.notification}");
-
-      debugPrint("Data is: ${message.data}");
-      debugPrint("category is ${message.category}");
-      debugPrint("from is: ${message.from}");
-      debugPrint("body is ${message.notification?.body}");
-      debugPrint("titlte is: ${message.notification?.title}");
-      debugPrint("sound is ${message..notification?.android?.sound}");
-      debugPrint("messageType is ${message..messageType}");
-      debugPrint("HEY MAN");
+      // handleClick(message);
     });
     onTokenRefresh();
+  }
+
+  Future<void> handleClick(RemoteMessage message) async {
+    final notificationData = NotificationData.fromJson(message.data);
+    await handleNavigation(notificationData);
+  }
+
+  Future<void> handleNotificationClick(String payload) async {
+    final Map<String, dynamic> jsonData = jsonDecode(payload); // error
+
+    final notificationData = NotificationData.fromJson(jsonData);
+
+    await handleNavigation(notificationData);
+  }
+
+  Future<void> handleNavigation(NotificationData notificationData) async {
+    final isRegisterd = Get.isRegistered<NavBottomController>();
+    final localStorageService = Get.find<LocalStorageService>();
+    final isLoggedin = !localStorageService.isUserNull.value;
+    if (isRegisterd) {
+      await onHandleNavWithDependencies(notificationData);
+    } else {
+      if (isLoggedin) {
+        Get.put<AuthController>(
+          AuthController(
+            localStorageService: Get.find<LocalStorageService>(),
+            authRepository: Get.find<AuthRepository>(),
+            userRepository: Get.find<UserRepository>(),
+            notificationsService: Get.find<NotificationsService>(),
+          ),
+        );
+        Get.put(
+            FriendController(
+                friendRepository: Get.find<FriendRepository>(),
+                authController: Get.find<AuthController>()),
+            permanent: true);
+        Get.put<NavBottomController>(
+          NavBottomController(),
+          permanent: true,
+        );
+        await onHandleNavWithDependencies(notificationData);
+      }
+    }
+  }
+}
+
+Future<void> onHandleNavWithDependencies(
+    NotificationData notificationData) async {
+  final navBottomController = Get.find<NavBottomController>();
+  final homeController = Get.find<HomeController>();
+  final friendController = Get.find<FriendController>();
+  if (Get.currentRoute != Routes.navBar) {
+    Get.toNamed(Routes.navBar);
+  }
+  if (notificationData.type == LinkToType.friend) {
+    navBottomController.onChangeToFriend();
+    if (notificationData.friendType == FriendNotiType.requested) {
+      await friendController.onViewInFriendReuquests();
+    } else {
+      await friendController.onViewInFriend();
+    }
+  } else {
+    navBottomController.onChangeToHome();
+    if (notificationData.postId != null) {
+      final postId = int.tryParse(notificationData.postId!);
+      homeController.onNavigateToHomeWithPostId(postId);
+      if (postId != null) {
+        Get.toNamed(Routes.comments, arguments: {
+          Strings.postId: postId,
+        });
+      }
+    }
   }
 }

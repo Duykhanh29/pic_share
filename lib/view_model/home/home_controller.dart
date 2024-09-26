@@ -165,6 +165,11 @@ class HomeController extends GetxController {
     Get.back();
   }
 
+  void onNavigateToHomeWithPostId(int? id) {
+    int index = posts.indexWhere((element) => element.post.id == id);
+    currentIndex.value = index == -1 ? 0 : index;
+  }
+
   Future<void> onDownloadImageToGallery(String urlPath) async {
     try {
       String url = AppConfig.baseUrl + urlPath;

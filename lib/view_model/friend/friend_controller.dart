@@ -33,6 +33,30 @@ class FriendController extends GetxController
     isFriendShipView.value = !isFriendShipView.value;
   }
 
+  Future<void> onViewInFriendReuquests() async {
+    try {
+      isFriendShipView.value = false;
+      isLoadingFriendRequests.value = true;
+      await onRefresh();
+    } catch (e) {
+      debugPrint("Something went wrong: ${e.toString()}");
+    } finally {
+      isLoadingFriendRequests.value = false;
+    }
+  }
+
+  Future<void> onViewInFriend() async {
+    try {
+      isFriendShipView.value = true;
+      isLoadingFriends.value = true;
+      await onRefresh();
+    } catch (e) {
+      debugPrint("Something went wrong: ${e.toString()}");
+    } finally {
+      isLoadingFriends.value = false;
+    }
+  }
+
   void onNavToPage() {
     isViewInTabbar = false.obs;
   }

@@ -21,7 +21,8 @@ class ShimmerHelper {
   }
 
   buildListViewShimmer() {
-    return ListView.builder(
+    return ListView.separated(
+      separatorBuilder: (context, index) => DividerHelper.sizedboxDivider(),
       shrinkWrap: true,
       itemBuilder: (context, index) {
         return Shimmer.fromColors(
