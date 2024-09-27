@@ -10,78 +10,87 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 // ignore: must_be_immutable
 class NotificationItemCard extends StatelessWidget {
   NotificationItemCard(
-      {super.key, required this.notification, required this.onMarkAsRead});
+      {super.key,
+      required this.notification,
+      required this.onMarkAsRead,
+      required this.onCLick});
   model.Notification notification;
   final Function(int)? onMarkAsRead;
+  final Function(int)? onCLick;
   @override
   Widget build(BuildContext context) {
-    return Container(
-        margin: const EdgeInsets.symmetric(vertical: 2, horizontal: 5),
-        padding: const EdgeInsets.all(5),
-        constraints: BoxConstraints(
-          minHeight: MediaQuery.of(context).size.height * 0.1,
-        ),
-        decoration: BoxDecoration(
-          color: notification.isSeen
-              ? const Color.fromARGB(137, 193, 193, 193)
-              : Colors.blueAccent,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          // crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(10),
-              child: notification.sender?.urlAvatar != null
-                  ? ImageCacheHelper.avatarImage(
-                      url: notification.sender!.urlAvatar!,
-                      height: MediaQuery.of(context).size.width * 0.12,
-                      width: MediaQuery.of(context).size.width * 0.12)
-                  : CircleAvatar(
-                      radius: MediaQuery.of(context).size.width * 0.06,
-                      backgroundImage:
-                          const AssetImage(AppImage.userEmptyAvatar),
-                    ),
-            ),
-            Flexible(
-              flex: 6,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    notification.title ?? "",
-                    maxLines: 3,
-                    overflow: TextOverflow.clip,
-                    style: AppTextStyles.commonTextStyle()
-                        .copyWith(fontWeight: FontWeight.w500),
-                  ),
-                  Text(
-                    notification.content ?? "",
-                    maxLines: 3,
-                    overflow: TextOverflow.clip,
-                    style: AppTextStyles.smallTextStyle().copyWith(),
-                  ),
-                ],
+    return GestureDetector(
+      onTap: () {
+        onCLick?.call(notification.id ?? 0);
+      },
+      child: Container(
+          margin: const EdgeInsets.symmetric(vertical: 2, horizontal: 5),
+          padding: const EdgeInsets.all(5),
+          constraints: BoxConstraints(
+            minHeight: MediaQuery.of(context).size.height * 0.1,
+          ),
+          decoration: BoxDecoration(
+            color: notification.isSeen
+                ? const Color.fromARGB(137, 193, 193, 193)
+                : Colors.blueAccent,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            // crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(10),
+                child: notification.sender?.urlAvatar != null
+                    ? ImageCacheHelper.avatarImage(
+                        url: notification.sender!.urlAvatar!,
+                        height: MediaQuery.of(context).size.width * 0.12,
+                        width: MediaQuery.of(context).size.width * 0.12)
+                    : CircleAvatar(
+                        radius: MediaQuery.of(context).size.width * 0.06,
+                        backgroundImage:
+                            const AssetImage(AppImage.userEmptyAvatar),
+                      ),
               ),
-            ),
-            const Spacer(),
-            Text(
-              notification.createdAt != null
-                  ? date.DateUtils.formatDateTimeToDateString(
-                      notification.createdAt!)
-                  : "",
-              style: AppTextStyles.smallTextStyle(),
-            ),
-            IconButton(
-              onPressed: () async {
-                await showActionSheet(
-                    context, onMarkAsRead, notification.id ?? 0);
-              },
-              icon: const Icon(Icons.more_vert),
-            ),
-          ],
-        ));
+              Flexible(
+                flex: 6,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      notification.title ?? "",
+                      maxLines: 3,
+                      overflow: TextOverflow.clip,
+                      style: AppTextStyles.commonTextStyle()
+                          .copyWith(fontWeight: FontWeight.w500),
+                    ),
+                    Text(
+                      notification.content ?? "",
+                      maxLines: 3,
+                      overflow: TextOverflow.clip,
+                      style: AppTextStyles.smallTextStyle().copyWith(),
+                    ),
+                  ],
+                ),
+              ),
+              const Spacer(),
+              Text(
+                notification.createdAt != null
+                    ? date.DateUtils.formatDateTimeToDateString(
+                        notification.createdAt!)
+                    : "",
+                style: AppTextStyles.smallTextStyle(),
+              ),
+              IconButton(
+                onPressed: () async {
+                  await showActionSheet(
+                      context, onMarkAsRead, notification.id ?? 0);
+                },
+                icon: const Icon(Icons.more_vert),
+              ),
+            ],
+          )),
+    );
   }
 }
 

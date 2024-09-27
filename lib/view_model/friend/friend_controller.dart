@@ -96,8 +96,10 @@ class FriendController extends GetxController
 
   Future<void> fetchFriendRequests() async {
     try {
-      requestedFriends.value = await friendRepository.getFriendRequestList();
-      sentFriends.value = await friendRepository.getFriendRequestSentList();
+      final requestedList = await friendRepository.getFriendRequestList();
+      requestedFriends.value = requestedList.reversed.toList();
+      final sentList = await friendRepository.getFriendRequestSentList();
+      sentFriends.value = sentList.reversed.toList();
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
     } finally {

@@ -25,6 +25,7 @@ class NotificationPage extends GetView<NotificationController> {
                 builderDelegate: PagedChildBuilderDelegate<model.Notification>(
                   itemBuilder: (context, notification, index) {
                     return NotificationItemCard(
+                      onCLick: controller.onClick,
                       notification: notification,
                       onMarkAsRead: controller.updateNotification,
                     );
