@@ -8,6 +8,7 @@ import 'package:pic_share/views/components/app_drawer.dart';
 import 'package:pic_share/views/pages/home/widgets/single_post_container.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pic_share/views/widgets/keyboard_dismiss.dart';
+import 'package:badges/badges.dart' as badges;
 
 class HomePage extends GetView<HomeController> {
   const HomePage({super.key});
@@ -22,9 +23,19 @@ class HomePage extends GetView<HomeController> {
           title: t.home,
           isLeadingShow: false,
           actions: [
-            IconButton(
-              onPressed: controller.onNavToNotification,
-              icon: const Icon(Icons.notifications),
+            InkWell(
+              onTap: controller.onNavToNotification,
+              child: badges.Badge(
+                badgeContent: Obx(
+                  () => Text(
+                    "${controller.unseenNotiCount.value}",
+                    style: const TextStyle(fontSize: 12, color: Colors.white),
+                  ),
+                ),
+                child: const Icon(
+                  Icons.notifications,
+                ),
+              ),
             ),
             const SizedBox(
               width: 15,

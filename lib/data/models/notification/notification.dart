@@ -14,7 +14,7 @@ class Notification {
   final String? content;
   final String? title;
   @JsonKey(name: 'is_seen', fromJson: _fromJsonBool, toJson: _toJsonBool)
-   bool isSeen;
+  bool isSeen;
   @JsonKey(name: 'created_at')
   final String? createdAt;
   @JsonKey(name: 'updated_at')
@@ -27,6 +27,8 @@ class Notification {
   final NotificationType notificationType;
   @JsonKey(name: 'link_to')
   final LinkToModel? linkTo;
+  @JsonKey(name: 'is_read', fromJson: _fromJsonBool, toJson: _toJsonBool)
+  bool isRead;
   Notification({
     this.content,
     this.createdAt,
@@ -38,6 +40,7 @@ class Notification {
     this.sender,
     this.title,
     this.updatedAt,
+    this.isRead = false,
   });
 
   factory Notification.fromJson(Map<String, dynamic> json) =>

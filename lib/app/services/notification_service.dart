@@ -11,12 +11,14 @@ import 'package:pic_share/data/enums/link_to_type.dart';
 import 'package:pic_share/data/models/notification/notification_data.dart';
 import 'package:pic_share/data/repositories/auth/auth_repository.dart';
 import 'package:pic_share/data/repositories/friend/friend_repository.dart';
+import 'package:pic_share/data/repositories/notification/notification_repository.dart';
 import 'package:pic_share/data/repositories/user/user_repository.dart';
 import 'package:pic_share/routes/app_pages.dart';
 import 'package:pic_share/view_model/auth/auth_controller.dart';
 import 'package:pic_share/view_model/friend/friend_controller.dart';
 import 'package:pic_share/view_model/home/home_controller.dart';
 import 'package:pic_share/view_model/nav_bottom/nav_bottom_controller.dart';
+import 'package:pic_share/view_model/notifications/notification_controller.dart';
 
 const channel = AndroidNotificationChannel(
     'high_importance_channel', 'Hign Importance Notifications',
@@ -219,6 +221,17 @@ Future<void> onHandleNavWithDependencies(
   final navBottomController = Get.find<NavBottomController>();
   final homeController = Get.find<HomeController>();
   final friendController = Get.find<FriendController>();
+  final notificationController = Get.put(NotificationController(
+      notificationRepository: Get.find<NotificationRepository>(),
+      friendController: friendController,
+      navBottomController: navBottomController,
+      homeController: homeController));
+  if (notificationData.notificationId != null) {
+    final notificationId = int.tryParse(notificationData.notificationId!);
+    if (notificationId != null) {
+      notificationController.updateNotification(notificationId);
+    }
+  }
   if (Get.currentRoute != Routes.navBar) {
     Get.toNamed(Routes.navBar);
   }

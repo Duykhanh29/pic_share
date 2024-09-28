@@ -23,12 +23,18 @@ class LinkToModel {
       fromJson: friendNotiTypeFromJson,
       toJson: friendNotiTypeToJson)
   final FriendNotiType? friendNotiType;
+  @JsonKey(name: 'notification_id')
+  final int? notificationId;
+  @JsonKey(name: 'conversation_id')
+  final int? conversationId;
   LinkToModel({
     required this.type,
     this.postId,
     this.commentId,
     this.replyId,
     this.friendNotiType,
+    this.conversationId,
+    this.notificationId,
   });
   factory LinkToModel.fromJson(Map<String, dynamic> json) =>
       _$LinkToModelFromJson(json);

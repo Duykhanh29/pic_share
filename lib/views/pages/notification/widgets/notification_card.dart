@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pic_share/app/constants/app_color.dart';
 import 'package:pic_share/app/constants/app_images.dart';
 import 'package:pic_share/app/constants/app_text_styles.dart';
 import 'package:pic_share/app/helper/image_cache_helper.dart';
@@ -31,7 +32,9 @@ class NotificationItemCard extends StatelessWidget {
           ),
           decoration: BoxDecoration(
             color: notification.isSeen
-                ? const Color.fromARGB(137, 193, 193, 193)
+                ? (notification.isRead
+                    ? const Color.fromARGB(137, 193, 193, 193)
+                    : AppColors.thirdColor)
                 : Colors.blueAccent,
             borderRadius: BorderRadius.circular(10),
           ),

@@ -1,6 +1,7 @@
 enum LinkToType {
   comment,
   friend,
+  chat,
 }
 
 extension StringLinkTo on LinkToType? {
@@ -10,6 +11,8 @@ extension StringLinkTo on LinkToType? {
         return 'comment';
       case LinkToType.friend:
         return 'friend_request';
+      case LinkToType.chat:
+        return 'chat';
       default:
         return null;
     }
@@ -22,6 +25,8 @@ LinkToType? linkToTypeFromJson(String? value) {
       return LinkToType.comment;
     case 'friend_request':
       return LinkToType.friend;
+    case 'chat':
+      return LinkToType.chat;
     default:
       return null;
   }

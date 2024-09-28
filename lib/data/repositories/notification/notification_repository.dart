@@ -12,6 +12,8 @@ abstract class NotificationRepository {
   Future<Paging<Notification>> getNotifications(int? page);
 
   Future<bool> updateNotification(int id);
+  Future<void> updateUnseenNotification();
+  Future<int> getUnseenNotificationCount();
 }
 
 class NotificationRepositoryImpl extends NotificationRepository {
@@ -69,12 +71,35 @@ class NotificationRepositoryImpl extends NotificationRepository {
   @override
   Future<bool> updateNotification(int id) async {
     try {
-      final response = await UpdateUnseenNotificationAPI(id: id).request();
+      final response = await UpdateUnreadNotificationAPI(id: id).request();
       debugPrint("Message: ${response['message']}");
       return true;
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
     }
     return false;
+  }
+
+  @override
+  Future<void> updateUnseenNotification() async {
+    try {
+      final response = await UpdateUnseenNotificationAPI().request();
+      debugPrint("Message: ${response['message']}");
+    } catch (e) {
+      debugPrint("Something went wrong: ${e.toString()}");
+    }
+  }
+
+  @override
+  Future<int> getUnseenNotificationCount() async {
+    try {
+      final response = await GetUnseenNotificationAPI().request();
+      final data = response['data'] as Map<String, dynamic>;
+      final total = data['unseen_count'] as int;
+      return total;
+    } catch (e) {
+      debugPrint("Something went wrong: ${e.toString()}");
+    }
+    return 0;
   }
 }

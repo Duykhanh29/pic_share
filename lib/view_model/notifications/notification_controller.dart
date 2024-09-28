@@ -35,15 +35,30 @@ class NotificationController extends GetxController {
   @override
   void onInit() {
     pagingController.addPageRequestListener((pageKey) async {
-      await fetchPosts(page: pageKey);
+      await fetchNotifications(page: pageKey);
     });
-    fetchPosts();
+    fetchNotifications();
     super.onInit();
   }
 
-  Future<void> fetchPosts({int page = 1}) async {
+  @override
+  void onReady() {
+    notificationRepository.updateUnseenNotification();
+    super.onReady();
+  }
+
+  Future<void> onRefresh() async {
+    await fetchNotifications();
+  }
+
+  Future<void> refreshUnseenCount() async {
+    await homeController.getUnseenNotificationCount();
+  }
+
+  Future<void> fetchNotifications({int page = 1}) async {
     try {
       if (page == 1) {
+        pagingController.itemList?.clear();
         isLoading.value = true;
       }
       Paging<Notification> paging =
@@ -51,11 +66,11 @@ class NotificationController extends GetxController {
       final posts = paging.data;
       if (paging.hasMore) {
         pagingController.appendPage(
-          posts.reversed.toList(),
+          posts,
           paging.pageNumber! + 1,
         );
       } else {
-        pagingController.appendLastPage(posts.reversed.toList());
+        pagingController.appendLastPage(posts);
       }
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
