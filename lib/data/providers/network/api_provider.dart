@@ -53,12 +53,8 @@ class APIProvider {
             Options(method: request.method.string, headers: request.headers),
         queryParameters: request.query,
         data: request.body,
-        onReceiveProgress: (val1, val2) {
-          debugPrint("WHAT HAPPEND: $val1, $val2");
-        },
-        onSendProgress: (val1, val2) {
-          debugPrint("WHAT HAPPEND: $val1, $val2");
-        },
+        onReceiveProgress: (val1, val2) {},
+        onSendProgress: (val1, val2) {},
       );
       if (response.statusCode == 200 || response.statusCode == 201) {
         return response.data;

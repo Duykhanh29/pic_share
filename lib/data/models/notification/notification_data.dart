@@ -24,6 +24,10 @@ class NotificationData {
   @JsonKey(name: 'comment_id')
   final String? commentId;
   final String? status;
+  @JsonKey(name: 'notification_id')
+  final String? notificationId;
+  @JsonKey(name: 'conversation_id')
+  final String? conversationId;
   NotificationData({
     this.clickAction,
     this.commentId,
@@ -32,6 +36,8 @@ class NotificationData {
     this.replyId,
     this.status,
     this.type,
+    this.conversationId,
+    this.notificationId,
   });
 
   factory NotificationData.fromJson(Map<String, dynamic> json) =>

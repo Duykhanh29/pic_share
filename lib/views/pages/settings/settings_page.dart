@@ -7,6 +7,7 @@ import 'package:pic_share/views/pages/settings/widgets/account_settings_section.
 import 'package:pic_share/views/pages/settings/widgets/general_settings_section.dart';
 import 'package:pic_share/views/pages/settings/widgets/user_section_widget.dart';
 import 'package:pic_share/views/pages/settings/widgets/user_settings_section.dart';
+import 'package:pic_share/views/widgets/loading_widget.dart';
 
 class SettinngsPage extends GetView<SettingsController> {
   const SettinngsPage({super.key});
@@ -14,20 +15,28 @@ class SettinngsPage extends GetView<SettingsController> {
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context)!;
-    return Scaffold(
-      appBar: CustomAppBar(title: t.settings, isLeadingShow: false).show(),
-      body: const Padding(
-        padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              UserSectionWidget(),
-              UserSettingsSection(),
-              GeneralSettingsSection(),
-              AccountSettingsSection(),
-            ],
+    return Obx(
+      () => Stack(
+        children: [
+          Scaffold(
+            appBar:
+                CustomAppBar(title: t.settings, isLeadingShow: false).show(),
+            body: const Padding(
+              padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    UserSectionWidget(),
+                    UserSettingsSection(),
+                    GeneralSettingsSection(),
+                    AccountSettingsSection(),
+                  ],
+                ),
+              ),
+            ),
           ),
-        ),
+          if (controller.isLoading.value) const LoadingWidget(),
+        ],
       ),
     );
   }

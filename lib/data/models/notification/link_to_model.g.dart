@@ -17,6 +17,10 @@ abstract class _$LinkToModelCWProxy {
 
   LinkToModel friendNotiType(FriendNotiType? friendNotiType);
 
+  LinkToModel conversationId(int? conversationId);
+
+  LinkToModel notificationId(int? notificationId);
+
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `LinkToModel(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
   /// Usage
@@ -29,6 +33,8 @@ abstract class _$LinkToModelCWProxy {
     int? commentId,
     int? replyId,
     FriendNotiType? friendNotiType,
+    int? conversationId,
+    int? notificationId,
   });
 }
 
@@ -55,6 +61,14 @@ class _$LinkToModelCWProxyImpl implements _$LinkToModelCWProxy {
       this(friendNotiType: friendNotiType);
 
   @override
+  LinkToModel conversationId(int? conversationId) =>
+      this(conversationId: conversationId);
+
+  @override
+  LinkToModel notificationId(int? notificationId) =>
+      this(notificationId: notificationId);
+
+  @override
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `LinkToModel(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -68,6 +82,8 @@ class _$LinkToModelCWProxyImpl implements _$LinkToModelCWProxy {
     Object? commentId = const $CopyWithPlaceholder(),
     Object? replyId = const $CopyWithPlaceholder(),
     Object? friendNotiType = const $CopyWithPlaceholder(),
+    Object? conversationId = const $CopyWithPlaceholder(),
+    Object? notificationId = const $CopyWithPlaceholder(),
   }) {
     return LinkToModel(
       type: type == const $CopyWithPlaceholder()
@@ -90,6 +106,14 @@ class _$LinkToModelCWProxyImpl implements _$LinkToModelCWProxy {
           ? _value.friendNotiType
           // ignore: cast_nullable_to_non_nullable
           : friendNotiType as FriendNotiType?,
+      conversationId: conversationId == const $CopyWithPlaceholder()
+          ? _value.conversationId
+          // ignore: cast_nullable_to_non_nullable
+          : conversationId as int?,
+      notificationId: notificationId == const $CopyWithPlaceholder()
+          ? _value.notificationId
+          // ignore: cast_nullable_to_non_nullable
+          : notificationId as int?,
     );
   }
 }
@@ -111,6 +135,8 @@ extension $LinkToModelCopyWith on LinkToModel {
     bool commentId = false,
     bool replyId = false,
     bool friendNotiType = false,
+    bool conversationId = false,
+    bool notificationId = false,
   }) {
     return LinkToModel(
       type: type == true ? null : this.type,
@@ -118,6 +144,8 @@ extension $LinkToModelCopyWith on LinkToModel {
       commentId: commentId == true ? null : this.commentId,
       replyId: replyId == true ? null : this.replyId,
       friendNotiType: friendNotiType == true ? null : this.friendNotiType,
+      conversationId: conversationId == true ? null : this.conversationId,
+      notificationId: notificationId == true ? null : this.notificationId,
     );
   }
 }
@@ -132,6 +160,8 @@ LinkToModel _$LinkToModelFromJson(Map<String, dynamic> json) => LinkToModel(
       commentId: (json['comment_id'] as num?)?.toInt(),
       replyId: (json['reply_id'] as num?)?.toInt(),
       friendNotiType: friendNotiTypeFromJson(json['friend_type'] as String?),
+      conversationId: (json['conversation_id'] as num?)?.toInt(),
+      notificationId: (json['notification_id'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$LinkToModelToJson(LinkToModel instance) =>
@@ -141,4 +171,6 @@ Map<String, dynamic> _$LinkToModelToJson(LinkToModel instance) =>
       'comment_id': instance.commentId,
       'reply_id': instance.replyId,
       'friend_type': friendNotiTypeToJson(instance.friendNotiType),
+      'notification_id': instance.notificationId,
+      'conversation_id': instance.conversationId,
     };

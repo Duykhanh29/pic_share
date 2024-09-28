@@ -16,33 +16,41 @@ class NotificationPage extends GetView<NotificationController> {
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: CustomAppBar(title: t.notification, isLeadingShow: false).show(),
-      body: Obx(
-        () => controller.isLoading.value
-            ? ShimmerHelper().buildNotificationListViewShimmer()
-            : PagedListView(
-                pagingController: controller.pagingController,
-                builderDelegate: PagedChildBuilderDelegate<model.Notification>(
-                  itemBuilder: (context, notification, index) {
-                    return NotificationItemCard(
-                      notification: notification,
-                      onMarkAsRead: controller.updateNotification,
-                    );
-                  },
-                  firstPageProgressIndicatorBuilder: (context) =>
-                      ShimmerHelper().buildNotificationListViewShimmer(),
-                  noItemsFoundIndicatorBuilder: (context) => SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.6,
-                    child: Center(
-                      child: Text(
-                        t.noNotifications,
-                        style: AppTextStyles.commonTextStyle(),
+      appBar: CustomAppBar(
+        title: t.notification,
+        onBack: controller.refreshUnseenCount,
+      ).show(),
+      body: RefreshIndicator(
+        onRefresh: controller.onRefresh,
+        child: Obx(
+          () => controller.isLoading.value
+              ? ShimmerHelper().buildNotificationListViewShimmer()
+              : PagedListView(
+                  pagingController: controller.pagingController,
+                  builderDelegate:
+                      PagedChildBuilderDelegate<model.Notification>(
+                    itemBuilder: (context, notification, index) {
+                      return NotificationItemCard(
+                        onCLick: controller.onClick,
+                        notification: notification,
+                        onMarkAsRead: controller.updateNotification,
+                      );
+                    },
+                    firstPageProgressIndicatorBuilder: (context) =>
+                        ShimmerHelper().buildNotificationListViewShimmer(),
+                    noItemsFoundIndicatorBuilder: (context) => SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.6,
+                      child: Center(
+                        child: Text(
+                          t.noNotifications,
+                          style: AppTextStyles.commonTextStyle(),
+                        ),
                       ),
                     ),
                   ),
+                  shrinkWrap: true,
                 ),
-                shrinkWrap: true,
-              ),
+        ),
       ),
     );
   }

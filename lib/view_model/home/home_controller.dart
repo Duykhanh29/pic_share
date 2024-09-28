@@ -7,6 +7,7 @@ import 'package:pic_share/data/models/post/post_data.dart';
 import 'package:pic_share/data/models/post/post_detail.dart';
 import 'package:pic_share/data/models/user/user_model.dart';
 import 'package:pic_share/data/models/user/user_summary_model.dart';
+import 'package:pic_share/data/repositories/notification/notification_repository.dart';
 import 'package:pic_share/data/repositories/posts/post_repository.dart';
 import 'package:pic_share/routes/app_pages.dart';
 import 'package:pic_share/view_model/auth/auth_controller.dart';
@@ -16,10 +17,12 @@ class HomeController extends GetxController {
   PostRepository postRepository;
   AuthController authController;
   AppDrawerController appDrawerController;
+  NotificationRepository notificationRepository;
   HomeController({
     required this.postRepository,
     required this.authController,
     required this.appDrawerController,
+    required this.notificationRepository,
   });
 
   late TextEditingController reasonController;
@@ -32,6 +35,7 @@ class HomeController extends GetxController {
   Rx<int> currentIndex = 0.obs;
 
   UserModel? get currentUser => authController.getCurrentUser;
+  Rx<int> unseenNotiCount = 0.obs;
   @override
   void onInit() async {
     ever(
@@ -44,10 +48,17 @@ class HomeController extends GetxController {
     ever(authController.currentUser, (UserModel? user) async {
       if (user != null) {
         await fetchPosts();
+        await getUnseenNotificationCount();
       }
     });
     await fetchPosts();
+    await getUnseenNotificationCount();
     super.onInit();
+  }
+
+  Future<void> getUnseenNotificationCount() async {
+    unseenNotiCount.value =
+        await notificationRepository.getUnseenNotificationCount();
   }
 
   void onOpenReportSHeet() {

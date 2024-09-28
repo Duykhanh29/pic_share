@@ -27,6 +27,8 @@ abstract class _$NotificationCWProxy {
 
   Notification updatedAt(String? updatedAt);
 
+  Notification isRead(bool isRead);
+
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `Notification(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
   /// Usage
@@ -44,6 +46,7 @@ abstract class _$NotificationCWProxy {
     UserSummaryModel? sender,
     String? title,
     String? updatedAt,
+    bool? isRead,
   });
 }
 
@@ -85,6 +88,9 @@ class _$NotificationCWProxyImpl implements _$NotificationCWProxy {
   Notification updatedAt(String? updatedAt) => this(updatedAt: updatedAt);
 
   @override
+  Notification isRead(bool isRead) => this(isRead: isRead);
+
+  @override
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `Notification(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -103,6 +109,7 @@ class _$NotificationCWProxyImpl implements _$NotificationCWProxy {
     Object? sender = const $CopyWithPlaceholder(),
     Object? title = const $CopyWithPlaceholder(),
     Object? updatedAt = const $CopyWithPlaceholder(),
+    Object? isRead = const $CopyWithPlaceholder(),
   }) {
     return Notification(
       content: content == const $CopyWithPlaceholder()
@@ -146,6 +153,10 @@ class _$NotificationCWProxyImpl implements _$NotificationCWProxy {
           ? _value.updatedAt
           // ignore: cast_nullable_to_non_nullable
           : updatedAt as String?,
+      isRead: isRead == const $CopyWithPlaceholder() || isRead == null
+          ? _value.isRead
+          // ignore: cast_nullable_to_non_nullable
+          : isRead as bool,
     );
   }
 }
@@ -182,6 +193,7 @@ extension $NotificationCopyWith on Notification {
       sender: sender == true ? null : this.sender,
       title: title == true ? null : this.title,
       updatedAt: updatedAt == true ? null : this.updatedAt,
+      isRead: isRead,
     );
   }
 }
@@ -211,6 +223,9 @@ Notification _$NotificationFromJson(Map<String, dynamic> json) => Notification(
           : UserSummaryModel.fromJson(json['sender'] as Map<String, dynamic>),
       title: json['title'] as String?,
       updatedAt: json['updated_at'] as String?,
+      isRead: json['is_read'] == null
+          ? false
+          : Notification._fromJsonBool((json['is_read'] as num).toInt()),
     );
 
 Map<String, dynamic> _$NotificationToJson(Notification instance) =>
@@ -226,6 +241,7 @@ Map<String, dynamic> _$NotificationToJson(Notification instance) =>
       'notification_type':
           _$NotificationTypeEnumMap[instance.notificationType]!,
       'link_to': instance.linkTo,
+      'is_read': Notification._toJsonBool(instance.isRead),
     };
 
 const _$NotificationTypeEnumMap = {

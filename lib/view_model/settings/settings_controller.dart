@@ -24,6 +24,8 @@ class SettingsController extends GetxController {
   RxBool isShowNotification = true.obs;
   RxBool isShowNotificationWithSound = true.obs;
 
+  RxBool isLoading = false.obs;
+
   @override
   void onInit() {
     _initializeNotificationSettings();
@@ -41,10 +43,13 @@ class SettingsController extends GetxController {
   }
 
   Future<void> logout() async {
+    isLoading.value = true;
     try {
       await authController.logout();
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
+    } finally {
+      isLoading.value = false;
     }
   }
 

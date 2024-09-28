@@ -61,6 +61,7 @@ class AuthController extends GetxController {
   }
 
   Future<void> logout() async {
+    await updateFCMToken(isNull: true);
     await authRepository.logout();
     currentUser.value = null;
     Get.offAllNamed(Routes.login);
