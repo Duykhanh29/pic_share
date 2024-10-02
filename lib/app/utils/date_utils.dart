@@ -142,4 +142,8 @@ class DateUtils {
   static String getStringCurrentTimeInHourAndMinutes() {
     return DateFormat.Hm().format(DateTime.now());
   }
+
+  static DateTime convertStringToDateTime(String? date) {
+    return date == null ? DateTime.now() : DateTime.parse(date);
+  }
 }

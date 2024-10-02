@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:pic_share/app/services/local_storage_service.dart';
+import 'package:pic_share/data/repositories/conversations/conversation_repository.dart';
 import 'package:pic_share/data/repositories/notification/notification_repository.dart';
 import 'package:pic_share/data/repositories/posts/post_repository.dart';
 import 'package:pic_share/view_model/auth/auth_controller.dart';
@@ -47,7 +48,12 @@ class NavBottomController extends GetxController {
           authController: Get.find<AuthController>(),
         ),
         permanent: true);
-    Get.put(ConversationsController(), permanent: true);
+    Get.put(
+        ConversationsController(
+          conversationRepository: Get.find<ConversationRepository>(),
+          authController: Get.find<AuthController>(),
+        ),
+        permanent: true);
     Get.put(
         SettingsController(
           authController: Get.find<AuthController>(),

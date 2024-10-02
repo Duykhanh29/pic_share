@@ -145,6 +145,7 @@ class NewPostController extends GetxController {
           caption: captionController.text.trim(),
           shareWiths: shareWiths,
         );
+        debugPrint("New post: $post");
       }
     } catch (e) {
       debugPrint('Error occured while downloading picture: $e');
