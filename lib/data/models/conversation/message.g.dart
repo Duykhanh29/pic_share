@@ -7,15 +7,25 @@ part of 'message.dart';
 // **************************************************************************
 
 abstract class _$MessageCWProxy {
-  Message id(String? id);
+  Message createdAt(String? createdAt);
 
-  Message messageContent(MessageContent? messageContent);
+  Message height(double? height);
 
-  Message messageType(MessageType messageType);
+  Message width(double? width);
 
-  Message sennderId(String? sennderId);
+  Message urlImage(String? urlImage);
 
-  Message time(int? time);
+  Message updatedAt(String? updatedAt);
+
+  Message id(int? id);
+
+  Message sender(UserSummaryModel? sender);
+
+  Message messageType(MessageType? messageType);
+
+  Message isRead(bool isRead);
+
+  Message text(String? text);
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `Message(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -24,11 +34,16 @@ abstract class _$MessageCWProxy {
   /// Message(...).copyWith(id: 12, name: "My name")
   /// ````
   Message call({
-    String? id,
-    MessageContent? messageContent,
+    String? createdAt,
+    double? height,
+    double? width,
+    String? urlImage,
+    String? updatedAt,
+    int? id,
+    UserSummaryModel? sender,
     MessageType? messageType,
-    String? sennderId,
-    int? time,
+    bool? isRead,
+    String? text,
   });
 }
 
@@ -39,21 +54,35 @@ class _$MessageCWProxyImpl implements _$MessageCWProxy {
   final Message _value;
 
   @override
-  Message id(String? id) => this(id: id);
+  Message createdAt(String? createdAt) => this(createdAt: createdAt);
 
   @override
-  Message messageContent(MessageContent? messageContent) =>
-      this(messageContent: messageContent);
+  Message height(double? height) => this(height: height);
 
   @override
-  Message messageType(MessageType messageType) =>
+  Message width(double? width) => this(width: width);
+
+  @override
+  Message urlImage(String? urlImage) => this(urlImage: urlImage);
+
+  @override
+  Message updatedAt(String? updatedAt) => this(updatedAt: updatedAt);
+
+  @override
+  Message id(int? id) => this(id: id);
+
+  @override
+  Message sender(UserSummaryModel? sender) => this(sender: sender);
+
+  @override
+  Message messageType(MessageType? messageType) =>
       this(messageType: messageType);
 
   @override
-  Message sennderId(String? sennderId) => this(sennderId: sennderId);
+  Message isRead(bool isRead) => this(isRead: isRead);
 
   @override
-  Message time(int? time) => this(time: time);
+  Message text(String? text) => this(text: text);
 
   @override
 
@@ -64,34 +93,58 @@ class _$MessageCWProxyImpl implements _$MessageCWProxy {
   /// Message(...).copyWith(id: 12, name: "My name")
   /// ````
   Message call({
+    Object? createdAt = const $CopyWithPlaceholder(),
+    Object? height = const $CopyWithPlaceholder(),
+    Object? width = const $CopyWithPlaceholder(),
+    Object? urlImage = const $CopyWithPlaceholder(),
+    Object? updatedAt = const $CopyWithPlaceholder(),
     Object? id = const $CopyWithPlaceholder(),
-    Object? messageContent = const $CopyWithPlaceholder(),
+    Object? sender = const $CopyWithPlaceholder(),
     Object? messageType = const $CopyWithPlaceholder(),
-    Object? sennderId = const $CopyWithPlaceholder(),
-    Object? time = const $CopyWithPlaceholder(),
+    Object? isRead = const $CopyWithPlaceholder(),
+    Object? text = const $CopyWithPlaceholder(),
   }) {
     return Message(
+      createdAt: createdAt == const $CopyWithPlaceholder()
+          ? _value.createdAt
+          // ignore: cast_nullable_to_non_nullable
+          : createdAt as String?,
+      height: height == const $CopyWithPlaceholder()
+          ? _value.height
+          // ignore: cast_nullable_to_non_nullable
+          : height as double?,
+      width: width == const $CopyWithPlaceholder()
+          ? _value.width
+          // ignore: cast_nullable_to_non_nullable
+          : width as double?,
+      urlImage: urlImage == const $CopyWithPlaceholder()
+          ? _value.urlImage
+          // ignore: cast_nullable_to_non_nullable
+          : urlImage as String?,
+      updatedAt: updatedAt == const $CopyWithPlaceholder()
+          ? _value.updatedAt
+          // ignore: cast_nullable_to_non_nullable
+          : updatedAt as String?,
       id: id == const $CopyWithPlaceholder()
           ? _value.id
           // ignore: cast_nullable_to_non_nullable
-          : id as String?,
-      messageContent: messageContent == const $CopyWithPlaceholder()
-          ? _value.messageContent
+          : id as int?,
+      sender: sender == const $CopyWithPlaceholder()
+          ? _value.sender
           // ignore: cast_nullable_to_non_nullable
-          : messageContent as MessageContent?,
-      messageType:
-          messageType == const $CopyWithPlaceholder() || messageType == null
-              ? _value.messageType
-              // ignore: cast_nullable_to_non_nullable
-              : messageType as MessageType,
-      sennderId: sennderId == const $CopyWithPlaceholder()
-          ? _value.sennderId
+          : sender as UserSummaryModel?,
+      messageType: messageType == const $CopyWithPlaceholder()
+          ? _value.messageType
           // ignore: cast_nullable_to_non_nullable
-          : sennderId as String?,
-      time: time == const $CopyWithPlaceholder()
-          ? _value.time
+          : messageType as MessageType?,
+      isRead: isRead == const $CopyWithPlaceholder() || isRead == null
+          ? _value.isRead
           // ignore: cast_nullable_to_non_nullable
-          : time as int?,
+          : isRead as bool,
+      text: text == const $CopyWithPlaceholder()
+          ? _value.text
+          // ignore: cast_nullable_to_non_nullable
+          : text as String?,
     );
   }
 }
@@ -108,119 +161,27 @@ extension $MessageCopyWith on Message {
   /// Message(...).copyWithNull(firstField: true, secondField: true)
   /// ````
   Message copyWithNull({
+    bool createdAt = false,
+    bool height = false,
+    bool width = false,
+    bool urlImage = false,
+    bool updatedAt = false,
     bool id = false,
-    bool messageContent = false,
-    bool sennderId = false,
-    bool time = false,
+    bool sender = false,
+    bool messageType = false,
+    bool text = false,
   }) {
     return Message(
-      id: id == true ? null : this.id,
-      messageContent: messageContent == true ? null : this.messageContent,
-      messageType: messageType,
-      sennderId: sennderId == true ? null : this.sennderId,
-      time: time == true ? null : this.time,
-    );
-  }
-}
-
-abstract class _$MessageContentCWProxy {
-  MessageContent height(double? height);
-
-  MessageContent text(String? text);
-
-  MessageContent urlPath(String? urlPath);
-
-  MessageContent width(double? width);
-
-  /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `MessageContent(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
-  ///
-  /// Usage
-  /// ```dart
-  /// MessageContent(...).copyWith(id: 12, name: "My name")
-  /// ````
-  MessageContent call({
-    double? height,
-    String? text,
-    String? urlPath,
-    double? width,
-  });
-}
-
-/// Proxy class for `copyWith` functionality. This is a callable class and can be used as follows: `instanceOfMessageContent.copyWith(...)`. Additionally contains functions for specific fields e.g. `instanceOfMessageContent.copyWith.fieldName(...)`
-class _$MessageContentCWProxyImpl implements _$MessageContentCWProxy {
-  const _$MessageContentCWProxyImpl(this._value);
-
-  final MessageContent _value;
-
-  @override
-  MessageContent height(double? height) => this(height: height);
-
-  @override
-  MessageContent text(String? text) => this(text: text);
-
-  @override
-  MessageContent urlPath(String? urlPath) => this(urlPath: urlPath);
-
-  @override
-  MessageContent width(double? width) => this(width: width);
-
-  @override
-
-  /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `MessageContent(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
-  ///
-  /// Usage
-  /// ```dart
-  /// MessageContent(...).copyWith(id: 12, name: "My name")
-  /// ````
-  MessageContent call({
-    Object? height = const $CopyWithPlaceholder(),
-    Object? text = const $CopyWithPlaceholder(),
-    Object? urlPath = const $CopyWithPlaceholder(),
-    Object? width = const $CopyWithPlaceholder(),
-  }) {
-    return MessageContent(
-      height: height == const $CopyWithPlaceholder()
-          ? _value.height
-          // ignore: cast_nullable_to_non_nullable
-          : height as double?,
-      text: text == const $CopyWithPlaceholder()
-          ? _value.text
-          // ignore: cast_nullable_to_non_nullable
-          : text as String?,
-      urlPath: urlPath == const $CopyWithPlaceholder()
-          ? _value.urlPath
-          // ignore: cast_nullable_to_non_nullable
-          : urlPath as String?,
-      width: width == const $CopyWithPlaceholder()
-          ? _value.width
-          // ignore: cast_nullable_to_non_nullable
-          : width as double?,
-    );
-  }
-}
-
-extension $MessageContentCopyWith on MessageContent {
-  /// Returns a callable class that can be used as follows: `instanceOfMessageContent.copyWith(...)` or like so:`instanceOfMessageContent.copyWith.fieldName(...)`.
-  // ignore: library_private_types_in_public_api
-  _$MessageContentCWProxy get copyWith => _$MessageContentCWProxyImpl(this);
-
-  /// Copies the object with the specific fields set to `null`. If you pass `false` as a parameter, nothing will be done and it will be ignored. Don't do it. Prefer `copyWith(field: null)` or `MessageContent(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
-  ///
-  /// Usage
-  /// ```dart
-  /// MessageContent(...).copyWithNull(firstField: true, secondField: true)
-  /// ````
-  MessageContent copyWithNull({
-    bool height = false,
-    bool text = false,
-    bool urlPath = false,
-    bool width = false,
-  }) {
-    return MessageContent(
+      createdAt: createdAt == true ? null : this.createdAt,
       height: height == true ? null : this.height,
-      text: text == true ? null : this.text,
-      urlPath: urlPath == true ? null : this.urlPath,
       width: width == true ? null : this.width,
+      urlImage: urlImage == true ? null : this.urlImage,
+      updatedAt: updatedAt == true ? null : this.updatedAt,
+      id: id == true ? null : this.id,
+      sender: sender == true ? null : this.sender,
+      messageType: messageType == true ? null : this.messageType,
+      isRead: isRead,
+      text: text == true ? null : this.text,
     );
   }
 }
@@ -230,43 +191,33 @@ extension $MessageContentCopyWith on MessageContent {
 // **************************************************************************
 
 Message _$MessageFromJson(Map<String, dynamic> json) => Message(
-      id: json['id'] as String?,
-      messageContent: json['messageContent'] == null
+      createdAt: json['created_at'] as String?,
+      height: (json['height'] as num?)?.toDouble(),
+      width: (json['width'] as num?)?.toDouble(),
+      urlImage: json['url_image'] as String?,
+      updatedAt: json['updated_at'] as String?,
+      id: (json['id'] as num?)?.toInt(),
+      sender: json['sender'] == null
           ? null
-          : MessageContent.fromJson(
-              json['messageContent'] as Map<String, dynamic>),
-      messageType:
-          $enumDecodeNullable(_$MessageTypeEnumMap, json['messageType']) ??
-              MessageType.text,
-      sennderId: json['sennderId'] as String?,
-      time: (json['time'] as num?)?.toInt(),
+          : UserSummaryModel.fromJson(json['sender'] as Map<String, dynamic>),
+      messageType: json['message_type'] == null
+          ? MessageType.text
+          : messageTypeFromJson(json['message_type'] as String?),
+      isRead: json['is_read'] == null
+          ? false
+          : Message._fromJsonBool((json['is_read'] as num).toInt()),
+      text: json['text'] as String?,
     );
 
 Map<String, dynamic> _$MessageToJson(Message instance) => <String, dynamic>{
       'id': instance.id,
-      'sennderId': instance.sennderId,
-      'messageType': _$MessageTypeEnumMap[instance.messageType]!,
-      'messageContent': instance.messageContent?.toJson(),
-      'time': instance.time,
-    };
-
-const _$MessageTypeEnumMap = {
-  MessageType.text: 'text',
-  MessageType.image: 'image',
-};
-
-MessageContent _$MessageContentFromJson(Map<String, dynamic> json) =>
-    MessageContent(
-      height: (json['height'] as num?)?.toDouble(),
-      text: json['text'] as String?,
-      urlPath: json['urlPath'] as String?,
-      width: (json['width'] as num?)?.toDouble(),
-    );
-
-Map<String, dynamic> _$MessageContentToJson(MessageContent instance) =>
-    <String, dynamic>{
+      'sender': instance.sender?.toJson(),
+      'url_image': instance.urlImage,
       'text': instance.text,
-      'urlPath': instance.urlPath,
+      'message_type': messageTypeToJson(instance.messageType),
       'height': instance.height,
       'width': instance.width,
+      'created_at': instance.createdAt,
+      'updated_at': instance.updatedAt,
+      'is_read': Message._toJsonBool(instance.isRead),
     };

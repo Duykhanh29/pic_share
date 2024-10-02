@@ -93,7 +93,7 @@ abstract class AppPages {
     ),
     GetPage(
       name: Routes.comments,
-      page: () => CommentsPage(),
+      page: () => const CommentsPage(),
       binding: CommentsBindings(),
     ),
     GetPage(

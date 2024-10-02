@@ -137,7 +137,7 @@ class CommentSection extends StatelessWidget {
                 ),
               ),
               DefaultTextStyle(
-                style: Theme.of(context).textTheme.caption!.copyWith(
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                     color: Colors.grey[700], fontWeight: FontWeight.bold),
                 child: Padding(
                   padding: const EdgeInsets.only(top: 4),

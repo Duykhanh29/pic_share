@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:pic_share/data/repositories/auth/auth_repository.dart';
 import 'package:pic_share/data/repositories/comments/comment_repository.dart';
+import 'package:pic_share/data/repositories/conversations/conversation_repository.dart';
 import 'package:pic_share/data/repositories/friend/friend_repository.dart';
 import 'package:pic_share/data/repositories/notification/notification_repository.dart';
 import 'package:pic_share/data/repositories/posts/post_repository.dart';
@@ -17,5 +18,7 @@ class DependenciesInjector {
     Get.put<SearchRepository>(SearchRepositoryImpl(), permanent: true);
     Get.put<PostRepository>(PostRepositoryImpl(), permanent: true);
     Get.put<CommentRepository>(CommentRepositoryImpl(), permanent: true);
+    Get.put<ConversationRepository>(ConversationRepositoryImpl(),
+        permanent: true);
   }
 }

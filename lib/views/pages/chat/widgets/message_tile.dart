@@ -19,11 +19,11 @@ class MessageTile extends StatelessWidget {
         children: [
           message.messageType == MessageType.image
               ? ImageCacheHelper.showImage(
-                  url: message.messageContent?.urlPath ?? "",
-                  height: message.messageContent?.height ??
+                  url: message.urlImage ?? "",
+                  height: message.height ??
                       MediaQuery.of(context).size.height * 0.2,
-                  width: message.messageContent?.width ??
-                      MediaQuery.of(context).size.height * 0.2)
+                  width:
+                      message.width ?? MediaQuery.of(context).size.height * 0.2)
               : ClipRRect(
                   borderRadius: isMe
                       ? const BorderRadius.only(
@@ -42,7 +42,7 @@ class MessageTile extends StatelessWidget {
                     ),
                     padding: const EdgeInsets.all(10),
                     child: SelectableText(
-                      message.messageContent?.text ?? "Nothing",
+                      message.text ?? "Nothing",
                       style: AppTextStyles.commonTextStyle(),
                     ),
                   ),
