@@ -13,18 +13,25 @@ class ConversationPage extends GetView<ConversationsController> {
     final t = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: CustomAppBar(title: t.messages, isLeadingShow: false).show(),
-      body: Padding(
-        padding: const EdgeInsets.all(10),
-        child: ListView.builder(
-          itemBuilder: (context, index) {
-            final conversation =
-                controller.conversationData.value.conversations[index];
-            return ConversationItemCard(
-              conversation: conversation,
-              onTap: controller.onClickConversationItem,
-            );
-          },
-          itemCount: controller.conversationData.value.conversations.length,
+      body: RefreshIndicator(
+        onRefresh: () async {
+          controller.temporaryAddNewConversation();
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Obx(
+            () => ListView.builder(
+              itemBuilder: (context, index) {
+                final conversation =
+                    controller.conversationData.value.conversations[index];
+                return ConversationItemCard(
+                  conversation: conversation,
+                  onTap: controller.onClickConversationItem,
+                );
+              },
+              itemCount: controller.conversationData.value.conversations.length,
+            ),
+          ),
         ),
       ),
     );

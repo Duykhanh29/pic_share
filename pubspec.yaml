@@ -86,6 +86,9 @@ dependencies:
   # local storage
   flutter_secure_storage: ^9.2.2
   shared_preferences: ^2.2.3
+
+  # real-time communication
+  pusher_channels_flutter: ^2.2.1
   
 
   # The following adds the Cupertino Icons font to your application.
