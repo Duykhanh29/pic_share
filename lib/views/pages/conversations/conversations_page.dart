@@ -14,9 +14,7 @@ class ConversationPage extends GetView<ConversationsController> {
     return Scaffold(
       appBar: CustomAppBar(title: t.messages, isLeadingShow: false).show(),
       body: RefreshIndicator(
-        onRefresh: () async {
-          controller.temporaryAddNewConversation();
-        },
+        onRefresh: () async {},
         child: Padding(
           padding: const EdgeInsets.all(10),
           child: Obx(
@@ -27,6 +25,8 @@ class ConversationPage extends GetView<ConversationsController> {
                 return ConversationItemCard(
                   conversation: conversation,
                   onTap: controller.onClickConversationItem,
+                  isMe: conversation.currentUser?.id ==
+                      controller.currentUser?.id,
                 );
               },
               itemCount: controller.conversationData.value.conversations.length,

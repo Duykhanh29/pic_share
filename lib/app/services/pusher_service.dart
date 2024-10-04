@@ -130,7 +130,7 @@ class PusherService extends GetxService {
     } else if (event.eventName.contains("chat.message.sent")) {
       onChatEvent(event);
     } else {
-      debugPrint("Nothing cahhenl: $event");
+      debugPrint("Aontoher event: $event");
     }
   }
 

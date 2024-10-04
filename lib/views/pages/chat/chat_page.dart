@@ -48,7 +48,11 @@ class ChatPage extends GetView<ChatController> {
     return AppBar(
       backgroundColor: AppColors.secondaryColor,
       elevation: 5,
-      leading: const CustomBackButton(onBack: null),
+      leading: CustomBackButton(
+        onBack: () {
+          controller.updateUnreadMsg();
+        },
+      ),
       title: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -70,28 +74,30 @@ class ChatPage extends GetView<ChatController> {
   }
 
   Widget _buildListMsg() {
-    return Expanded(
-      child: GroupedListView<Message, DateTime>(
-        elements: controller.messages,
-        groupBy: (msg) => controller.getgroupByDateTime(msg.createdAt),
-        physics: const BouncingScrollPhysics(),
-        reverse: true,
-        floatingHeader: true,
-        shrinkWrap: true,
-        useStickyGroupSeparators: true,
-        itemComparator: (message1, message2) {
-          return controller.getComparator(
-              message1.createdAt, message2.createdAt);
-        },
-        groupHeaderBuilder: (message) {
-          DateTime dateTime =
-              helper.DateUtils.convertStringToDateTime(message.createdAt);
-          return _buildGroupHeader(dateTime);
-        },
-        itemBuilder: (context, message) {
-          bool isMe = controller.isMe(message.sender?.id ?? 0);
-          return _buildMsgCard(message, isMe);
-        },
+    return Obx(
+      () => Expanded(
+        child: GroupedListView<Message, DateTime>(
+          elements: controller.messages.toList(),
+          groupBy: (msg) => controller.getgroupByDateTime(msg.createdAt),
+          physics: const BouncingScrollPhysics(),
+          // reverse: true,
+          floatingHeader: true,
+          shrinkWrap: true,
+          useStickyGroupSeparators: true,
+          itemComparator: (message1, message2) {
+            return controller.getComparator(
+                message1.createdAt, message2.createdAt);
+          },
+          groupHeaderBuilder: (message) {
+            DateTime dateTime =
+                helper.DateUtils.convertStringToDateTime(message.createdAt);
+            return _buildGroupHeader(dateTime);
+          },
+          itemBuilder: (context, message) {
+            bool isMe = controller.isMe(message.sender?.id ?? 0);
+            return _buildMsgCard(message, isMe);
+          },
+        ),
       ),
     );
   }
@@ -116,23 +122,21 @@ class ChatPage extends GetView<ChatController> {
         ),
         hintText: t.sendMessage,
         suffixIcon: GestureDetector(
-          onTap: () {
+          onTap: () async {
             if (controller.messageTextController.text.isNotEmpty) {
+              await controller.sendMessage();
               controller.onSubmitted(controller.messageTextController.text);
             }
           },
-          child: InkWell(
-            onTap: () {},
-            child: Container(
-              padding: const EdgeInsets.all(2),
-              margin: const EdgeInsets.all(5),
-              decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Color.fromARGB(255, 227, 232, 235)),
-              child: Icon(
-                Icons.send,
-                color: AppColors.backgroundColor,
-              ),
+          child: Container(
+            padding: const EdgeInsets.all(2),
+            margin: const EdgeInsets.all(5),
+            decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                color: Color.fromARGB(255, 227, 232, 235)),
+            child: Icon(
+              Icons.send,
+              color: AppColors.backgroundColor,
             ),
           ),
         ),

@@ -35,6 +35,9 @@ class MessageTile extends StatelessWidget {
                           topLeft: Radius.circular(20),
                           topRight: Radius.circular(20)),
                   child: Container(
+                    constraints: BoxConstraints(
+                      maxWidth: MediaQuery.of(context).size.width * 0.7,
+                    ),
                     decoration: BoxDecoration(
                       color: isMe
                           ? const Color.fromARGB(255, 176, 194, 243)
@@ -42,7 +45,7 @@ class MessageTile extends StatelessWidget {
                     ),
                     padding: const EdgeInsets.all(10),
                     child: SelectableText(
-                      message.text ?? "Nothing",
+                      message.text ?? "",
                       style: AppTextStyles.commonTextStyle(),
                     ),
                   ),

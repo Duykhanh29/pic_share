@@ -32,10 +32,17 @@ class ChatController extends GetxController {
 
   // getter
   UserModel? get currentUser => authController.getCurrentUser;
+  late UserSummaryModel userSummary;
 
   @override
   void onInit() async {
     messageTextController = TextEditingController();
+    userSummary = UserSummaryModel(
+      id: currentUser?.id ?? 0,
+      name: currentUser?.name ?? "",
+      urlAvatar: currentUser?.urlAvatar ?? "",
+      userCode: currentUser?.userCode ?? "",
+    );
     await fetchMessages();
     super.onInit();
   }
@@ -53,8 +60,9 @@ class ChatController extends GetxController {
   Future<void> fetchMessages() async {
     isLoading.value = true;
     try {
-      messages.value =
+      final listMsg =
           await conversationRepository.getMessages(conversationId.value);
+      messages.value = listMsg;
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
     } finally {
@@ -62,19 +70,30 @@ class ChatController extends GetxController {
     }
   }
 
+  Future<void> updateUnreadMsg() async {
+    try {
+      await conversationRepository.updateUnreadMsg(conversationId.value);
+    } catch (e) {
+      debugPrint("Something went wrong: ${e.toString()}");
+    }
+  }
+
   Future<void> sendMessage({
     MessageType messageType = MessageType.text,
-    required String text,
-    required int userId,
+    String? text,
+    int? userId,
     String? urlImage,
   }) async {
     isLoading.value = true;
     try {
+      String msgText = messageTextController.text.trim().toString();
+      messageTextController.clear();
       await conversationRepository.sendMessage(
-          messageType: messageType,
-          text: text,
-          userId: userId,
-          urlImage: urlImage);
+        messageType: messageType,
+        text: msgText,
+        userId: userId ?? (user?.id ?? 0),
+        urlImage: urlImage,
+      );
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
     } finally {
@@ -83,7 +102,7 @@ class ChatController extends GetxController {
   }
 
   void listenNewMessage(Message message) {
-    messages.insert(0, message);
+    messages.add(message);
   }
 
   DateTime getgroupByDateTime(String? createdAt) {

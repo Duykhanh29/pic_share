@@ -19,49 +19,42 @@ class NavBottomPage extends GetView<NavBottomController> {
     const ConversationPage(),
     const SettinngsPage(),
   ];
-  final List<PersistentBottomNavBarItem> _navBarsItems = [
-    PersistentBottomNavBarItem(
-      icon: const Icon(Icons.home),
-      activeColorPrimary: Colors.indigo,
-      inactiveColorPrimary: Colors.grey,
-      inactiveColorSecondary: Colors.purple,
-    ),
-    PersistentBottomNavBarItem(
-      icon: const Icon(Icons.people_outline_sharp),
-      activeColorPrimary: Colors.indigo,
-      inactiveColorPrimary: Colors.grey,
-      inactiveColorSecondary: Colors.purple,
-    ),
-    PersistentBottomNavBarItem(
-      icon: const Icon(Icons.add_circle_outline),
-      activeColorPrimary: Colors.indigo,
-      inactiveColorPrimary: Colors.grey,
-      inactiveColorSecondary: Colors.purple,
-    ),
-    PersistentBottomNavBarItem(
-      icon: badges.Badge(
-        position: badges.BadgePosition.custom(end: 10),
-        badgeContent: Text(
-          "2",
-          style: TextStyle(fontSize: 12, color: Colors.white),
-        ),
-        child: Center(
-          child: const Icon(
-            Icons.chat_bubble_outline_rounded,
-          ),
-        ),
+
+  List<PersistentBottomNavBarItem> get _navBarsItems {
+    return [
+      PersistentBottomNavBarItem(
+        icon: const Icon(Icons.home),
+        activeColorPrimary: Colors.indigo,
+        inactiveColorPrimary: Colors.grey,
+        inactiveColorSecondary: Colors.purple,
       ),
-      activeColorPrimary: Colors.indigo,
-      inactiveColorPrimary: Colors.grey,
-      inactiveColorSecondary: Colors.purple,
-    ),
-    PersistentBottomNavBarItem(
-      icon: const Icon(Icons.person_2_rounded),
-      activeColorPrimary: Colors.indigo,
-      inactiveColorPrimary: Colors.grey,
-      inactiveColorSecondary: Colors.purple,
-    ),
-  ];
+      PersistentBottomNavBarItem(
+        icon: const Icon(Icons.people_outline_sharp),
+        activeColorPrimary: Colors.indigo,
+        inactiveColorPrimary: Colors.grey,
+        inactiveColorSecondary: Colors.purple,
+      ),
+      PersistentBottomNavBarItem(
+        icon: const Icon(Icons.add_circle_outline),
+        activeColorPrimary: Colors.indigo,
+        inactiveColorPrimary: Colors.grey,
+        inactiveColorSecondary: Colors.purple,
+      ),
+      PersistentBottomNavBarItem(
+        icon: buildChatIconWithUnreadCount(),
+        activeColorPrimary: Colors.indigo,
+        inactiveColorPrimary: Colors.grey,
+        inactiveColorSecondary: Colors.purple,
+      ),
+      PersistentBottomNavBarItem(
+        icon: const Icon(Icons.person_2_rounded),
+        activeColorPrimary: Colors.indigo,
+        inactiveColorPrimary: Colors.grey,
+        inactiveColorSecondary: Colors.purple,
+      ),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     return PersistentTabView(
@@ -94,6 +87,33 @@ class NavBottomPage extends GetView<NavBottomController> {
       onItemSelected: (value) {
         controller.changeNavigationPage(value);
       },
+    );
+  }
+
+  Widget buildChatIconWithUnreadCount() {
+    return Obx(
+      () {
+        if (controller.chatUnreadCount.value == 0) {
+          return _buildChatIcon();
+        } else {
+          return badges.Badge(
+            position: badges.BadgePosition.custom(end: 10),
+            badgeContent: Text(
+              controller.chatUnreadCount.value.toString(),
+              style: const TextStyle(fontSize: 12, color: Colors.white),
+            ),
+            child: _buildChatIcon(),
+          );
+        }
+      },
+    );
+  }
+
+  Widget _buildChatIcon() {
+    return const Center(
+      child: Icon(
+        Icons.chat_bubble_outline_rounded,
+      ),
     );
   }
 }

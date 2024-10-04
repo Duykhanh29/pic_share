@@ -20,6 +20,9 @@ class ConversationsController extends GetxController {
       conversationData.value.conversations;
   Rx<ConversationData> conversationData = ConversationData().obs;
   RxBool isLoading = false.obs;
+
+  // getter
+  UserModel? get currentUser => authController.getCurrentUser;
   @override
   void onInit() async {
     ever(authController.currentUser, (UserModel? user) async {
@@ -43,20 +46,45 @@ class ConversationsController extends GetxController {
     }
   }
 
-  void onClickConversationItem(int conversationId, UserSummaryModel? user) {
-    Get.toNamed(Routes.chat, arguments: {
+  Future<void> onClickConversationItem(
+      int conversationId, UserSummaryModel? user) async {
+    await Get.toNamed(Routes.chat, arguments: {
       Strings.conversationId: conversationId,
       Strings.userSummary: user,
     });
+    updateUnreadStatus(conversationId);
   }
 
-  void temporaryAddNewConversation() {
-    var updatedConversations =
-        List<Conversation>.from(conversationData.value.conversations);
-    updatedConversations.add(Conversation(id: 100));
+  void updateUnreadStatus(int conversationId) {
+    final conversationIndex = conversationData.value.conversations.indexWhere(
+      (c) => c.id == conversationId,
+    );
 
-    conversationData.value =
-        conversationData.value.copyWith(conversations: updatedConversations);
+    if (conversationIndex != -1) {
+      var conversation =
+          conversationData.value.conversations[conversationIndex];
+
+      if (conversation.unreadCount > 0) {
+        // Don't read the entire message yet
+        conversationData.update((val) {
+          if (val != null) {
+            val.unreadCount -= 1;
+
+            // Download update count to 0
+            conversation = conversation.copyWith(unreadCount: 0);
+
+            // Create a new book with a conversation
+            var updatedConversations =
+                List<Conversation>.from(val.conversations);
+            updatedConversations[conversationIndex] = conversation;
+
+            // Update conversationData with new list
+            conversationData.value =
+                val.copyWith(conversations: updatedConversations);
+          }
+        });
+      }
+    }
   }
 
   void addNewConversation(Conversation conversation) {
@@ -69,28 +97,24 @@ class ConversationsController extends GetxController {
   }
 
   void updateNewMsgOfConversation(int conversationId, Message message) {
-    // Tìm cuộc trò chuyện theo ID
     final conversationIndex = conversationData.value.conversations
         .indexWhere((conversation) => conversation.id == conversationId);
 
     if (conversationIndex != -1) {
-      // Nếu tìm thấy cuộc trò chuyện
       var conversation =
           conversationData.value.conversations[conversationIndex];
 
-      // Cập nhật lastMsg với giá trị message mới
+      //Update lastMsg with new message value
       conversation = conversation.copyWith(
-          lastMessage: message); // Sử dụng copyWith để tạo ra một bản sao mới
+          lastMessage: message, unreadCount: conversation.unreadCount + 1);
 
-      // Tạo danh sách mới và di chuyển cuộc trò chuyện lên đầu
       var updatedConversations =
           List<Conversation>.from(conversationData.value.conversations);
 
-      // Di chuyển cuộc trò chuyện lên đầu
+      // Move conversation to top
       updatedConversations.removeAt(conversationIndex);
       updatedConversations.insert(0, conversation);
 
-      // Cập nhật dữ liệu cuộc trò chuyện
       conversationData.value =
           conversationData.value.copyWith(conversations: updatedConversations);
     }

@@ -16,6 +16,7 @@ import 'package:pic_share/view_model/settings/settings_controller.dart';
 class NavBottomController extends GetxController {
   final PersistentTabController pageController = PersistentTabController();
   RxInt pageIndex = 0.obs;
+  RxInt chatUnreadCount = 0.obs;
   @override
   void onInit() {
     if (pageIndex.value != 0) {
@@ -69,6 +70,12 @@ class NavBottomController extends GetxController {
         conversationsController: Get.find<ConversationsController>(),
       ),
     );
+    final conversationController = Get.find<ConversationsController>();
+    ever(conversationController.conversationData, (data) {
+      if (data.unreadCount != chatUnreadCount.value) {
+        chatUnreadCount.value = data.unreadCount;
+      }
+    });
 
     super.onInit();
   }
