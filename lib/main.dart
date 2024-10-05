@@ -4,6 +4,7 @@ import 'package:pic_share/app/init_service.dart';
 import 'package:pic_share/app/utils/dependencies_injector.dart';
 import 'package:pic_share/firebase_options.dart';
 import 'package:pic_share/views/root_app.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -12,5 +13,6 @@ void main() async {
   );
   await DependenciesInjector.initDependencies();
   await initServices();
+  await dotenv.load(fileName: ".env");
   runApp(const RootApp());
 }

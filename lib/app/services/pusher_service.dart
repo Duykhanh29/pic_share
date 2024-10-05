@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pic_share/app/config/app_config.dart';
 import 'package:pic_share/data/models/conversation/conversation.dart';
 import 'package:pic_share/data/models/conversation/message.dart';
 import 'package:pic_share/data/models/user/user_model.dart';
@@ -42,18 +43,13 @@ class PusherService extends GetxService {
     super.onInit();
   }
 
-  String appID = "1853507";
-  String apiKey = "168e2c4a9d8522f88031";
-  String secret = "85b446bf332f96565c8c";
-  String apiCluster = "ap1";
-
   Future<void> initPusher(int userId, Function(PusherEvent) onEvent) async {
     _pusher = PusherChannelsFlutter.getInstance();
 
     try {
       await _pusher.init(
-        apiKey: apiKey,
-        cluster: apiCluster,
+        apiKey: AppConfig.pusherApiKey,
+        cluster: AppConfig.pusherApiCluster,
         onConnectionStateChange: onConnectionStateChange,
         onError: onError,
         onSubscriptionSucceeded: onSubscriptionSucceeded,
