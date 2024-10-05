@@ -12,10 +12,12 @@ class ConversationItemCard extends StatelessWidget {
     super.key,
     required this.conversation,
     required this.onTap,
+    required this.isMe,
   });
 
   final Conversation conversation;
   final Function(int, UserSummaryModel?)? onTap;
+  final bool isMe;
 
   @override
   Widget build(BuildContext context) {
@@ -26,24 +28,9 @@ class ConversationItemCard extends StatelessWidget {
         }
       },
       contentPadding: const EdgeInsets.all(5),
-      title: Text(
-        conversation.friend?.name ?? "",
-        style: AppTextStyles.headingTextStyle(),
-      ),
-      leading: conversation.friend?.urlAvatar != null
-          ? ImageCacheHelper.avatarImage(
-              url: conversation.friend!.urlAvatar!,
-              height: MediaQuery.of(context).size.width * 0.1,
-              width: MediaQuery.of(context).size.width * 0.1)
-          : CircleAvatar(
-              radius: MediaQuery.of(context).size.width * 0.05,
-              backgroundImage: const AssetImage(AppImage.userEmptyAvatar),
-            ),
-      subtitle: Text(
-        conversation.lastMessage?.text ?? "",
-        overflow: TextOverflow.ellipsis,
-        style: AppTextStyles.commonTextStyle(),
-      ),
+      title: _buildName(context),
+      leading: _buildAvatar(context),
+      subtitle: _buildSubtitle(context),
       trailing: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -71,6 +58,42 @@ class ConversationItemCard extends StatelessWidget {
               : const SizedBox.shrink()
         ],
       ),
+    );
+  }
+
+  Widget _buildAvatar(BuildContext context) {
+    String? avatar = isMe
+        ? conversation.friend?.urlAvatar
+        : conversation.currentUser?.urlAvatar;
+    return avatar != null
+        ? ImageCacheHelper.avatarImage(
+            url: avatar,
+            height: MediaQuery.of(context).size.width * 0.1,
+            width: MediaQuery.of(context).size.width * 0.1)
+        : CircleAvatar(
+            radius: MediaQuery.of(context).size.width * 0.05,
+            backgroundImage: const AssetImage(AppImage.userEmptyAvatar),
+          );
+  }
+
+  Widget _buildName(BuildContext context) {
+    String? name =
+        isMe ? conversation.friend?.name : conversation.currentUser?.name;
+    return Text(
+      name ?? "",
+      style: AppTextStyles.headingTextStyle(),
+    );
+  }
+
+  Widget _buildSubtitle(BuildContext context) {
+    String msg = conversation.lastMessage?.text ?? "";
+    String? name =
+        isMe ? conversation.friend?.name : conversation.currentUser?.name;
+    String message = isMe ? msg : "$name: $msg";
+    return Text(
+      message,
+      overflow: TextOverflow.ellipsis,
+      style: AppTextStyles.commonTextStyle(),
     );
   }
 }

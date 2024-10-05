@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pic_share/app/services/local_storage_service.dart';
 import 'package:pic_share/app/services/notification_service.dart';
+import 'package:pic_share/app/services/pusher_service.dart';
 import 'package:pic_share/app/services/token_manager.dart';
 import 'package:pic_share/data/models/user/user_model.dart';
 import 'package:pic_share/data/repositories/auth/auth_repository.dart';
@@ -67,6 +68,7 @@ class AuthController extends GetxController {
     Get.offAllNamed(Routes.login);
     localStorageService.removeAllSharedPreferencesValues();
     _tokenManager.deleteAll();
+    deleteControllerDenpendenciesInjection();
   }
 
   Future<void> updateUserInfo(
@@ -118,6 +120,14 @@ class AuthController extends GetxController {
           config:
               currentUser.value?.config?.customCopyWith(fcmToken: fcmToken));
       localStorageService.setUserModel(value: user, isUpdateUserNull: false);
+    } catch (e) {
+      debugPrint("Something went wrong: ${e.toString()}");
+    }
+  }
+
+  Future<void> deleteControllerDenpendenciesInjection() async {
+    try {
+      await Get.delete<PusherService>();
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
     }
