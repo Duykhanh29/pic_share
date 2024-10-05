@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:pic_share/app/services/local_storage_service.dart';
+import 'package:pic_share/app/services/pusher_service.dart';
 import 'package:pic_share/data/repositories/conversations/conversation_repository.dart';
 import 'package:pic_share/data/repositories/notification/notification_repository.dart';
 import 'package:pic_share/data/repositories/posts/post_repository.dart';
@@ -15,6 +16,7 @@ import 'package:pic_share/view_model/settings/settings_controller.dart';
 class NavBottomController extends GetxController {
   final PersistentTabController pageController = PersistentTabController();
   RxInt pageIndex = 0.obs;
+  RxInt chatUnreadCount = 0.obs;
   @override
   void onInit() {
     if (pageIndex.value != 0) {
@@ -61,6 +63,19 @@ class NavBottomController extends GetxController {
           localStorageService: Get.find<LocalStorageService>(),
         ),
         permanent: true);
+
+    Get.put(
+      PusherService(
+        authController: Get.find<AuthController>(),
+        conversationsController: Get.find<ConversationsController>(),
+      ),
+    );
+    final conversationController = Get.find<ConversationsController>();
+    ever(conversationController.conversationData, (data) {
+      if (data.unreadCount != chatUnreadCount.value) {
+        chatUnreadCount.value = data.unreadCount;
+      }
+    });
 
     super.onInit();
   }
