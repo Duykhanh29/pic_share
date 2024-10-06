@@ -120,5 +120,7 @@
     "postHistories":"Lịch sử các bài đăng",
     "reply":"Trả lời",
     "noNotifications":"Không có thông báo nào",
-    "markAsRead":"Đánh dấu là đã đọc"
+    "markAsRead":"Đánh dấu là đã đọc",
+    "you":"Bạn",
+    "sentAnImage":"Đã gửi một hình ảnh"
 }

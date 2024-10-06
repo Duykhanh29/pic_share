@@ -8,6 +8,7 @@ import 'package:pic_share/app/helper/shimmer_helper.dart';
 import 'package:pic_share/view_model/friend/friend_controller.dart';
 import 'package:pic_share/views/pages/friend/widgets/custom_header_delegate.dart';
 import 'package:pic_share/views/pages/friend/widgets/friend_card.dart';
+import 'package:pic_share/views/widgets/loading_widget.dart';
 
 class FriendPage extends GetView<FriendController> {
   const FriendPage({super.key});
@@ -15,15 +16,20 @@ class FriendPage extends GetView<FriendController> {
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context)!;
-    return Scaffold(
-      appBar: _buildAppBar(t),
-      body: RefreshIndicator(
-        onRefresh: controller.onRefresh,
-        child: Obx(
-          () => controller.isFriendShipView.value
-              ? _buildListFriendView(t, context)
-              : _buildFriendRequestsView(t),
-        ),
+    return Obx(
+      () => Stack(
+        children: [
+          Scaffold(
+            appBar: _buildAppBar(t),
+            body: RefreshIndicator(
+              onRefresh: controller.onRefresh,
+              child: controller.isFriendShipView.value
+                  ? _buildListFriendView(t, context)
+                  : _buildFriendRequestsView(t),
+            ),
+          ),
+          if (controller.isActionLoading.value) const LoadingWidget(),
+        ],
       ),
     );
   }

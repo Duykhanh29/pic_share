@@ -21,13 +21,15 @@ class GetConversationsAPI extends APIRequestRepresentable {
 class SendMessageAPI extends APIRequestRepresentable {
   final String? urlImage;
   final String text;
-  final int userId;
+  final int? userId;
   final MessageType messageType;
+  final int? conversationID;
   SendMessageAPI({
     required this.text,
     required this.messageType,
-    required this.userId,
+    this.userId,
     this.urlImage,
+    this.conversationID,
   });
   @override
   String get endpoint {
@@ -42,7 +44,8 @@ class SendMessageAPI extends APIRequestRepresentable {
         'url_image': urlImage,
         'text': text,
         'user_id': userId,
-        'message_type': messageType.value
+        'message_type': messageType.value,
+        'conversation_id': conversationID,
       };
 
   @override

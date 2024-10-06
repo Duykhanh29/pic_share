@@ -5,7 +5,10 @@ import 'package:pic_share/data/enums/user_relationship.dart';
 import 'package:pic_share/data/models/user/friend.dart';
 import 'package:pic_share/data/models/user/user_friendship_model.dart';
 import 'package:pic_share/data/models/user/user_summary_model.dart';
+import 'package:pic_share/data/repositories/conversations/conversation_repository.dart';
 import 'package:pic_share/data/repositories/search/search_repository.dart';
+import 'package:pic_share/view_model/auth/auth_controller.dart';
+import 'package:pic_share/view_model/conversations/conversations_controller.dart';
 import 'package:pic_share/view_model/friend/friend_controller.dart';
 
 class SearchUserController extends GetxController {
@@ -206,5 +209,28 @@ class SearchUserController extends GetxController {
   }
 
   void onItemCLick(int id) {}
-  void onChatClick(int id) {}
+  void onChatClick(int id) {
+    UserFriendShipModel? searchedUser;
+    if (isSearchWithCode.value) {
+      searchedUser = userSearchResult.value;
+    } else {
+      final index = listSearchUser.indexWhere((user) => user.id == id);
+      if (index != -1) {
+        searchedUser = listSearchUser[index];
+      }
+    }
+    if (searchedUser != null) {
+      final user = searchedUser.user;
+      if (!Get.isRegistered<ConversationsController>()) {
+        Get.put(
+          ConversationsController(
+            conversationRepository: Get.find<ConversationRepository>(),
+            authController: Get.find<AuthController>(),
+          ),
+        );
+      }
+      final conversationController = Get.find<ConversationsController>();
+      conversationController.onOpenChatFromSearch(user);
+    }
+  }
 }

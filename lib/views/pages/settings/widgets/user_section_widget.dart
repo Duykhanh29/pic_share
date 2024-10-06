@@ -5,6 +5,7 @@ import 'package:pic_share/app/constants/app_images.dart';
 import 'package:pic_share/app/constants/app_text_styles.dart';
 import 'package:pic_share/app/helper/image_cache_helper.dart';
 import 'package:pic_share/view_model/settings/settings_controller.dart';
+import 'package:pic_share/app/utils/date_utils.dart' as helper;
 
 class UserSectionWidget extends GetView<SettingsController> {
   const UserSectionWidget({super.key});
@@ -58,7 +59,10 @@ class UserSectionWidget extends GetView<SettingsController> {
                   overflow: TextOverflow.clip,
                 ),
                 Text(
-                  controller.currentUser?.createdAt ?? "",
+                  controller.currentUser?.createdAt != null
+                      ? helper.DateUtils.stringToDate(
+                          controller.currentUser!.createdAt!)
+                      : "",
                   style: AppTextStyles.commonTextStyle()
                       .copyWith(color: AppColors.darkBorderColor),
                 ),

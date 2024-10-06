@@ -25,6 +25,7 @@ const channel = AndroidNotificationChannel(
     description: 'This channel is used for important notifications.',
     importance: Importance.max,
     playSound: true);
+Future<void> _backgroundMessageHandler(RemoteMessage message) async {}
 
 class NotificationsService extends GetxService {
   final LocalStorageService localStorageService =
@@ -40,6 +41,15 @@ class NotificationsService extends GetxService {
     _initLocalNotification();
     _setupFirebaseMessaging();
     return this;
+  }
+
+  static Future<void> backgroundNotificationHandler(
+      NotificationResponse details) async {}
+
+  @pragma('vm:entry-point')
+  onDidReceiveBackgroundNotificationResponse(
+      NotificationResponse notificationResponse) {
+    // some code
   }
 
   void _initLocalNotification() async {
@@ -65,7 +75,7 @@ class NotificationsService extends GetxService {
         debugPrint("Payload ${response.payload.toString()}");
         await handleNotificationClick(response.payload.toString());
       },
-      onDidReceiveBackgroundNotificationResponse: (details) {},
+      onDidReceiveBackgroundNotificationResponse: backgroundNotificationHandler,
     );
   }
 
@@ -149,6 +159,7 @@ class NotificationsService extends GetxService {
   }
 
   Future<void> _setupFirebaseMessaging() async {
+    FirebaseMessaging.onBackgroundMessage(_backgroundMessageHandler);
     _initLocalNotification();
 
     // it not work as expected

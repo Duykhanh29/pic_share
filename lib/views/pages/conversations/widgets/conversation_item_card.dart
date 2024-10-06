@@ -3,9 +3,11 @@ import 'package:pic_share/app/constants/app_color.dart';
 import 'package:pic_share/app/constants/app_images.dart';
 import 'package:pic_share/app/constants/app_text_styles.dart';
 import 'package:pic_share/app/helper/image_cache_helper.dart';
+import 'package:pic_share/data/enums/message_type.dart';
 import 'package:pic_share/data/models/user/user_summary_model.dart';
 import 'package:pic_share/data/models/conversation/conversation.dart';
 import 'package:pic_share/app/utils/date_utils.dart' as helper;
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ConversationItemCard extends StatelessWidget {
   const ConversationItemCard({
@@ -13,11 +15,13 @@ class ConversationItemCard extends StatelessWidget {
     required this.conversation,
     required this.onTap,
     required this.isMe,
+    required this.isLastChatByMyself,
   });
 
   final Conversation conversation;
   final Function(int, UserSummaryModel?)? onTap;
   final bool isMe;
+  final bool isLastChatByMyself;
 
   @override
   Widget build(BuildContext context) {
@@ -86,10 +90,13 @@ class ConversationItemCard extends StatelessWidget {
   }
 
   Widget _buildSubtitle(BuildContext context) {
-    String msg = conversation.lastMessage?.text ?? "";
+    final t = AppLocalizations.of(context)!;
+    String msg = conversation.lastMessage?.messageType == MessageType.text
+        ? (conversation.lastMessage?.text ?? "")
+        : t.sentAnImage;
     String? name =
         isMe ? conversation.friend?.name : conversation.currentUser?.name;
-    String message = isMe ? msg : "$name: $msg";
+    String message = isLastChatByMyself ? "${t.you}: $msg" : "$name: $msg";
     return Text(
       message,
       overflow: TextOverflow.ellipsis,

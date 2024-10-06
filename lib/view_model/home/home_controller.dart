@@ -7,10 +7,12 @@ import 'package:pic_share/data/models/post/post_data.dart';
 import 'package:pic_share/data/models/post/post_detail.dart';
 import 'package:pic_share/data/models/user/user_model.dart';
 import 'package:pic_share/data/models/user/user_summary_model.dart';
+import 'package:pic_share/data/repositories/conversations/conversation_repository.dart';
 import 'package:pic_share/data/repositories/notification/notification_repository.dart';
 import 'package:pic_share/data/repositories/posts/post_repository.dart';
 import 'package:pic_share/routes/app_pages.dart';
 import 'package:pic_share/view_model/auth/auth_controller.dart';
+import 'package:pic_share/view_model/conversations/conversations_controller.dart';
 import 'package:pic_share/view_model/drawer/drawer_controller.dart';
 
 class HomeController extends GetxController {
@@ -47,6 +49,7 @@ class HomeController extends GetxController {
     );
     ever(authController.currentUser, (UserModel? user) async {
       if (user != null) {
+        posts.clear();
         await fetchPosts();
         await getUnseenNotificationCount();
       }
@@ -79,6 +82,7 @@ class HomeController extends GetxController {
   Future<void> fetchPosts({int? userId}) async {
     isLoading.value = true;
     try {
+      posts.clear();
       List<PostDetail> listPost =
           await postRepository.getPostsForUser(userId: userId);
       for (var post in listPost) {
@@ -192,6 +196,33 @@ class HomeController extends GetxController {
       }
     } catch (e) {
       debugPrint('Error occured while downloading picture: $e');
+    }
+  }
+
+  Future<void> sendMessage(int postId) async {
+    try {
+      final index = posts.indexWhere((post) => post.post.id == postId);
+      if (index != -1) {
+        final post = posts[index];
+        if (post.post.user != null) {
+          final user = post.post.user!;
+          if (!Get.isRegistered<ConversationsController>()) {
+            Get.put(
+              ConversationsController(
+                conversationRepository: Get.find<ConversationRepository>(),
+                authController: Get.find<AuthController>(),
+              ),
+            );
+          }
+          final conversationController = Get.find<ConversationsController>();
+          await conversationController.onClickStartChat(
+            user,
+            urlImage: post.post.urlImage,
+          );
+        }
+      }
+    } catch (e) {
+      debugPrint("Something went wrong: ${e.toString()}");
     }
   }
 }

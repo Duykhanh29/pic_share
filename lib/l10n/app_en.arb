@@ -120,5 +120,7 @@
     "postHistories":"Post histories",
     "reply":"Reply",
     "noNotifications":"No notifications",
-    "markAsRead":"Mark as read"
+    "markAsRead":"Mark as read",
+    "you":"You",
+    "sentAnImage":"Sent an image"
 }

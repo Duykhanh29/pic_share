@@ -3,9 +3,12 @@ import 'package:get/get.dart';
 import 'package:pic_share/data/enums/friend_status.dart';
 import 'package:pic_share/data/models/user/friend.dart';
 import 'package:pic_share/data/models/user/user_model.dart';
+import 'package:pic_share/data/models/user/user_summary_model.dart';
+import 'package:pic_share/data/repositories/conversations/conversation_repository.dart';
 import 'package:pic_share/data/repositories/friend/friend_repository.dart';
 import 'package:pic_share/routes/app_pages.dart';
 import 'package:pic_share/view_model/auth/auth_controller.dart';
+import 'package:pic_share/view_model/conversations/conversations_controller.dart';
 
 class FriendController extends GetxController
     with GetSingleTickerProviderStateMixin {
@@ -24,11 +27,15 @@ class FriendController extends GetxController
   RxList<Friend> sentFriends = <Friend>[].obs;
   RxBool isLoadingFriends = true.obs;
   RxBool isLoadingFriendRequests = true.obs;
+  RxBool isActionLoading = false.obs;
 
   List<Friend> get friends => friendList;
   List<Friend> get getSentFriends => sentFriends;
   List<Friend> get requestFriends => requestedFriends;
   RxBool isViewInTabbar = true.obs;
+
+// getter
+  UserModel? get currentUser => authController.currentUser.value;
   void onChangeView() {
     isFriendShipView.value = !isFriendShipView.value;
   }
@@ -71,6 +78,10 @@ class FriendController extends GetxController
       if (user != null) {
         await fetchFriends();
         await fetchFriendRequests();
+      } else {
+        friendList.value = [];
+        requestedFriends.value = [];
+        sentFriends.value = [];
       }
     });
     await fetchFriends();
@@ -80,8 +91,11 @@ class FriendController extends GetxController
   }
 
   Future<void> onRefresh() async {
-    await fetchFriends();
-    await fetchFriendRequests();
+    if (isFriendShipView.value) {
+      await fetchFriends();
+    } else {
+      await fetchFriendRequests();
+    }
   }
 
   Future<void> fetchFriends() async {
@@ -115,11 +129,14 @@ class FriendController extends GetxController
 
   void onItemClick(int id) {}
   Future<void> onRejectFriendRequest(int id) async {
+    isActionLoading.value = true;
     try {
       await friendRepository.deleteFriend(id);
       updateChangesForFriendRequest(id);
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
+    } finally {
+      isActionLoading.value = false;
     }
   }
 
@@ -148,6 +165,7 @@ class FriendController extends GetxController
   }
 
   Future<void> onAcceptFriendRequest(int id) async {
+    isActionLoading.value = true;
     try {
       await friendRepository.updateFriendStatus(
           id: id, status: FriendStatus.friend);
@@ -156,6 +174,8 @@ class FriendController extends GetxController
       updateChangesForFriendRequest(id);
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
+    } finally {
+      isActionLoading.value = false;
     }
   }
 
@@ -168,7 +188,30 @@ class FriendController extends GetxController
     return null;
   }
 
-  void onNavToChat(int id) {}
+  void onNavToChat(int id) {
+    final index = friendList.indexWhere((user) => user.id == id);
+    if (index != -1) {
+      final friend = friendList[index];
+      UserSummaryModel userSummaryModel = UserSummaryModel(
+        id: currentUser?.id == friend.friendId
+            ? friend.userId
+            : friend.friendId,
+        name: friend.name,
+        urlAvatar: friend.avatar,
+      );
+      if (!Get.isRegistered<ConversationsController>()) {
+        Get.put(
+          ConversationsController(
+            conversationRepository: Get.find<ConversationRepository>(),
+            authController: Get.find<AuthController>(),
+          ),
+        );
+      }
+      final conversationController = Get.find<ConversationsController>();
+      conversationController.onOpenChatFromSearch(userSummaryModel);
+    }
+  }
+
   void onNavToSearch() {
     Get.toNamed(Routes.search);
   }

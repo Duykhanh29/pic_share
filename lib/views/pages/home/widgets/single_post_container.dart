@@ -205,7 +205,9 @@ class SinglePostContainer extends GetView<HomeController> {
             height: 8,
           ),
           GestureDetector(
-            onTap: () {},
+            onTap: () async {
+              await controller.sendMessage(postData.post.id ?? 0);
+            },
             child: DecoratedBox(
               decoration: BoxDecoration(
                 color: Colors.transparent,

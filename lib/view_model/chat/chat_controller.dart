@@ -20,12 +20,15 @@ class ChatController extends GetxController {
       final arguments = Get.arguments as Map<String, dynamic>;
       conversationId.value = arguments[Strings.conversationId] as int;
       user = arguments[Strings.userSummary] as UserSummaryModel?;
+      isTempChat.value = arguments[Strings.isTempChat] ?? false;
     } else {}
   }
   UserSummaryModel? user;
   Rx<int> conversationId = 0.obs;
+  RxBool isTempChat = false.obs;
 
   late TextEditingController messageTextController;
+
   RxBool isLoading = false.obs;
 
   RxList<Message> messages = <Message>[].obs;
@@ -43,7 +46,9 @@ class ChatController extends GetxController {
       urlAvatar: currentUser?.urlAvatar ?? "",
       userCode: currentUser?.userCode ?? "",
     );
-    await fetchMessages();
+    if (!isTempChat.value) {
+      await fetchMessages();
+    }
     super.onInit();
   }
 
@@ -72,7 +77,9 @@ class ChatController extends GetxController {
 
   Future<void> updateUnreadMsg() async {
     try {
-      await conversationRepository.updateUnreadMsg(conversationId.value);
+      if (!isTempChat.value) {
+        await conversationRepository.updateUnreadMsg(conversationId.value);
+      }
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
     }
@@ -93,7 +100,21 @@ class ChatController extends GetxController {
         text: msgText,
         userId: userId ?? (user?.id ?? 0),
         urlImage: urlImage,
+        conversationId: conversationId.value != 0 ? conversationId.value : null,
       );
+      if (isTempChat.value) {
+        String now = DateTime.now().toUtc().toIso8601String();
+        Message message = Message(
+          createdAt: now,
+          updatedAt: now,
+          messageType: messageType,
+          text: msgText,
+          urlImage: urlImage,
+          sender: userSummary,
+        );
+        messages.add(message);
+        isTempChat.value = false;
+      }
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
     } finally {

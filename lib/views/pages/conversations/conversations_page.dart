@@ -27,6 +27,8 @@ class ConversationPage extends GetView<ConversationsController> {
                   onTap: controller.onClickConversationItem,
                   isMe: conversation.currentUser?.id ==
                       controller.currentUser?.id,
+                  isLastChatByMyself: conversation.lastMessage?.sender?.id ==
+                      controller.currentUser?.id,
                 );
               },
               itemCount: controller.conversationData.value.conversations.length,

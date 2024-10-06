@@ -77,12 +77,12 @@ class ChatPage extends GetView<ChatController> {
     return Obx(
       () => Expanded(
         child: GroupedListView<Message, DateTime>(
+          order: GroupedListOrder.DESC,
           elements: controller.messages.toList(),
           groupBy: (msg) => controller.getgroupByDateTime(msg.createdAt),
           physics: const BouncingScrollPhysics(),
-          // reverse: true,
+          reverse: true,
           floatingHeader: true,
-          shrinkWrap: true,
           useStickyGroupSeparators: true,
           itemComparator: (message1, message2) {
             return controller.getComparator(

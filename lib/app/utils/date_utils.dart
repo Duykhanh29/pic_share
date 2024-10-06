@@ -51,7 +51,7 @@ class DateUtils {
   }
 
   static String _timeFormatter() {
-    return 'hh:mm a';
+    return 'hh:mm';
   }
 
   static String localDateToIsoStringAMPM(DateTime dateTime) {
@@ -98,8 +98,8 @@ class DateUtils {
   }
 
   static String formatDateTimeToString(String time) {
-    DateTime dateTime = DateTime.parse(time);
-    DateTime now = DateTime.now();
+    DateTime dateTime = DateTime.parse(time).toLocal();
+    DateTime now = DateTime.now().toLocal();
 
     if (dateTime.year == now.year &&
         dateTime.month == now.month &&
@@ -111,8 +111,8 @@ class DateUtils {
   }
 
   static String formatDateTimeToDateString(String time) {
-    DateTime dateTime = DateTime.parse(time);
-    DateTime now = DateTime.now();
+    DateTime dateTime = DateTime.parse(time).toLocal();
+    DateTime now = DateTime.now().toLocal();
 
     if (dateTime.year == now.year &&
         dateTime.month == now.month &&
@@ -144,6 +144,12 @@ class DateUtils {
   }
 
   static DateTime convertStringToDateTime(String? date) {
-    return date == null ? DateTime.now() : DateTime.parse(date);
+    return date == null
+        ? DateTime.now().toLocal()
+        : DateTime.parse(date).toLocal();
+  }
+
+  static String stringToDate(String dateTime) {
+    return DateFormat.yMd().format(DateTime.parse(dateTime));
   }
 }
