@@ -8,8 +8,9 @@ abstract class ConversationRepository {
   Future<void> sendMessage({
     String? urlImage,
     required String text,
-    required int userId,
     required MessageType messageType,
+    int? userId,
+    int? conversationId,
   });
   Future<List<Message>> getMessages(int id);
   Future<void> updateUnreadMsg(int id);
@@ -21,16 +22,18 @@ class ConversationRepositoryImpl implements ConversationRepository {
   Future<void> sendMessage({
     String? urlImage,
     required String text,
-    required int userId,
     required MessageType messageType,
+    int? userId,
+    int? conversationId,
   }) async {
     try {
       final response = await SendMessageAPI(
-              messageType: messageType,
-              text: text,
-              urlImage: urlImage,
-              userId: userId)
-          .request();
+        messageType: messageType,
+        text: text,
+        urlImage: urlImage,
+        userId: userId,
+        conversationID: conversationId,
+      ).request();
       debugPrint("Message: $response");
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");

@@ -25,14 +25,30 @@ class PusherService extends GetxService {
   @override
   void onInit() async {
     ever(conversationsController.conversationData, (data) async {
-      conversations.value = conversationsController.listConversation;
-      await subscribeToRooms();
+      final updatedConversations = conversationsController.listConversation;
+
+      if (updatedConversations.isNotEmpty) {
+        // Update conversations only if there are new ones
+        conversations.value = updatedConversations;
+        await subscribeToRooms();
+      } else {
+        // Unsubscribe before clearing conversations
+        if (conversations.isNotEmpty) {
+          await unsubscribeAllRooms();
+          // Now clear conversations since there's nothing left
+          conversations.clear();
+        }
+      }
     });
     ever(authController.currentUser, (UserModel? user) async {
       if (user != null) {
-        currentUser.value = user;
-        await initPusher(currentUser.value?.id ?? 0, (p0) {});
+        await initPusher(user.id ?? 0, (event) async {
+          await onEvent(event);
+        });
+      } else {
+        await unsubscribleUserChannel(currentUser.value?.id ?? 0);
       }
+      currentUser.value = user;
     });
     currentUser.value = authController.getCurrentUser;
     conversations.value = conversationsController.listConversation;
@@ -75,7 +91,8 @@ class PusherService extends GetxService {
   Future<void> subscribeToRooms() async {
     for (var conversation in conversations) {
       final roomId = conversation.id ?? 0;
-      if (!subscribedRooms.contains(conversation.id)) {
+      if (roomId == 0) continue;
+      if (!subscribedRooms.contains(roomId)) {
         try {
           await _pusher.subscribe(
             channelName: "chat.room.$roomId",
@@ -87,6 +104,13 @@ class PusherService extends GetxService {
         }
       }
     }
+  }
+
+  Future<void> unsubscribleUserChannel(int userId) async {
+    await _pusher.unsubscribe(
+      channelName: "chat.user.$userId",
+    );
+    debugPrint("Unsubscribed from chat: chat.user.$userId");
   }
 
   // Unsubscribe from rooms you no longer need to listen to
@@ -122,7 +146,7 @@ class PusherService extends GetxService {
     debugPrint("onEvent: $event");
     debugPrint(event.eventName.toString());
     if (event.eventName.contains("conversation.created")) {
-      onNewConversationEvent(event);
+      await onNewConversationEvent(event);
     } else if (event.eventName.contains("chat.message.sent")) {
       onChatEvent(event);
     } else {
@@ -130,12 +154,22 @@ class PusherService extends GetxService {
     }
   }
 
-  void onNewConversationEvent(PusherEvent event) {
+  Future<void> onNewConversationEvent(PusherEvent event) async {
     try {
       final data = event.data;
       final decodedData = jsonDecode(data);
       final Conversation conversation = Conversation.fromJson(decodedData);
-      conversationsController.addNewConversation(conversation);
+      if (conversation.id != null) {
+        final currentList = List<Conversation>.from(conversations);
+
+        currentList.removeWhere((c) => c.id == 0);
+        currentList.add(conversation);
+
+        // Cập nhật conversations với danh sách mới
+        conversations.assignAll(currentList);
+        await subscribeToRooms();
+        conversationsController.addNewConversation(conversation);
+      }
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
     }
@@ -154,7 +188,8 @@ class PusherService extends GetxService {
       // current page is chat page
       if (Get.isRegistered<ChatController>()) {
         final chatController = Get.find<ChatController>();
-        if (chatController.conversationId.value == conversationID) {
+        if (chatController.conversationId.value == conversationID ||
+            chatController.conversationId.value == 0) {
           chatController.listenNewMessage(message);
         }
       }
