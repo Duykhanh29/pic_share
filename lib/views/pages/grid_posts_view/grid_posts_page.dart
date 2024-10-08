@@ -33,12 +33,14 @@ class GridPostPage extends GetView<HomeController> {
                         controller.onNavigateToHomeWithIndex(index);
                       },
                       child: ImageCacheHelper.showImage(
-                          url: controller.posts[index].post.urlImage ?? "",
+                          url: controller
+                                  .actualDisplayPosts[index].post.urlImage ??
+                              "",
                           height: MediaQuery.of(context).size.height * 0.15,
                           width: MediaQuery.of(context).size.width * 0.3),
                     );
                   },
-                  itemCount: controller.posts.length,
+                  itemCount: controller.actualDisplayPosts.length,
                 ),
         ),
       ),
