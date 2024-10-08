@@ -79,9 +79,9 @@ class HomePage extends GetView<HomeController> {
                             controller.currentIndex.value = index;
                           },
                         ),
-                        itemCount: controller.posts.length,
+                        itemCount: controller.actualDisplayPosts.length,
                         itemBuilder: (context, index, realIndex) {
-                          final post = controller.posts[index];
+                          final post = controller.actualDisplayPosts[index];
                           return SinglePostContainer(
                             postData: post,
                           );
