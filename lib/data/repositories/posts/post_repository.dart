@@ -20,6 +20,8 @@ abstract class PostRepository {
     String? caption,
     List<int> shareWiths = const [],
     required SharedPostType type,
+    double? latitude,
+    double? longitude,
   });
   Future<Paging<Post>> getPostHistory(int? page);
   Future<PostDetail?> getPostDetail(int id);
@@ -32,6 +34,7 @@ abstract class PostRepository {
   Future<void> addNewUserView(int id);
   Future<void> dislikePost({required int id, required int userId});
   Future<List<PostDetail>> getPostsForUser({int? userId});
+  Future<List<PostDetail>> getPostsWithLocation();
 }
 
 class PostRepositoryImpl implements PostRepository {
@@ -41,6 +44,8 @@ class PostRepositoryImpl implements PostRepository {
     String? caption,
     List<int> shareWiths = const [],
     required SharedPostType type,
+    double? latitude,
+    double? longitude,
   }) async {
     try {
       Map<String, dynamic> sharedWithData = {};
@@ -56,6 +61,8 @@ class PostRepositoryImpl implements PostRepository {
         ),
         "caption": caption,
         "type": type.value,
+        if (latitude != null && latitude != 0.0) "latitude": latitude,
+        if (longitude != null && longitude != 0.0) "longitude": longitude,
         ...sharedWithData,
       });
 
@@ -207,5 +214,18 @@ class PostRepositoryImpl implements PostRepository {
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
     }
+  }
+
+  @override
+  Future<List<PostDetail>> getPostsWithLocation() async {
+    try {
+      final response = await GetPostWithLocationAPI().request();
+      final postsData = response['data'] as List<dynamic>;
+      final posts = postsData.map((e) => PostDetail.fromJson(e)).toList();
+      return posts;
+    } catch (e) {
+      debugPrint("Something went wrong: ${e.toString()}");
+    }
+    return [];
   }
 }

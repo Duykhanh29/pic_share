@@ -33,6 +33,10 @@ abstract class _$PostDetailCWProxy {
 
   PostDetail userViews(List<UserSummaryModel>? userViews);
 
+  PostDetail latitude(double? latitude);
+
+  PostDetail longitude(double? longitude);
+
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `PostDetail(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
   /// Usage
@@ -53,6 +57,8 @@ abstract class _$PostDetailCWProxy {
     SharedPostType? type,
     List<UserSummaryModel>? userLikes,
     List<UserSummaryModel>? userViews,
+    double? latitude,
+    double? longitude,
   });
 }
 
@@ -104,6 +110,12 @@ class _$PostDetailCWProxyImpl implements _$PostDetailCWProxy {
       this(userViews: userViews);
 
   @override
+  PostDetail latitude(double? latitude) => this(latitude: latitude);
+
+  @override
+  PostDetail longitude(double? longitude) => this(longitude: longitude);
+
+  @override
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `PostDetail(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -125,6 +137,8 @@ class _$PostDetailCWProxyImpl implements _$PostDetailCWProxy {
     Object? type = const $CopyWithPlaceholder(),
     Object? userLikes = const $CopyWithPlaceholder(),
     Object? userViews = const $CopyWithPlaceholder(),
+    Object? latitude = const $CopyWithPlaceholder(),
+    Object? longitude = const $CopyWithPlaceholder(),
   }) {
     return PostDetail(
       caption: caption == const $CopyWithPlaceholder()
@@ -179,6 +193,14 @@ class _$PostDetailCWProxyImpl implements _$PostDetailCWProxy {
           ? _value.userViews
           // ignore: cast_nullable_to_non_nullable
           : userViews as List<UserSummaryModel>?,
+      latitude: latitude == const $CopyWithPlaceholder()
+          ? _value.latitude
+          // ignore: cast_nullable_to_non_nullable
+          : latitude as double?,
+      longitude: longitude == const $CopyWithPlaceholder()
+          ? _value.longitude
+          // ignore: cast_nullable_to_non_nullable
+          : longitude as double?,
     );
   }
 }
@@ -204,6 +226,8 @@ extension $PostDetailCopyWith on PostDetail {
     bool user = false,
     bool type = false,
     bool userViews = false,
+    bool latitude = false,
+    bool longitude = false,
   }) {
     return PostDetail(
       caption: caption == true ? null : this.caption,
@@ -219,6 +243,8 @@ extension $PostDetailCopyWith on PostDetail {
       type: type == true ? null : this.type,
       userLikes: userLikes,
       userViews: userViews == true ? null : this.userViews,
+      latitude: latitude == true ? null : this.latitude,
+      longitude: longitude == true ? null : this.longitude,
     );
   }
 }
@@ -250,6 +276,8 @@ PostDetail _$PostDetailFromJson(Map<String, dynamic> json) => PostDetail(
       userViews: (json['user_views'] as List<dynamic>?)
           ?.map((e) => UserSummaryModel.fromJson(e as Map<String, dynamic>))
           .toList(),
+      latitude: (json['latitude'] as num?)?.toDouble(),
+      longitude: (json['longitude'] as num?)?.toDouble(),
     );
 
 Map<String, dynamic> _$PostDetailToJson(PostDetail instance) =>
@@ -267,4 +295,6 @@ Map<String, dynamic> _$PostDetailToJson(PostDetail instance) =>
       'updated_at': instance.updatedAt,
       'user_views': instance.userViews?.map((e) => e.toJson()).toList(),
       'user_likes': instance.userLikes.map((e) => e.toJson()).toList(),
+      'latitude': instance.latitude,
+      'longitude': instance.longitude,
     };

@@ -5,4 +5,5 @@ class Strings {
   static const String conversationId = 'conversationId';
   static const String userSummary = 'userSummary';
   static const String isTempChat = 'isTempChat';
+  static const String postDetail = 'postDetail';
 }

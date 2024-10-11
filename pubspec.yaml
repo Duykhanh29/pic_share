@@ -65,6 +65,9 @@ dependencies:
   # pagination: ^4.0.0
   infinite_scroll_pagination: ^4.0.0
 
+  # geolocation
+  geolocator: ^11.1.0
+
   # Localization
   flutter_localizations:
     sdk: flutter
@@ -89,6 +92,11 @@ dependencies:
 
   # real-time communication
   pusher_channels_flutter: ^2.2.1
+
+  # map
+  google_maps_flutter: ^2.5.3
+  flutter_map: ^4.0.0
+  latlong2: ^0.8.0
 
 
   # env

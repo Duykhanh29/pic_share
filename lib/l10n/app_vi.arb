@@ -122,5 +122,6 @@
     "noNotifications":"Không có thông báo nào",
     "markAsRead":"Đánh dấu là đã đọc",
     "you":"Bạn",
-    "sentAnImage":"Đã gửi một hình ảnh"
+    "sentAnImage":"Đã gửi một hình ảnh",
+    "postsWithLocation":"Bài đăng với vị trí"
 }

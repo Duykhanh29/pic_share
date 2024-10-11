@@ -86,6 +86,18 @@ class SettingsController extends GetxController {
     );
   }
 
+  void onNavToPostsWithLocation() {
+    Get.toNamed(
+      Routes.postsWithLocation,
+    );
+  }
+
+  void onNavToPostsLocation() {
+    Get.toNamed(
+      Routes.postsLocation,
+    );
+  }
+
   void onNavToHistory() {
     Get.toNamed(Routes.postHistory);
   }

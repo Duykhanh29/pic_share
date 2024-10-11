@@ -27,6 +27,10 @@ abstract class _$PostCWProxy {
 
   Post type(SharedPostType? type);
 
+  Post latitude(double? latitude);
+
+  Post longitude(double? longitude);
+
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `Post(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
   /// Usage
@@ -44,6 +48,8 @@ abstract class _$PostCWProxy {
     String? createdAt,
     String? updatedAt,
     SharedPostType? type,
+    double? latitude,
+    double? longitude,
   });
 }
 
@@ -84,6 +90,12 @@ class _$PostCWProxyImpl implements _$PostCWProxy {
   Post type(SharedPostType? type) => this(type: type);
 
   @override
+  Post latitude(double? latitude) => this(latitude: latitude);
+
+  @override
+  Post longitude(double? longitude) => this(longitude: longitude);
+
+  @override
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `Post(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -102,6 +114,8 @@ class _$PostCWProxyImpl implements _$PostCWProxy {
     Object? createdAt = const $CopyWithPlaceholder(),
     Object? updatedAt = const $CopyWithPlaceholder(),
     Object? type = const $CopyWithPlaceholder(),
+    Object? latitude = const $CopyWithPlaceholder(),
+    Object? longitude = const $CopyWithPlaceholder(),
   }) {
     return Post(
       caption: caption == const $CopyWithPlaceholder()
@@ -144,6 +158,14 @@ class _$PostCWProxyImpl implements _$PostCWProxy {
           ? _value.type
           // ignore: cast_nullable_to_non_nullable
           : type as SharedPostType?,
+      latitude: latitude == const $CopyWithPlaceholder()
+          ? _value.latitude
+          // ignore: cast_nullable_to_non_nullable
+          : latitude as double?,
+      longitude: longitude == const $CopyWithPlaceholder()
+          ? _value.longitude
+          // ignore: cast_nullable_to_non_nullable
+          : longitude as double?,
     );
   }
 }
@@ -167,6 +189,8 @@ extension $PostCopyWith on Post {
     bool createdAt = false,
     bool updatedAt = false,
     bool type = false,
+    bool latitude = false,
+    bool longitude = false,
   }) {
     return Post(
       caption: caption == true ? null : this.caption,
@@ -179,6 +203,8 @@ extension $PostCopyWith on Post {
       createdAt: createdAt == true ? null : this.createdAt,
       updatedAt: updatedAt == true ? null : this.updatedAt,
       type: type == true ? null : this.type,
+      latitude: latitude == true ? null : this.latitude,
+      longitude: longitude == true ? null : this.longitude,
     );
   }
 }
@@ -200,6 +226,8 @@ Post _$PostFromJson(Map<String, dynamic> json) => Post(
       createdAt: json['created_at'] as String?,
       updatedAt: json['updated_at'] as String?,
       type: sharedPostTypeFromJson(json['type'] as String?),
+      latitude: (json['latitude'] as num?)?.toDouble(),
+      longitude: (json['longitude'] as num?)?.toDouble(),
     );
 
 Map<String, dynamic> _$PostToJson(Post instance) => <String, dynamic>{
@@ -213,4 +241,6 @@ Map<String, dynamic> _$PostToJson(Post instance) => <String, dynamic>{
       'created_at': instance.createdAt,
       'updated_at': instance.updatedAt,
       'type': sharedPostTypeToJson(instance.type),
+      'latitude': instance.latitude,
+      'longitude': instance.longitude,
     };

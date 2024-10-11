@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:pic_share/app/services/local_storage_service.dart';
+import 'package:pic_share/app/services/location_service.dart';
 import 'package:pic_share/app/services/pusher_service.dart';
 import 'package:pic_share/data/repositories/conversations/conversation_repository.dart';
 import 'package:pic_share/data/repositories/notification/notification_repository.dart';
@@ -48,6 +49,7 @@ class NavBottomController extends GetxController {
           postRepository: Get.find<PostRepository>(),
           friendController: Get.find<FriendController>(),
           authController: Get.find<AuthController>(),
+          locationService: Get.find<LocationService>(),
         ),
         permanent: true);
     Get.put(

@@ -11,6 +11,7 @@ class ChangePasswordController extends GetxController {
   RxBool isCurrentPassVissibility = false.obs;
   RxBool isNewPassVissibility = false.obs;
   RxBool isConfirmNewPassVissibility = false.obs;
+  RxBool isLoading = false.obs;
 
   AuthController authController;
 
@@ -45,6 +46,7 @@ class ChangePasswordController extends GetxController {
   }
 
   Future<void> onChangePassword() async {
+    isLoading.value = true;
     try {
       var isValid = formKey.currentState!.validate();
       if (isValid) {
@@ -59,6 +61,8 @@ class ChangePasswordController extends GetxController {
       }
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
+    } finally {
+      isLoading.value = false;
     }
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pic_share/app/config/app_config.dart';
+import 'package:pic_share/app/constants/strings.dart';
 import 'package:pic_share/app/helper/snack_bar_helper.dart';
 import 'package:pic_share/app/utils/file_utils.dart';
 import 'package:pic_share/data/models/post/post_data.dart';
@@ -30,6 +31,7 @@ class HomeController extends GetxController {
   late TextEditingController reasonController;
 
   RxList<PostData> posts = <PostData>[].obs;
+  RxList<PostData> actualDisplayPosts = <PostData>[].obs;
 
   RxList<UserSummaryModel> listViews = <UserSummaryModel>[].obs;
   RxBool isLoading = false.obs;
@@ -43,8 +45,7 @@ class HomeController extends GetxController {
     ever(
       appDrawerController.selectedUserId,
       (userID) async {
-        posts.clear();
-        await fetchPosts(userId: userID);
+        filterPostByUserId(userID);
       },
     );
     ever(authController.currentUser, (UserModel? user) async {
@@ -76,6 +77,7 @@ class HomeController extends GetxController {
 
   Future<void> onRefresh() async {
     posts.clear();
+    actualDisplayPosts.clear();
     await fetchPosts(userId: appDrawerController.selectedUserId.value);
   }
 
@@ -83,6 +85,7 @@ class HomeController extends GetxController {
     isLoading.value = true;
     try {
       posts.clear();
+      actualDisplayPosts.clear();
       List<PostDetail> listPost =
           await postRepository.getPostsForUser(userId: userId);
       for (var post in listPost) {
@@ -92,10 +95,21 @@ class HomeController extends GetxController {
         }
         posts.add(postData);
       }
+      actualDisplayPosts.value = posts;
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
     } finally {
       isLoading.value = false;
+    }
+  }
+
+  void filterPostByUserId(int? userId) {
+    if (userId == null) {
+      actualDisplayPosts.value = posts;
+    } else {
+      final list =
+          posts.where((element) => element.post.user?.id == userId).toList();
+      actualDisplayPosts.value = list;
     }
   }
 
@@ -154,13 +168,14 @@ class HomeController extends GetxController {
   }
 
   void updatePostsData(int id, bool isLike) {
-    int index = posts.indexWhere((element) => element.post.id == id);
+    int index =
+        actualDisplayPosts.indexWhere((element) => element.post.id == id);
     if (index != -1) {
-      posts[index] = posts[index].copyWith(
-        post: posts[index].post.copyWith(
+      actualDisplayPosts[index] = actualDisplayPosts[index].copyWith(
+        post: actualDisplayPosts[index].post.copyWith(
               likeCount: isLike
-                  ? posts[index].post.likeCount + 1
-                  : posts[index].post.likeCount - 1,
+                  ? actualDisplayPosts[index].post.likeCount + 1
+                  : actualDisplayPosts[index].post.likeCount - 1,
             ),
         isLike: isLike,
       );
@@ -181,7 +196,8 @@ class HomeController extends GetxController {
   }
 
   void onNavigateToHomeWithPostId(int? id) {
-    int index = posts.indexWhere((element) => element.post.id == id);
+    int index =
+        actualDisplayPosts.indexWhere((element) => element.post.id == id);
     currentIndex.value = index == -1 ? 0 : index;
   }
 
@@ -201,9 +217,10 @@ class HomeController extends GetxController {
 
   Future<void> sendMessage(int postId) async {
     try {
-      final index = posts.indexWhere((post) => post.post.id == postId);
+      final index =
+          actualDisplayPosts.indexWhere((post) => post.post.id == postId);
       if (index != -1) {
-        final post = posts[index];
+        final post = actualDisplayPosts[index];
         if (post.post.user != null) {
           final user = post.post.user!;
           if (!Get.isRegistered<ConversationsController>()) {
@@ -224,5 +241,23 @@ class HomeController extends GetxController {
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
     }
+  }
+
+  PostDetail? getPostDetail(int postId) {
+    int index =
+        actualDisplayPosts.indexWhere((element) => element.post.id == postId);
+    if (index != -1) {
+      return actualDisplayPosts[index].post;
+    }
+    return null;
+  }
+
+  void onNavToLocationView(int? id) {
+    if (id == null) return;
+    PostDetail? post = getPostDetail(id);
+    if (post == null) return;
+    Get.toNamed(Routes.postsLocation, arguments: {
+      Strings.postDetail: post,
+    });
   }
 }

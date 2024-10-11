@@ -122,5 +122,6 @@
     "noNotifications":"No notifications",
     "markAsRead":"Mark as read",
     "you":"You",
-    "sentAnImage":"Sent an image"
+    "sentAnImage":"Sent an image",
+    "postsWithLocation":"Posts with location"
 }
