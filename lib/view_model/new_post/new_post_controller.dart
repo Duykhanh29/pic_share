@@ -2,8 +2,10 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:pic_share/app/constants/glocal_data.dart';
+import 'package:pic_share/app/services/location_service.dart';
 import 'package:pic_share/app/utils/date_utils.dart' as date;
 import 'package:pic_share/app/utils/file_utils.dart';
 import 'package:pic_share/data/enums/shared_post_type.dart';
@@ -18,11 +20,14 @@ class NewPostController extends GetxController {
   PostRepository postRepository;
   FriendController friendController;
   AuthController authController;
+  LocationService locationService;
   UserModel? get currentUser => authController.getCurrentUser;
-  NewPostController(
-      {required this.postRepository,
-      required this.friendController,
-      required this.authController});
+  NewPostController({
+    required this.postRepository,
+    required this.friendController,
+    required this.authController,
+    required this.locationService,
+  });
   List<Friend> get friends => friendController.friends;
 
   late CameraController cameraController;
@@ -32,6 +37,10 @@ class NewPostController extends GetxController {
   RxBool isEnableFlash = false.obs;
   RxBool isSelectAllUser = true.obs;
   RxList<bool> listSelectedUser = <bool>[].obs;
+  Rx<double> latitude = 0.0.obs;
+  Rx<double> longitude = 0.0.obs;
+
+  // getter
   String get currentTime =>
       date.DateUtils.getStringCurrentTimeInHourAndMinutes();
 
@@ -131,6 +140,19 @@ class NewPostController extends GetxController {
     }
   }
 
+  Future<void> checkIn() async {
+    try {
+      final isAccepted = await locationService.requestPermission();
+      if (isAccepted) {
+        Position position = await locationService.getCurrentPosition();
+        latitude.value = position.latitude;
+        longitude.value = position.longitude;
+      }
+    } catch (e) {
+      debugPrint('Something went wrong: $e');
+    }
+  }
+
   // api operation
 
   Future<void> createPost() async {
@@ -144,6 +166,8 @@ class NewPostController extends GetxController {
           urlImage: File(pictureFile.value?.path ?? ""),
           caption: captionController.text.trim(),
           shareWiths: shareWiths,
+          latitude: latitude.value,
+          longitude: longitude.value,
         );
         debugPrint("New post: $post");
       }

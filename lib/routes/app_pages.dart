@@ -13,6 +13,8 @@ import 'package:pic_share/view_model/new_post/new_post_biding.dart';
 import 'package:pic_share/view_model/notifications/notification_bindings.dart';
 import 'package:pic_share/view_model/post_detail/post_detail_bindings.dart';
 import 'package:pic_share/view_model/post_history/post_history_bindings.dart';
+import 'package:pic_share/view_model/posts_location/posts_location_bindings.dart';
+import 'package:pic_share/view_model/posts_with_location/posts_with_location_binding.dart';
 import 'package:pic_share/view_model/profile/profile_bindings.dart';
 import 'package:pic_share/view_model/reacted_users/reacted_users_bindings.dart';
 import 'package:pic_share/view_model/register/register_bindings.dart';
@@ -34,6 +36,8 @@ import 'package:pic_share/views/pages/new_post/new_post_page.dart';
 import 'package:pic_share/views/pages/notification/notification_page.dart';
 import 'package:pic_share/views/pages/post_detail/post_detail_page.dart';
 import 'package:pic_share/views/pages/post_histories/post_history_page.dart';
+import 'package:pic_share/views/pages/posts_location/posts_location_page.dart';
+import 'package:pic_share/views/pages/posts_with_location/posts_with_location_page.dart';
 import 'package:pic_share/views/pages/profile/profile_page.dart';
 import 'package:pic_share/views/pages/reacted_users/reacted_users_page.dart';
 import 'package:pic_share/views/pages/register/register_page.dart';
@@ -164,6 +168,16 @@ abstract class AppPages {
       name: Routes.postDetail,
       page: () => const PostDetailPage(),
       binding: PostDetailBindings(),
+    ),
+    GetPage(
+      name: Routes.postsWithLocation,
+      page: () => const PostsWithLocationPage(),
+      binding: PostsWithLocationBindinsgs(),
+    ),
+    GetPage(
+      name: Routes.postsLocation,
+      page: () => const PostsLocationPage(),
+      binding: PostsLocationBinding(),
     ),
   ];
 }

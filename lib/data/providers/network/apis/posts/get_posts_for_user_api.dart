@@ -18,3 +18,16 @@ class GetPostsForUserAPI extends APIRequestRepresentable {
     return APIProvider().request(this);
   }
 }
+
+class GetPostWithLocationAPI extends APIRequestRepresentable {
+  @override
+  String get endpoint => '/api/post/posts_with_geolocation';
+
+  @override
+  HTTPMethod get method => HTTPMethod.get;
+
+  @override
+  Future request() {
+    return APIProvider().request(this);
+  }
+}

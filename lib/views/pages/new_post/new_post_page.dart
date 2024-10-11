@@ -34,6 +34,16 @@ class NewPostPage extends GetView<NewPostController> {
                 color: Colors.white,
               ),
             ),
+            const SizedBox(
+              width: 10,
+            ),
+            IconButton(
+              onPressed: controller.checkIn,
+              icon: const Icon(
+                Icons.location_on_outlined,
+                color: Colors.white,
+              ),
+            ),
           ],
         ).show(),
         body: Obx(

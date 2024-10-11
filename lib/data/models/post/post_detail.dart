@@ -33,6 +33,8 @@ class PostDetail {
   final List<UserSummaryModel>? userViews;
   @JsonKey(name: 'user_likes')
   final List<UserSummaryModel> userLikes;
+  final double? latitude;
+  final double? longitude;
   PostDetail({
     this.caption,
     this.cmtCount = 0,
@@ -47,6 +49,8 @@ class PostDetail {
     this.type,
     this.userLikes = const [],
     this.userViews,
+    this.latitude,
+    this.longitude,
   });
   factory PostDetail.fromJson(Map<String, dynamic> json) =>
       _$PostDetailFromJson(json);

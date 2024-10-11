@@ -28,6 +28,8 @@ class Post {
       fromJson: sharedPostTypeFromJson,
       toJson: sharedPostTypeToJson)
   final SharedPostType? type;
+  final double? latitude;
+  final double? longitude;
   Post({
     this.caption,
     this.cmtCount = 0,
@@ -39,6 +41,8 @@ class Post {
     this.createdAt,
     this.updatedAt,
     this.type,
+    this.latitude,
+    this.longitude,
   });
   factory Post.fromJson(Map<String, dynamic> json) => _$PostFromJson(json);
 

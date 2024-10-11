@@ -52,6 +52,28 @@ class UserSettingsSection extends GetView<SettingsController> {
             onTap: controller.onNavToUserCode,
             title: t.history,
           ),
+          // Divider(
+          //   thickness: 0.4,
+          //   color: AppColors.lightBorderColor,
+          // ),
+          // ItemCard(
+          //   backgroundColor: AppColors.blue,
+          //   icon: Icons.location_on,
+          //   iconColor: AppColors.white,
+          //   onTap: controller.onNavToPostsWithLocation,
+          //   title: t.postsWithLocation,
+          // ),
+          Divider(
+            thickness: 0.4,
+            color: AppColors.lightBorderColor,
+          ),
+          ItemCard(
+            backgroundColor: AppColors.blue,
+            icon: Icons.location_on,
+            iconColor: AppColors.white,
+            onTap: controller.onNavToPostsLocation,
+            title: t.postsWithLocation,
+          ),
           const SizedBox(
             height: 2,
           ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pic_share/app/config/app_config.dart';
+import 'package:pic_share/app/constants/strings.dart';
 import 'package:pic_share/app/helper/snack_bar_helper.dart';
 import 'package:pic_share/app/utils/file_utils.dart';
 import 'package:pic_share/data/models/post/post_data.dart';
@@ -240,5 +241,23 @@ class HomeController extends GetxController {
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
     }
+  }
+
+  PostDetail? getPostDetail(int postId) {
+    int index =
+        actualDisplayPosts.indexWhere((element) => element.post.id == postId);
+    if (index != -1) {
+      return actualDisplayPosts[index].post;
+    }
+    return null;
+  }
+
+  void onNavToLocationView(int? id) {
+    if (id == null) return;
+    PostDetail? post = getPostDetail(id);
+    if (post == null) return;
+    Get.toNamed(Routes.postsLocation, arguments: {
+      Strings.postDetail: post,
+    });
   }
 }

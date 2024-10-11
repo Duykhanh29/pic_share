@@ -26,4 +26,6 @@ abstract class Routes {
   static const String notificationSettings = '/notification_settings';
   static const String postHistory = '/post_history';
   static const String postDetail = '/post_detail';
+  static const String postsWithLocation = '/posts_with_location';
+  static const String postsLocation = '/posts_location';
 }

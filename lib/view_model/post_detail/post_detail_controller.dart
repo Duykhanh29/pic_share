@@ -9,6 +9,7 @@ import 'package:pic_share/data/models/post/post_detail.dart';
 import 'package:pic_share/data/models/user/user_model.dart';
 import 'package:pic_share/data/models/user/user_summary_model.dart';
 import 'package:pic_share/data/repositories/posts/post_repository.dart';
+import 'package:pic_share/routes/app_pages.dart';
 import 'package:pic_share/view_model/auth/auth_controller.dart';
 
 class PostDetailController extends GetxController {
@@ -108,5 +109,12 @@ class PostDetailController extends GetxController {
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
     }
+  }
+
+  void onNavToLocationView() {
+    if (postData.value == null) return;
+    Get.toNamed(Routes.postsLocation, arguments: {
+      Strings.postDetail: postData.value,
+    });
   }
 }
