@@ -35,30 +35,38 @@ class UserSearchResultWidget extends StatelessWidget {
         ),
         child: Row(
           children: [
-            userSummaryModel.user.urlAvatar != null
-                ? ImageCacheHelper.avatarImage(
-                    url: userSummaryModel.user.urlAvatar!,
-                    width: MediaQuery.of(context).size.height * 0.08,
-                    height: MediaQuery.of(context).size.height * 0.08)
-                : CircleAvatar(
-                    radius: MediaQuery.of(context).size.height * 0.04,
-                    backgroundImage: const AssetImage(
-                      AppImage.userEmptyAvatar,
-                    ),
-                  ),
+            _buildAvatar(context),
             const SizedBox(
               width: 20,
             ),
-            Text(
-              userSummaryModel.user.name ?? "",
-              style: AppTextStyles.commonTextStyle()
-                  .copyWith(fontSize: 16, fontWeight: FontWeight.w600),
-            ),
+            _buildName(),
             const Spacer(),
             _buildButton(),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildAvatar(BuildContext context) {
+    return userSummaryModel.user.urlAvatar != null
+        ? ImageCacheHelper.avatarImage(
+            url: userSummaryModel.user.urlAvatar!,
+            width: MediaQuery.of(context).size.height * 0.08,
+            height: MediaQuery.of(context).size.height * 0.08)
+        : CircleAvatar(
+            radius: MediaQuery.of(context).size.height * 0.04,
+            backgroundImage: const AssetImage(
+              AppImage.userEmptyAvatar,
+            ),
+          );
+  }
+
+  Widget _buildName() {
+    return Text(
+      userSummaryModel.user.name ?? "",
+      style: AppTextStyles.commonTextStyle()
+          .copyWith(fontSize: 16, fontWeight: FontWeight.w600),
     );
   }
 
@@ -73,22 +81,28 @@ class UserSearchResultWidget extends StatelessWidget {
         icon: const Icon(Icons.person_add_alt_1),
       );
     } else if (userSummaryModel.relationship == UserRelationship.friend) {
-      return IconButton.outlined(
-        onPressed: () {
-          if (onChatTap != null) {
-            onChatTap!(userSummaryModel.user.id?.toInt() ?? 0);
-          }
-        },
-        icon: const Icon(Icons.chat),
+      return Row(
+        children: [
+          IconButton.outlined(
+            onPressed: () {
+              if (onChatTap != null) {
+                onChatTap!(userSummaryModel.user.id?.toInt() ?? 0);
+              }
+            },
+            icon: const Icon(Icons.chat),
+          ),
+          IconButton.outlined(
+            onPressed: () async {
+              await onReject();
+            },
+            icon: const Icon(Icons.person_add_disabled),
+          ),
+        ],
       );
     } else if (userSummaryModel.relationship == UserRelationship.sent) {
       return IconButton.outlined(
         onPressed: () async {
-          if (onRejectFriend != null) {
-            await onRejectFriend!(
-                userID: userSummaryModel.user.id?.toInt() ?? 0,
-                id: userSummaryModel.id);
-          }
+          await onReject();
         },
         icon: const Icon(Icons.cancel),
       );
@@ -98,11 +112,7 @@ class UserSearchResultWidget extends StatelessWidget {
           IconButton.filled(
             color: AppColors.warningColor,
             onPressed: () async {
-              if (onRejectFriend != null) {
-                await onRejectFriend!(
-                    userID: userSummaryModel.user.id?.toInt() ?? 0,
-                    id: userSummaryModel.id);
-              }
+              await onReject();
             },
             icon: Icon(
               Icons.clear,
@@ -125,6 +135,14 @@ class UserSearchResultWidget extends StatelessWidget {
           )
         ],
       );
+    }
+  }
+
+  Future<void> onReject() async {
+    if (onRejectFriend != null) {
+      await onRejectFriend!(
+          userID: userSummaryModel.user.id?.toInt() ?? 0,
+          id: userSummaryModel.id);
     }
   }
 }

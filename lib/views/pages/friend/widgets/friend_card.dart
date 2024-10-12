@@ -34,87 +34,115 @@ class FriendCard extends StatelessWidget {
         padding: const EdgeInsets.all(10),
         child: Row(
           children: [
-            friend.avatar != null
-                ? ImageCacheHelper.avatarImage(
-                    url: friend.avatar!,
-                    width: MediaQuery.of(context).size.height * 0.08,
-                    height: MediaQuery.of(context).size.height * 0.08)
-                : CircleAvatar(
-                    radius: MediaQuery.of(context).size.height * 0.04,
-                    backgroundImage: const AssetImage(
-                      AppImage.userEmptyAvatar,
-                    ),
-                  ),
+            _buildAvatar(context),
             const SizedBox(width: 10),
-            Text(
-              friend.name ?? "",
-              style: AppTextStyles.commonTextStyle()
-                  .copyWith(fontSize: 16, fontWeight: FontWeight.w600),
-            ),
+            _buildName(),
             const Spacer(),
-            Visibility(
-              visible: friend.status == FriendStatus.friend,
-              replacement: Visibility(
-                visible: isSent == false,
-                replacement: GestureDetector(
-                  onTap: () async {
-                    if (onRejectClick != null) {
-                      await onRejectClick!(friend.id);
-                    }
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: AppColors.darkBorderColor,
-                    ),
-                    child: Text(
-                      t.recall,
-                      style: AppTextStyles.commonTextStyle()
-                          .copyWith(color: AppColors.white),
-                    ),
-                  ),
-                ),
-                child: Row(
-                  children: [
-                    IconButton.filled(
-                      color: AppColors.warningColor,
-                      onPressed: () async {
-                        if (onRejectClick != null) {
-                          await onRejectClick!(friend.id);
-                        }
-                      },
-                      icon: Icon(
-                        Icons.clear,
-                        color: AppColors.white,
-                      ),
-                    ),
-                    IconButton.filled(
-                      color: AppColors.secondaryColor,
-                      onPressed: () async {
-                        if (onAccepttClick != null) {
-                          await onAccepttClick!(friend.id);
-                        }
-                      },
-                      icon: Icon(
-                        Icons.done,
-                        color: AppColors.white,
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              child: IconButton.outlined(
-                onPressed: () {
-                  if (onChatClick != null) {
-                    onChatClick!(friend.id);
-                  }
-                },
-                icon: const Icon(Icons.message_outlined),
-              ),
-            ),
+            _buildButtons(t),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildAvatar(BuildContext context) {
+    return friend.avatar != null
+        ? ImageCacheHelper.avatarImage(
+            url: friend.avatar!,
+            width: MediaQuery.of(context).size.height * 0.08,
+            height: MediaQuery.of(context).size.height * 0.08)
+        : CircleAvatar(
+            radius: MediaQuery.of(context).size.height * 0.04,
+            backgroundImage: const AssetImage(
+              AppImage.userEmptyAvatar,
+            ),
+          );
+  }
+
+  Widget _buildName() {
+    return Text(
+      friend.name ?? "",
+      style: AppTextStyles.commonTextStyle()
+          .copyWith(fontSize: 16, fontWeight: FontWeight.w600),
+    );
+  }
+
+  Widget _buildButtons(AppLocalizations t) {
+    return Visibility(
+      visible: friend.status == FriendStatus.friend,
+      replacement: _buildNotFriendStatus(t),
+      child: Row(
+        children: [
+          IconButton.outlined(
+            onPressed: () {
+              if (onChatClick != null) {
+                onChatClick!(friend.id);
+              }
+            },
+            icon: const Icon(Icons.message_outlined),
+          ),
+          IconButton.outlined(
+            onPressed: () async {
+              if (onRejectClick != null) {
+                await onRejectClick!(friend.id);
+              }
+            },
+            icon: const Icon(Icons.person_add_disabled),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildNotFriendStatus(AppLocalizations t) {
+    return Visibility(
+      visible: isSent == false,
+      replacement: GestureDetector(
+        onTap: () async {
+          if (onRejectClick != null) {
+            await onRejectClick!(friend.id);
+          }
+        },
+        child: Container(
+          padding: const EdgeInsets.all(5),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: AppColors.darkBorderColor,
+          ),
+          child: Text(
+            t.recall,
+            style: AppTextStyles.commonTextStyle()
+                .copyWith(color: AppColors.white),
+          ),
+        ),
+      ),
+      child: Row(
+        children: [
+          IconButton.filled(
+            color: AppColors.warningColor,
+            onPressed: () async {
+              if (onRejectClick != null) {
+                await onRejectClick!(friend.id);
+              }
+            },
+            icon: Icon(
+              Icons.clear,
+              color: AppColors.white,
+            ),
+          ),
+          IconButton.filled(
+            color: AppColors.secondaryColor,
+            onPressed: () async {
+              if (onAccepttClick != null) {
+                await onAccepttClick!(friend.id);
+              }
+            },
+            icon: Icon(
+              Icons.done,
+              color: AppColors.white,
+            ),
+          )
+        ],
       ),
     );
   }

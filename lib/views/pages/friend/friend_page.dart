@@ -130,6 +130,8 @@ class FriendPage extends GetView<FriendController> {
                                   onItemClick: controller.onItemClick,
                                   onChatClick: controller.onNavToChat,
                                   key: UniqueKey(),
+                                  onRejectClick:
+                                      controller.onRejectFriendRequest,
                                 );
                               },
                               itemCount: controller.friendList.length,

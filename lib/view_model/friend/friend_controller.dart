@@ -133,6 +133,7 @@ class FriendController extends GetxController
     try {
       await friendRepository.deleteFriend(id);
       updateChangesForFriendRequest(id);
+      updateChangesForFriends(id);
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
     } finally {
@@ -153,6 +154,25 @@ class FriendController extends GetxController
       for (var i = 0; i < sentFriends.length; i++) {
         if (sentFriends[i].id == id) {
           sentFriends.removeAt(i);
+          break;
+        }
+      }
+    }
+  }
+
+  void updateChangesForFriends(int id) {
+    bool flag = false;
+    for (var i = 0; i < friendList.length; i++) {
+      if (friendList[i].id == id) {
+        friendList.removeAt(i);
+        flag = true;
+        break;
+      }
+    }
+    if (!flag) {
+      for (var i = 0; i < friendList.length; i++) {
+        if (friendList[i].id == id) {
+          friendList.removeAt(i);
           break;
         }
       }
