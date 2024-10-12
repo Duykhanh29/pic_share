@@ -154,7 +154,7 @@ class SearchUserController extends GetxController {
       Friend? friend = await friendController.makeFriendRequest(id);
       if (friend != null) {
         onUpdateClick(UserRelationship.sent, id, friend.id);
-        await friendController.onRefresh();
+        friendController.onRefresh();
       }
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
@@ -172,7 +172,7 @@ class SearchUserController extends GetxController {
       debugPrint("Something went wrong: ${e.toString()}");
     } finally {
       onUpdateClick(UserRelationship.notFriend, userID, 0);
-      await friendController.onRefresh();
+      friendController.onRefresh();
       isLoading.value = false;
     }
   }
@@ -186,7 +186,7 @@ class SearchUserController extends GetxController {
       debugPrint("Something went wrong: ${e.toString()}");
     } finally {
       onUpdateClick(UserRelationship.friend, userID, id);
-      await friendController.onRefresh();
+      friendController.onRefresh();
       isLoading.value = false;
     }
   }
