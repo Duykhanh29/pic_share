@@ -34,37 +34,27 @@ class AuthRepositoryImpl extends AuthRepository {
       required String password,
       required String name,
       required String confirmPassword}) async {
-    try {
-      final response = await RegisterAPI(
-              email: email,
-              name: name,
-              password: password,
-              passwordConfirmation: confirmPassword)
-          .request();
-      final userData = response['user'];
-      UserModel user = UserModel.fromJson(userData);
-      return user;
-    } catch (e) {
-      debugPrint("Something went wrong: ${e.toString()}");
-    }
-    return null;
+    final response = await RegisterAPI(
+            email: email,
+            name: name,
+            password: password,
+            passwordConfirmation: confirmPassword)
+        .request();
+    final userData = response['user'];
+    UserModel user = UserModel.fromJson(userData);
+    return user;
   }
 
   @override
   Future<UserModel?> signInWithEmailPass(
       {required String email, required String password}) async {
-    try {
-      final response = await LoginAPI(
-        email: email,
-        password: password,
-      ).request();
-      final userData = response['user'];
-      UserModel user = UserModel.fromJson(userData);
-      return user;
-    } catch (e) {
-      debugPrint("Something went wrong: ${e.toString()}");
-    }
-    return null;
+    final response = await LoginAPI(
+      email: email,
+      password: password,
+    ).request();
+    final userData = response['user'];
+    UserModel user = UserModel.fromJson(userData);
+    return user;
   }
 
   @override
