@@ -30,7 +30,10 @@ class APIProvider {
       },
       onError: (e, handler) async {
         if (e.response?.statusCode == 401) {}
-        if (e.response?.statusCode == 403) {}
+        if (e.response?.statusCode == 403) {
+          SnackbarHelper.errorSnackbar(
+              e.response?.statusMessage ?? "This account has been banned");
+        }
         return handler.next(e);
       },
     ));
@@ -58,6 +61,9 @@ class APIProvider {
       );
       if (response.statusCode == 200 || response.statusCode == 201) {
         return response.data;
+      } else if (response.statusCode == 403) {
+        SnackbarHelper.errorSnackbar(
+            response.statusMessage ?? "This account has been banned");
       }
       return null;
     } on TimeoutException catch (_) {

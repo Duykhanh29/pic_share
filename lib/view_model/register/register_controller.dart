@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pic_share/app/helper/snack_bar_helper.dart';
 import 'package:pic_share/app/services/local_storage_service.dart';
 import 'package:pic_share/app/services/notification_service.dart';
 import 'package:pic_share/app/services/token_manager.dart';
@@ -75,12 +76,13 @@ class RegisterController extends GetxController {
               ?.copyWith(config: user.value?.config?.copyWith(fcmToken: token));
         }
         localStorageService.setUserModel(value: user.value);
+        SnackbarHelper.successSnackbar("Register successfully");
       } else {
         debugPrint("Form is not valid");
       }
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
-    }finally {
+    } finally {
       isLoading.value = false;
     }
   }

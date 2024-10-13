@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pic_share/app/helper/snack_bar_helper.dart';
 import 'package:pic_share/app/services/local_storage_service.dart';
 import 'package:pic_share/app/services/notification_service.dart';
 import 'package:pic_share/app/services/token_manager.dart';
@@ -61,6 +62,7 @@ class SignInController extends GetxController {
               ?.copyWith(config: user.value?.config?.copyWith(fcmToken: token));
         }
         localStorageService.setUserModel(value: user.value);
+        SnackbarHelper.successSnackbar("Login successfully");
       } else {
         debugPrint('form is not valid');
       }
@@ -83,6 +85,7 @@ class SignInController extends GetxController {
             ?.copyWith(config: user.value?.config?.copyWith(fcmToken: token));
       }
       localStorageService.setUserModel(value: user.value);
+      SnackbarHelper.successSnackbar("Login successfully");
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
     } finally {
