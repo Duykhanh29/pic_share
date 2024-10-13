@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pic_share/data/enums/friend_status.dart';
 import 'package:pic_share/data/models/user/friend.dart';
+import 'package:pic_share/data/models/user/user_summary_model.dart';
 import 'package:pic_share/data/providers/network/apis/friends/friend_apis.dart';
 
 abstract class FriendRepository {
@@ -14,6 +15,7 @@ abstract class FriendRepository {
   Future<List<Friend>> getFriendRequestList();
 
   Future<List<Friend>> getFriendRequestSentList();
+  Future<List<UserSummaryModel>> getMutualFriends(int friendId);
 }
 
 class FriendRepositoryImpl implements FriendRepository {
@@ -87,6 +89,19 @@ class FriendRepositoryImpl implements FriendRepository {
       final data = response['data'] as Map<String, dynamic>;
       final friendsData = data['list_request'] as List<dynamic>;
       final friends = friendsData.map((e) => Friend.fromJson(e)).toList();
+      return friends;
+    } catch (e) {
+      debugPrint("Something went wrong: ${e.toString()}");
+    }
+    return [];
+  }
+
+  @override
+  Future<List<UserSummaryModel>> getMutualFriends(int friendId) async {
+    try {
+      final response = await GetMutualFriendsAPI(friendId: friendId).request();
+      final data = response['data'] as List<dynamic>;
+      final friends = data.map((e) => UserSummaryModel.fromJson(e)).toList();
       return friends;
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");

@@ -96,3 +96,18 @@ class GetSentFriendsAPI extends APIRequestRepresentable {
     return APIProvider().request(this);
   }
 }
+
+class GetMutualFriendsAPI extends APIRequestRepresentable {
+  final int friendId;
+  GetMutualFriendsAPI({required this.friendId});
+  @override
+  String get endpoint => '/api/friend/get_mutual_friends/$friendId';
+
+  @override
+  HTTPMethod get method => HTTPMethod.get;
+
+  @override
+  Future request() {
+    return APIProvider().request(this);
+  }
+}

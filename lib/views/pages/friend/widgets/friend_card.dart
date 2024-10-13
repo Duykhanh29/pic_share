@@ -16,6 +16,7 @@ class FriendCard extends StatelessWidget {
     this.onRejectClick,
     required this.onItemClick,
     required this.friend,
+    required this.isMe,
   });
   final Friend friend;
   final bool? isSent;
@@ -23,12 +24,13 @@ class FriendCard extends StatelessWidget {
   final Future<void> Function(int)? onAccepttClick;
   final Future<void> Function(int)? onRejectClick;
   final void Function(int) onItemClick;
+  final bool isMe;
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context)!;
     return GestureDetector(
       onTap: () {
-        onItemClick(friend.id);
+        onItemClick( friend.id);
       },
       child: Container(
         padding: const EdgeInsets.all(10),

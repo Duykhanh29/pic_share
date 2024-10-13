@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pic_share/app/constants/strings.dart';
 import 'package:pic_share/data/enums/friend_status.dart';
 import 'package:pic_share/data/models/user/friend.dart';
 import 'package:pic_share/data/models/user/user_model.dart';
@@ -127,7 +128,18 @@ class FriendController extends GetxController
     super.dispose();
   }
 
-  void onItemClick(int id) {}
+  void onItemClick(int id) {
+    final currentFriendList = isFriendShipView.value
+        ? friendList
+        : (tabController.index == 0 ? requestedFriends : sentFriends);
+    UserSummaryModel? selectedUser = getSelectedUser(id, currentFriendList);
+    if (selectedUser != null) {
+      Get.toNamed(Routes.friendProfile, arguments: {
+        Strings.userSummary: selectedUser,
+      });
+    }
+  }
+
   Future<void> onRejectFriendRequest(int id) async {
     isActionLoading.value = true;
     try {
@@ -212,13 +224,7 @@ class FriendController extends GetxController
     final index = friendList.indexWhere((user) => user.id == id);
     if (index != -1) {
       final friend = friendList[index];
-      UserSummaryModel userSummaryModel = UserSummaryModel(
-        id: currentUser?.id == friend.friendId
-            ? friend.userId
-            : friend.friendId,
-        name: friend.name,
-        urlAvatar: friend.avatar,
-      );
+      UserSummaryModel userSummaryModel = getSelectedUserWithFriend(friend);
       if (!Get.isRegistered<ConversationsController>()) {
         Get.put(
           ConversationsController(
@@ -234,5 +240,23 @@ class FriendController extends GetxController
 
   void onNavToSearch() {
     Get.toNamed(Routes.search);
+  }
+
+  // helper
+  UserSummaryModel? getSelectedUser(int userId, List<Friend> friends) {
+    final index = friends.indexWhere((user) => user.id == userId);
+    if (index != -1) {
+      final friend = friends[index];
+      return getSelectedUserWithFriend(friend);
+    }
+    return null;
+  }
+
+  UserSummaryModel getSelectedUserWithFriend(Friend friend) {
+    return UserSummaryModel(
+      id: currentUser?.id == friend.friendId ? friend.userId : friend.friendId,
+      name: friend.name,
+      urlAvatar: friend.avatar,
+    );
   }
 }

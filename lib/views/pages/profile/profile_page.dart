@@ -18,59 +18,7 @@ class ProfilePage extends GetView<ProfileController> {
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(
-        leading: const CustomBackButton(),
-        actions: [
-          IconButton(
-            onPressed: controller.onNavToEditProfile,
-            icon: const Icon(
-              Icons.edit,
-              color: Colors.black,
-            ),
-          ),
-        ],
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(200),
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: 20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                controller.currentUser?.urlAvatar != null
-                    ? ImageCacheHelper.avatarImage(
-                        url: controller.currentUser!.urlAvatar!,
-                        height: 100,
-                        width: 100)
-                    : const CircleAvatar(
-                        radius: 50,
-                        backgroundImage: AssetImage(AppImage.userEmptyAvatar),
-                      ),
-                const SizedBox(
-                  height: 15,
-                ),
-                Text(
-                  controller.currentUser?.name ?? "",
-                  style: AppTextStyles.headingTextStyle(),
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                Obx(
-                  () => controller.isUserLogLoading.value
-                      ? ShimmerHelper().buildBasicShimmer(
-                          height: 80,
-                          width: MediaQuery.of(context).size.width * 0.85)
-                      : UserLogWidget(
-                          likeCount: controller.userLog.value?.totalLikes ?? 0,
-                          postCount: controller.userLog.value?.totalPosts ?? 0,
-                          viewCount: controller.userLog.value?.totalView ?? 0,
-                        ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
+      appBar: _buildAppBar(context),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
         child: CustomScrollView(
@@ -89,84 +37,141 @@ class ProfilePage extends GetView<ProfileController> {
                 name: controller.currentUser?.name ?? "",
               ),
             ),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 15, bottom: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 5),
-                      child: Text(
-                        t.currentPosts,
-                        style: AppTextStyles.commonTextStyle()
-                            .copyWith(fontWeight: FontWeight.w600),
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: controller.onNavToPostHistory,
-                      child: Text(
-                        t.seeMore,
-                        style: AppTextStyles.seeMoreTextStyle(),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Obx(() => controller.isLoading.value
-                ? SliverToBoxAdapter(
-                    child: ShimmerHelper().buildGridShimmer(),
-                  )
-                : controller.latestPosts.isEmpty
-                    ? SliverToBoxAdapter(
-                        child: SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.15,
-                          child: Center(
-                            child: Text(
-                              t.noPosts,
-                              style: AppTextStyles.commonTextStyle(),
-                            ),
-                          ),
-                        ),
-                      )
-                    : SliverToBoxAdapter(
-                        child: GridView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 3,
-                                  mainAxisSpacing: 10,
-                                  crossAxisSpacing: 10),
-                          itemBuilder: (context, index) {
-                            final post = controller.latestPosts[index];
-                            return GestureDetector(
-                              onTap: () {
-                                controller.onTapDetail(post.id ?? 0);
-                              },
-                              child: post.urlImage != null
-                                  ? ImageCacheHelper.showImage(
-                                      url: post.urlImage ?? "",
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.15,
-                                      width: MediaQuery.of(context).size.width *
-                                          0.3)
-                                  : Image.asset(AppImage.placeHolder,
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.15,
-                                      width: MediaQuery.of(context).size.width *
-                                          0.3),
-                            );
-                          },
-                          itemCount: controller.latestPosts.length,
-                        ),
-                      )),
+            _buildRowForHistory(context, t),
+            _buildHisories(context, t),
           ],
         ),
       ),
     );
+  }
+
+  AppBar _buildAppBar(BuildContext context) {
+    return AppBar(
+      leading: const CustomBackButton(),
+      actions: [
+        IconButton(
+          onPressed: controller.onNavToEditProfile,
+          icon: const Icon(
+            Icons.edit,
+            color: Colors.black,
+          ),
+        ),
+      ],
+      bottom: PreferredSize(
+        preferredSize: const Size.fromHeight(200),
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              controller.currentUser?.urlAvatar != null
+                  ? ImageCacheHelper.avatarImage(
+                      url: controller.currentUser!.urlAvatar!,
+                      height: 100,
+                      width: 100)
+                  : const CircleAvatar(
+                      radius: 50,
+                      backgroundImage: AssetImage(AppImage.userEmptyAvatar),
+                    ),
+              const SizedBox(
+                height: 15,
+              ),
+              Text(
+                controller.currentUser?.name ?? "",
+                style: AppTextStyles.headingTextStyle(),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              Obx(
+                () => controller.isUserLogLoading.value
+                    ? ShimmerHelper().buildBasicShimmer(
+                        height: 80,
+                        width: MediaQuery.of(context).size.width * 0.85)
+                    : UserLogWidget(
+                        likeCount: controller.userLog.value?.totalLikes ?? 0,
+                        postCount: controller.userLog.value?.totalPosts ?? 0,
+                        viewCount: controller.userLog.value?.totalView ?? 0,
+                      ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildRowForHistory(BuildContext context, AppLocalizations t) {
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: const EdgeInsets.only(top: 15, bottom: 10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 5),
+              child: Text(
+                t.currentPosts,
+                style: AppTextStyles.commonTextStyle()
+                    .copyWith(fontWeight: FontWeight.w600),
+              ),
+            ),
+            TextButton(
+              onPressed: controller.onNavToPostHistory,
+              child: Text(
+                t.seeMore,
+                style: AppTextStyles.seeMoreTextStyle(),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHisories(BuildContext context, AppLocalizations t) {
+    return Obx(() => controller.isLoading.value
+        ? SliverToBoxAdapter(
+            child: ShimmerHelper().buildGridShimmer(),
+          )
+        : controller.latestPosts.isEmpty
+            ? SliverToBoxAdapter(
+                child: SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.15,
+                  child: Center(
+                    child: Text(
+                      t.noPosts,
+                      style: AppTextStyles.commonTextStyle(),
+                    ),
+                  ),
+                ),
+              )
+            : SliverToBoxAdapter(
+                child: GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      mainAxisSpacing: 10,
+                      crossAxisSpacing: 10),
+                  itemBuilder: (context, index) {
+                    final post = controller.latestPosts[index];
+                    return GestureDetector(
+                      onTap: () {
+                        controller.onTapDetail(post.id ?? 0);
+                      },
+                      child: post.urlImage != null
+                          ? ImageCacheHelper.showImage(
+                              url: post.urlImage ?? "",
+                              height: MediaQuery.of(context).size.height * 0.15,
+                              width: MediaQuery.of(context).size.width * 0.3)
+                          : Image.asset(AppImage.placeHolder,
+                              height: MediaQuery.of(context).size.height * 0.15,
+                              width: MediaQuery.of(context).size.width * 0.3),
+                    );
+                  },
+                  itemCount: controller.latestPosts.length,
+                ),
+              ));
   }
 }

@@ -27,7 +27,7 @@ abstract class UserRepository {
   Future<void> updateFcmToken({required String? fcmToken});
   Future<void> deleteUser();
   Future<UserModel?> getCurrentUser();
-  Future<UserLog?> getUserLog();
+  Future<UserLog?> getUserLog({int? userId});
 }
 
 class UserRepositoryImpl implements UserRepository {
@@ -103,9 +103,9 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<UserLog?> getUserLog() async {
+  Future<UserLog?> getUserLog({int? userId}) async {
     try {
-      final response = await UserLogAPI().request();
+      final response = await UserLogAPI(userId: userId).request();
       final data = response['data'] as Map<String, dynamic>;
       final userLog = UserLog.fromJson(data);
       return userLog;

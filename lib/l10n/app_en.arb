@@ -123,5 +123,11 @@
     "markAsRead":"Mark as read",
     "you":"You",
     "sentAnImage":"Sent an image",
-    "postsWithLocation":"Posts with location"
+    "postsWithLocation":"Posts with location",
+    "mutualFriends":"Mutual friends",
+    "profile":"Profile",
+    "noMutualFriend":"No mutual friends",
+    "reject":"Reject",
+    "unfriend":"Unfriend",
+    "accept":"Accept"
 }

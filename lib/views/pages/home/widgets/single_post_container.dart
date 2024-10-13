@@ -57,25 +57,35 @@ class SinglePostContainer extends GetView<HomeController> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          postData.post.user?.urlAvatar != null
-              ? ImageCacheHelper.avatarImage(
-                  url: postData.post.user!.urlAvatar!)
-              : const CircleAvatar(
-                  radius: 20,
-                  backgroundImage: AssetImage(
-                    AppImage.userEmptyAvatar,
+          GestureDetector(
+            onTap: () {
+              controller.onUserClick(postData.post.user);
+            },
+            child: postData.post.user?.urlAvatar != null
+                ? ImageCacheHelper.avatarImage(
+                    url: postData.post.user!.urlAvatar!)
+                : const CircleAvatar(
+                    radius: 20,
+                    backgroundImage: AssetImage(
+                      AppImage.userEmptyAvatar,
+                    ),
                   ),
-                ),
+          ),
           const SizedBox(width: 15),
-          Container(
-            padding: const EdgeInsets.all(4),
-            decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 223, 219, 219),
-                borderRadius: BorderRadius.circular(5)),
-            child: Center(
-              child: Text(
-                postData.post.user?.name ?? "",
-                style: AppTextStyles.headingTextStyle(),
+          GestureDetector(
+            onTap: () {
+              controller.onUserClick(postData.post.user);
+            },
+            child: Container(
+              padding: const EdgeInsets.all(4),
+              decoration: BoxDecoration(
+                  color: const Color.fromARGB(255, 223, 219, 219),
+                  borderRadius: BorderRadius.circular(5)),
+              child: Center(
+                child: Text(
+                  postData.post.user?.name ?? "",
+                  style: AppTextStyles.headingTextStyle(),
+                ),
               ),
             ),
           ),

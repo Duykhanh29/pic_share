@@ -26,7 +26,9 @@ class UserSearchResultWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        onTap.call(userSummaryModel.user.id?.toInt() ?? 0);
+      },
       child: Container(
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
@@ -52,10 +54,10 @@ class UserSearchResultWidget extends StatelessWidget {
     return userSummaryModel.user.urlAvatar != null
         ? ImageCacheHelper.avatarImage(
             url: userSummaryModel.user.urlAvatar!,
-            width: MediaQuery.of(context).size.height * 0.08,
-            height: MediaQuery.of(context).size.height * 0.08)
+            width: MediaQuery.of(context).size.height * 0.06,
+            height: MediaQuery.of(context).size.height * 0.06)
         : CircleAvatar(
-            radius: MediaQuery.of(context).size.height * 0.04,
+            radius: MediaQuery.of(context).size.height * 0.03,
             backgroundImage: const AssetImage(
               AppImage.userEmptyAvatar,
             ),

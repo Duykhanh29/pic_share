@@ -6,6 +6,7 @@ import 'package:pic_share/view_model/comments/comments_bindings.dart';
 import 'package:pic_share/view_model/conversations/conversations_bindings.dart';
 import 'package:pic_share/view_model/edit_profile/edit_profile_bindings.dart';
 import 'package:pic_share/view_model/friend/friend_bindings.dart';
+import 'package:pic_share/view_model/friend_profile/friend_profile_bindings.dart';
 import 'package:pic_share/view_model/home/home_bidings.dart';
 import 'package:pic_share/view_model/language/language_bindings.dart';
 import 'package:pic_share/view_model/nav_bottom/nav_bottom_bidings.dart';
@@ -29,6 +30,7 @@ import 'package:pic_share/views/pages/comments/comments_page.dart';
 import 'package:pic_share/views/pages/conversations/conversations_page.dart';
 import 'package:pic_share/views/pages/edit_profile/edit_profile_page.dart';
 import 'package:pic_share/views/pages/friend/friend_page.dart';
+import 'package:pic_share/views/pages/friend_profile/friend_profile_page.dart';
 import 'package:pic_share/views/pages/grid_posts_view/grid_posts_page.dart';
 import 'package:pic_share/views/pages/home/home_page.dart';
 import 'package:pic_share/views/pages/languages/language_page.dart';
@@ -178,6 +180,11 @@ abstract class AppPages {
       name: Routes.postsLocation,
       page: () => const PostsLocationPage(),
       binding: PostsLocationBinding(),
+    ),
+    GetPage(
+      name: Routes.friendProfile,
+      page: () => const FriendProfilePage(),
+      binding: FriendProfileBinding(),
     ),
   ];
 }

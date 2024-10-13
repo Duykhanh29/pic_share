@@ -52,7 +52,7 @@ class ProfileController extends GetxController {
   Future<void> fetchData() async {
     isLoading.value = true;
     try {
-      Paging<Post> paging = await postRepository.getPostHistory(1);
+      Paging<Post> paging = await postRepository.getPostHistory(page: 1);
       latestPosts.value = paging.data;
       postCount.value = paging.totalResults;
     } catch (e) {
