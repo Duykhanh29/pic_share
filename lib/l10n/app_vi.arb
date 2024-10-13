@@ -123,5 +123,11 @@
     "markAsRead":"Đánh dấu là đã đọc",
     "you":"Bạn",
     "sentAnImage":"Đã gửi một hình ảnh",
-    "postsWithLocation":"Bài đăng với vị trí"
+    "postsWithLocation":"Bài đăng với vị trí",
+    "mutualFriends":"Bạn bè chung",
+    "profile":"Hồ sơ cá nhân",
+    "noMutualFriend":"Không có bạn bè chung",
+    "reject":"Từ chối",
+    "unfriend":"Hủy kết bạn",
+    "accept":"Chấp nhận"
 }

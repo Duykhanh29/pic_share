@@ -32,7 +32,7 @@ class PostHistoryController extends GetxController {
   Future<void> fetchPosts({int page = 1}) async {
     isLoading.value = true;
     try {
-      Paging<Post> paging = await postRepository.getPostHistory(page);
+      Paging<Post> paging = await postRepository.getPostHistory(page: page);
       final posts = paging.data;
       if (paging.hasMore) {
         pagingController.appendPage(

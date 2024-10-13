@@ -55,10 +55,13 @@ class DeletePostAPI extends APIRequestRepresentable {
 }
 
 class GetPostHistoryAPI extends APIRequestRepresentable {
-  GetPostHistoryAPI({this.page});
+  GetPostHistoryAPI({this.page, this.userId});
   final int? page;
+  final int? userId;
   @override
-  String get endpoint => '/api/post/post_histories?page=$page';
+  String get endpoint => userId != null
+      ? '/api/post/post_histories?user_id=$userId?page=$page'
+      : '/api/post/post_histories?page=$page';
 
   @override
   HTTPMethod get method => HTTPMethod.get;

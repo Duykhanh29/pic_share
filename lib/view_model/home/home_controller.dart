@@ -260,4 +260,15 @@ class HomeController extends GetxController {
       Strings.postDetail: post,
     });
   }
+
+  void onUserClick(UserSummaryModel? user) {
+    if (user == null) return;
+    if (user.id == currentUser?.id) {
+      Get.toNamed(Routes.profile);
+    } else {
+      Get.toNamed(Routes.friendProfile, arguments: {
+        Strings.userSummary: user,
+      });
+    }
+  }
 }

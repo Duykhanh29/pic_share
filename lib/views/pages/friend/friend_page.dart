@@ -132,6 +132,8 @@ class FriendPage extends GetView<FriendController> {
                                   key: UniqueKey(),
                                   onRejectClick:
                                       controller.onRejectFriendRequest,
+                                  isMe: controller.currentUser?.id ==
+                                      friend.userId,
                                 );
                               },
                               itemCount: controller.friendList.length,
@@ -204,6 +206,8 @@ class FriendPage extends GetView<FriendController> {
                                   onAccepttClick:
                                       controller.onAcceptFriendRequest,
                                   key: UniqueKey(),
+                                  isMe: controller.currentUser?.id ==
+                                      friend.userId,
                                 );
                               },
                               itemCount: controller.requestedFriends.length,
@@ -228,6 +232,8 @@ class FriendPage extends GetView<FriendController> {
                                   onAccepttClick:
                                       controller.onAcceptFriendRequest,
                                   key: UniqueKey(),
+                                  isMe: controller.currentUser?.id ==
+                                      friend.userId,
                                 );
                               },
                               itemCount: controller.sentFriends.length,

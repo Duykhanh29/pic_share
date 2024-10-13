@@ -115,12 +115,16 @@ class NewPostPage extends GetView<NewPostController> {
                         Align(
                           alignment: Alignment.bottomCenter,
                           child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                color: Colors.black.withOpacity(0.6)),
                             padding: const EdgeInsets.symmetric(
                                 vertical: 5, horizontal: 20),
                             height: 45,
                             width: MediaQuery.of(context).size.width * 0.6,
                             child: Obx(
                               () => TextField(
+                                style: AppTextStyles.commonLightTextStyle(),
                                 onTapOutside: (event) {
                                   controller.onClearFocus();
                                 },
@@ -140,6 +144,8 @@ class NewPostPage extends GetView<NewPostController> {
                                           width: 2),
                                       borderRadius: BorderRadius.circular(10)),
                                   hintText: t.addCaption,
+                                  hintStyle:
+                                      AppTextStyles.commonLightTextStyle(),
                                 ),
                               ),
                             ),

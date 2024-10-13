@@ -7,6 +7,7 @@ import 'package:pic_share/data/models/user/user_friendship_model.dart';
 import 'package:pic_share/data/models/user/user_summary_model.dart';
 import 'package:pic_share/data/repositories/conversations/conversation_repository.dart';
 import 'package:pic_share/data/repositories/search/search_repository.dart';
+import 'package:pic_share/routes/app_pages.dart';
 import 'package:pic_share/view_model/auth/auth_controller.dart';
 import 'package:pic_share/view_model/conversations/conversations_controller.dart';
 import 'package:pic_share/view_model/friend/friend_controller.dart';
@@ -208,13 +209,29 @@ class SearchUserController extends GetxController {
     }
   }
 
-  void onItemCLick(int id) {}
+  void onItemCLick(int id) {
+    UserFriendShipModel? searchedUser;
+    if (isSearchWithCode.value) {
+      searchedUser = userSearchResult.value;
+    } else {
+      final index = listSearchUser.indexWhere((user) => user.user.id == id);
+      if (index != -1) {
+        searchedUser = listSearchUser[index];
+      }
+    }
+    if (searchedUser != null) {
+      Get.toNamed(Routes.friendProfile, arguments: {
+        Strings.userSummary: searchedUser.user,
+      });
+    }
+  }
+
   void onChatClick(int id) {
     UserFriendShipModel? searchedUser;
     if (isSearchWithCode.value) {
       searchedUser = userSearchResult.value;
     } else {
-      final index = listSearchUser.indexWhere((user) => user.id == id);
+      final index = listSearchUser.indexWhere((user) => user.user.id == id);
       if (index != -1) {
         searchedUser = listSearchUser[index];
       }

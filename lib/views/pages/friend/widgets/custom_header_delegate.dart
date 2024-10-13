@@ -5,11 +5,13 @@ class MyCustomHeaderDelegate extends SliverPersistentHeaderDelegate {
   final double minHeight;
   final double maxHeight;
   final Widget child;
+  final Color? backgroundColor;
 
   MyCustomHeaderDelegate({
     required this.minHeight,
     required this.maxHeight,
     required this.child,
+    this.backgroundColor,
   });
 
   @override
@@ -23,7 +25,9 @@ class MyCustomHeaderDelegate extends SliverPersistentHeaderDelegate {
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return SizedBox.expand(
       child: Container(
-        color: AppColors.secondaryColor,
+        decoration: BoxDecoration(
+          color: backgroundColor ?? AppColors.secondaryColor,
+        ),
         child: child,
       ),
     );

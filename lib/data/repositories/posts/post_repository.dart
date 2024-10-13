@@ -23,7 +23,7 @@ abstract class PostRepository {
     double? latitude,
     double? longitude,
   });
-  Future<Paging<Post>> getPostHistory(int? page);
+  Future<Paging<Post>> getPostHistory({int? page, int? userId});
   Future<PostDetail?> getPostDetail(int id);
   Future<void> deletePost(int id);
   Future<Report?> reportPost({required int id, required String reason});
@@ -90,9 +90,10 @@ class PostRepositoryImpl implements PostRepository {
   }
 
   @override
-  Future<Paging<Post>> getPostHistory(int? page) async {
+  Future<Paging<Post>> getPostHistory({int? page, int? userId}) async {
     try {
-      final response = await GetPostHistoryAPI(page: page).request();
+      final response =
+          await GetPostHistoryAPI(page: page, userId: userId).request();
       final data = response['data'] as Map<String, dynamic>;
       int totalItems = data['totalItems'] as int;
       final postData = data['posts'] as List<dynamic>;
