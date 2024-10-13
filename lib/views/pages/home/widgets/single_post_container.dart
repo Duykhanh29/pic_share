@@ -13,19 +13,26 @@ import 'package:pic_share/view_model/home/home_controller.dart';
 import 'package:pic_share/app/constants/strings.dart';
 import 'package:pic_share/views/pages/home/widgets/action_sheet_widget.dart';
 import 'package:pic_share/views/pages/home/widgets/report_action_widget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SinglePostContainer extends GetView<HomeController> {
-  const SinglePostContainer({super.key, required this.postData});
+  const SinglePostContainer({
+    super.key,
+    required this.postData,
+    required this.isMe,
+  });
   final PostData postData;
+  final bool isMe;
   @override
   Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context)!;
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            _buildTopInfo(context),
+            _buildTopInfo(context, t),
             Stack(
               alignment: Alignment.center,
               children: [
@@ -51,7 +58,7 @@ class SinglePostContainer extends GetView<HomeController> {
     );
   }
 
-  Widget _buildTopInfo(BuildContext context) {
+  Widget _buildTopInfo(BuildContext context, AppLocalizations t) {
     return Padding(
       padding: const EdgeInsets.only(left: 5, top: 10, bottom: 10),
       child: Row(
@@ -83,7 +90,7 @@ class SinglePostContainer extends GetView<HomeController> {
                   borderRadius: BorderRadius.circular(5)),
               child: Center(
                 child: Text(
-                  postData.post.user?.name ?? "",
+                  isMe ? t.you : postData.post.user?.name ?? "",
                   style: AppTextStyles.headingTextStyle(),
                 ),
               ),
@@ -179,9 +186,11 @@ class SinglePostContainer extends GetView<HomeController> {
           const SizedBox(
             height: 8,
           ),
-          _buildButton(Icons.email, () async {
-            await controller.sendMessage(postData.post.id ?? 0);
-          }),
+          isMe
+              ? const SizedBox.shrink()
+              : _buildButton(Icons.email, () async {
+                  await controller.sendMessage(postData.post.id ?? 0);
+                }),
           if (postData.post.latitude != null &&
               postData.post.longitude != null) ...[
             const SizedBox(

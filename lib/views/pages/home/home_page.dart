@@ -84,6 +84,8 @@ class HomePage extends GetView<HomeController> {
                           final post = controller.actualDisplayPosts[index];
                           return SinglePostContainer(
                             postData: post,
+                            isMe: controller.currentUser?.id ==
+                                post.post.user?.id,
                           );
                         },
                       ),

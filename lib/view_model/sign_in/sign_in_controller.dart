@@ -4,9 +4,11 @@ import 'package:pic_share/app/helper/snack_bar_helper.dart';
 import 'package:pic_share/app/services/local_storage_service.dart';
 import 'package:pic_share/app/services/notification_service.dart';
 import 'package:pic_share/app/services/token_manager.dart';
+import 'package:pic_share/data/enums/role_type.dart';
 import 'package:pic_share/data/models/user/user_model.dart';
 import 'package:pic_share/data/repositories/auth/auth_repository.dart';
 import 'package:pic_share/data/repositories/user/user_repository.dart';
+import 'package:pic_share/routes/app_pages.dart';
 
 class SignInController extends GetxController {
   final AuthRepository authRepository;
@@ -52,17 +54,23 @@ class SignInController extends GetxController {
       if (isValid) {
         user.value = await authRepository.signInWithEmailPass(
             email: emailController.text.trim(), password: passController.text);
-        await _tokenManager.setAccessToken(user.value?.accessToken);
-        String? token = await notificationsService.getToken();
+        if (user.value != null) {
+          if (user.value!.roleType == RoleType.admin) {
+            Get.toNamed(Routes.adminPage);
+          } else {
+            await _tokenManager.setAccessToken(user.value?.accessToken);
+            String? token = await notificationsService.getToken();
 
-        if (token != null) {
-          debugPrint("TOken of FCM is: $token");
-          await userRepository.updateFcmToken(fcmToken: token);
-          user.value = user.value
-              ?.copyWith(config: user.value?.config?.copyWith(fcmToken: token));
+            if (token != null) {
+              debugPrint("TOken of FCM is: $token");
+              await userRepository.updateFcmToken(fcmToken: token);
+              user.value = user.value?.copyWith(
+                  config: user.value?.config?.copyWith(fcmToken: token));
+            }
+            localStorageService.setUserModel(value: user.value);
+            SnackbarHelper.successSnackbar("Login successfully");
+          }
         }
-        localStorageService.setUserModel(value: user.value);
-        SnackbarHelper.successSnackbar("Login successfully");
       } else {
         debugPrint('form is not valid');
       }

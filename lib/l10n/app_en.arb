@@ -129,5 +129,7 @@
     "noMutualFriend":"No mutual friends",
     "reject":"Reject",
     "unfriend":"Unfriend",
-    "accept":"Accept"
+    "accept":"Accept",
+    "notSupportedForAdminApp":"The app does not support Admin accounts. Please try on the website",
+    "backToLogin":"Back to login"
 }

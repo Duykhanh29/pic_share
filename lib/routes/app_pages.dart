@@ -24,6 +24,7 @@ import 'package:pic_share/view_model/settings/setting_bindings.dart';
 import 'package:pic_share/view_model/sign_in/sign_in_bindings.dart';
 import 'package:pic_share/view_model/verify/verify_bindings.dart';
 import 'package:pic_share/views/nav_bottom.dart';
+import 'package:pic_share/views/pages/amdin_view/admin_page.dart';
 import 'package:pic_share/views/pages/change_pass/change_pass_page.dart';
 import 'package:pic_share/views/pages/chat/chat_page.dart';
 import 'package:pic_share/views/pages/comments/comments_page.dart';
@@ -185,6 +186,10 @@ abstract class AppPages {
       name: Routes.friendProfile,
       page: () => const FriendProfilePage(),
       binding: FriendProfileBinding(),
+    ),
+    GetPage(
+      name: Routes.adminPage,
+      page: () => const AdminPage(),
     ),
   ];
 }

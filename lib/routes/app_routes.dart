@@ -29,4 +29,5 @@ abstract class Routes {
   static const String postsWithLocation = '/posts_with_location';
   static const String postsLocation = '/posts_location';
   static const String friendProfile = '/friend_profile';
+  static const String adminPage = '/admin_page';
 }
