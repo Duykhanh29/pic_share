@@ -2,11 +2,11 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pic_share/app/constants/app_color.dart';
-import 'package:pic_share/app/constants/app_images.dart';
 import 'package:pic_share/app/constants/app_text_styles.dart';
 import 'package:pic_share/view_model/auth/auth_controller.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pic_share/views/pages/auth/widgets/footer.dart';
+import 'package:pic_share/views/pages/logo_widget.dart';
 import 'package:pic_share/views/widgets/keyboard_dismiss.dart';
 
 class AuthView extends GetView<AuthController> {
@@ -44,10 +44,21 @@ class AuthView extends GetView<AuthController> {
     final t = AppLocalizations.of(context)!;
     return KeyboardDismiss(
       child: Scaffold(
-        backgroundColor: AppColors.backgrounAuthScreendColor,
+        // backgroundColor: AppColors.backgrounAuthScreendColor,
         resizeToAvoidBottomInset: false,
         body: SingleChildScrollView(
           child: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  AppColors.backgroundColor,
+                  AppColors.backgrounAuthScreendColor,
+                  AppColors.thirdColor,
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+            ),
             padding: const EdgeInsets.all(20),
             child: Form(
               key: formKey,
@@ -55,15 +66,7 @@ class AuthView extends GetView<AuthController> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Container(
-                    margin: const EdgeInsets.symmetric(vertical: 50),
-                    alignment: Alignment.topCenter,
-                    child: Image.asset(
-                      AppImage.picShareLogo,
-                      width: 90,
-                      height: 90,
-                    ),
-                  ),
+                  const LogoWidget(),
                   Visibility(
                     visible: isRegister,
                     child: Column(
