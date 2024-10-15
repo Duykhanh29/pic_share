@@ -2,12 +2,20 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:pic_share/app/constants/strings.dart';
 import 'package:pic_share/data/models/comment/comment.dart';
+import 'package:pic_share/data/models/comment/reply.dart';
+import 'package:pic_share/data/models/user/user_model.dart';
+import 'package:pic_share/data/models/user/user_summary_model.dart';
 import 'package:pic_share/data/repositories/comments/comment_repository.dart';
+import 'package:pic_share/view_model/auth/auth_controller.dart';
 
 class CommentsController extends GetxController {
   CommentRepository commentRepository;
+  AuthController authController;
 
-  CommentsController({required this.commentRepository}) {
+  CommentsController({
+    required this.commentRepository,
+    required this.authController,
+  }) {
     if (Get.arguments != null) {
       final arguments = Get.arguments as Map<String, dynamic>;
 
@@ -22,9 +30,19 @@ class CommentsController extends GetxController {
   Rx<int> commentId = 0.obs;
   FocusNode focusNode = FocusNode();
 
+  // getter
+  UserModel? get currentUser => authController.getCurrentUser;
+  late UserSummaryModel userSummary;
+
   @override
   void onInit() async {
     commentController = TextEditingController();
+    userSummary = UserSummaryModel(
+      id: currentUser?.id ?? 0,
+      name: currentUser?.name,
+      urlAvatar: currentUser?.urlAvatar,
+      userCode: currentUser?.userCode,
+    );
     await fetchComments();
     super.onInit();
   }
@@ -53,12 +71,21 @@ class CommentsController extends GetxController {
     isLoading.value = true;
     try {
       if (text.isNotEmpty) {
+        Comment tempComment = Comment(
+          content: text,
+          createdAt: DateTime.now().toIso8601String(),
+          user: userSummary,
+          id: 0,
+        );
+        listComments.add(tempComment);
+        isLoading.value = false;
+        commentController.clear();
         final comment =
             await commentRepository.addComment(id: postId.value, content: text);
         if (comment != null) {
-          listComments.add(comment);
+          // listComments.add(comment);
         }
-        commentController.clear();
+        // commentController.clear();
       }
     } catch (e) {
       debugPrint('Something went wrong: $e');
@@ -81,15 +108,26 @@ class CommentsController extends GetxController {
     isLoading.value = true;
     try {
       if (text.isNotEmpty) {
+        Reply tempReply = Reply(
+          content: text,
+          id: 0,
+          user: userSummary,
+          createdAt: DateTime.now().toIso8601String(),
+        );
+        listComments
+            .firstWhere((element) => element.id == commentId)
+            .listReply
+            .add(tempReply);
+        isLoading.value = false;
+        commentController.clear();
         final reply = await commentRepository.addReply(
             cmtId: commentId, content: text, id: postId.value);
         if (reply != null) {
-          listComments
-              .firstWhere((element) => element.id == commentId)
-              .listReply
-              .add(reply);
+          // listComments
+          //     .firstWhere((element) => element.id == commentId)
+          //     .listReply
+          //     .add(reply);
         }
-        commentController.clear();
       }
     } catch (e) {
       debugPrint('Something went wrong: $e');

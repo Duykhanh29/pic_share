@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:pic_share/data/repositories/comments/comment_repository.dart';
+import 'package:pic_share/view_model/auth/auth_controller.dart';
 import 'package:pic_share/view_model/comments/comments_controller.dart';
 
 class CommentsBindings extends Bindings {
@@ -8,6 +9,7 @@ class CommentsBindings extends Bindings {
     Get.lazyPut<CommentsController>(
       () => CommentsController(
         commentRepository: Get.find<CommentRepository>(),
+        authController: Get.find<AuthController>(),
       ),
     );
   }

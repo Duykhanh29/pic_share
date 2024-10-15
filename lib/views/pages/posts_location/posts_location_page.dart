@@ -20,7 +20,7 @@ class PostsLocationPage extends GetView<PostsLocationController> {
         padding: const EdgeInsets.all(10),
         child: Stack(
           children: [
-            _buildMap(),
+            _buildMap(context, t),
             _buildZoomButtons(),
           ],
         ),
@@ -28,7 +28,7 @@ class PostsLocationPage extends GetView<PostsLocationController> {
     );
   }
 
-  Widget _buildMap() {
+  Widget _buildMap(BuildContext context, AppLocalizations t) {
     return Obx(() {
       final markers = controller.markers.toList();
       return markers.isNotEmpty
@@ -56,39 +56,51 @@ class PostsLocationPage extends GetView<PostsLocationController> {
                 ),
               ],
             )
-          : const SizedBox.shrink();
+          : SizedBox(
+              height: MediaQuery.of(context).size.height * 0.8,
+              child: Center(
+                child: Text(t.noPosts),
+              ),
+            );
     });
   }
 
   Widget _buildZoomButtons() {
-    return Positioned(
-      bottom: 20,
-      right: 20,
-      child: Column(
-        children: [
-          FloatingActionButton(
-            heroTag: 'zoom_in',
-            onPressed: () {
-              controller.mapController.move(
-                controller.mapController.center,
-                controller.mapController.zoom + 1,
-              );
-            },
-            child: const Icon(Icons.zoom_in),
-          ),
-          const SizedBox(height: 10),
-          FloatingActionButton(
-            heroTag: 'zoom_out',
-            onPressed: () {
-              controller.mapController.move(
-                controller.mapController.center,
-                controller.mapController.zoom - 1,
-              );
-            },
-            child: const Icon(Icons.zoom_out),
-          ),
-        ],
-      ),
+    return Obx(
+      () {
+        final markers = controller.markers.toList();
+        return markers.isNotEmpty
+            ? Positioned(
+                bottom: 20,
+                right: 20,
+                child: Column(
+                  children: [
+                    FloatingActionButton(
+                      heroTag: 'zoom_in',
+                      onPressed: () {
+                        controller.mapController.move(
+                          controller.mapController.center,
+                          controller.mapController.zoom + 1,
+                        );
+                      },
+                      child: const Icon(Icons.zoom_in),
+                    ),
+                    const SizedBox(height: 10),
+                    FloatingActionButton(
+                      heroTag: 'zoom_out',
+                      onPressed: () {
+                        controller.mapController.move(
+                          controller.mapController.center,
+                          controller.mapController.zoom - 1,
+                        );
+                      },
+                      child: const Icon(Icons.zoom_out),
+                    ),
+                  ],
+                ),
+              )
+            : const SizedBox.shrink();
+      },
     );
   }
 }

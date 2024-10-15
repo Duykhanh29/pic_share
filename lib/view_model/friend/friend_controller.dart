@@ -143,9 +143,14 @@ class FriendController extends GetxController
   Future<void> onRejectFriendRequest(int id) async {
     isActionLoading.value = true;
     try {
-      await friendRepository.deleteFriend(id);
+      // just for improvinf loading time
       updateChangesForFriendRequest(id);
       updateChangesForFriends(id);
+      isActionLoading.value = false;
+      //
+      await friendRepository.deleteFriend(id);
+      // updateChangesForFriendRequest(id);
+      // updateChangesForFriends(id);
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
     } finally {
@@ -199,11 +204,17 @@ class FriendController extends GetxController
   Future<void> onAcceptFriendRequest(int id) async {
     isActionLoading.value = true;
     try {
-      await friendRepository.updateFriendStatus(
-          id: id, status: FriendStatus.friend);
+      // just for improving loading time
       updateChangesForFriendList(
           requestedFriends.firstWhere((element) => element.id == id));
       updateChangesForFriendRequest(id);
+      isActionLoading.value = false;
+      //
+      await friendRepository.updateFriendStatus(
+          id: id, status: FriendStatus.friend);
+      // updateChangesForFriendList(
+      //     requestedFriends.firstWhere((element) => element.id == id));
+      // updateChangesForFriendRequest(id);
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
     } finally {
