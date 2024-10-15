@@ -168,11 +168,15 @@ class SearchUserController extends GetxController {
       {required int userID, required int id}) async {
     isLoading.value = true;
     try {
+      // just for improving loading time
+      onUpdateClick(UserRelationship.notFriend, userID, id);
+      isLoading.value = false;
+      //
       await friendController.onRejectFriendRequest(id);
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
     } finally {
-      onUpdateClick(UserRelationship.notFriend, userID, 0);
+      // onUpdateClick(UserRelationship.notFriend, userID, 0);
       friendController.onRefresh();
       isLoading.value = false;
     }
@@ -182,11 +186,15 @@ class SearchUserController extends GetxController {
       {required int userID, required int id}) async {
     isLoading.value = true;
     try {
+      // just for improving loading time
+      onUpdateClick(UserRelationship.friend, userID, id);
+      isLoading.value = false;
+      //
       await friendController.onAcceptFriendRequest(id);
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
     } finally {
-      onUpdateClick(UserRelationship.friend, userID, id);
+      // onUpdateClick(UserRelationship.friend, userID, id);
       friendController.onRefresh();
       isLoading.value = false;
     }
