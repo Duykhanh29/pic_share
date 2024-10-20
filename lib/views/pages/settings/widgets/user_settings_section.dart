@@ -49,7 +49,7 @@ class UserSettingsSection extends GetView<SettingsController> {
             backgroundColor: AppColors.blue,
             icon: Icons.history,
             iconColor: AppColors.white,
-            onTap: controller.onNavToUserCode,
+            onTap: controller.onNavToHistory,
             title: t.history,
           ),
           // Divider(
