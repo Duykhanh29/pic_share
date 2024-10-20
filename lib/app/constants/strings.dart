@@ -6,4 +6,5 @@ class Strings {
   static const String userSummary = 'userSummary';
   static const String isTempChat = 'isTempChat';
   static const String postDetail = 'postDetail';
+  static const String deletedPost = 'deletedPost';
 }

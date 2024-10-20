@@ -7,6 +7,7 @@ import 'package:pic_share/data/enums/link_to_type.dart';
 import 'package:pic_share/data/models/notification/link_to_model.dart';
 import 'package:pic_share/data/models/notification/notification.dart';
 import 'package:pic_share/data/models/paging.dart';
+import 'package:pic_share/data/models/post/deleted_post.dart';
 import 'package:pic_share/data/repositories/notification/notification_repository.dart';
 import 'package:pic_share/routes/app_pages.dart';
 import 'package:pic_share/view_model/friend/friend_controller.dart';
@@ -120,7 +121,7 @@ class NotificationController extends GetxController {
         } else {
           await friendController.onViewInFriend();
         }
-      } else {
+      } else if (linkTo.type == LinkToType.comment) {
         navBottomController.onChangeToHome();
         if (linkTo.postId != null) {
           homeController.onNavigateToHomeWithPostId(linkTo.postId);
@@ -130,6 +131,17 @@ class NotificationController extends GetxController {
             });
           }
         }
+      } else if (linkTo.type == LinkToType.deletion) {
+        DeletedPost deletedPost = DeletedPost(
+            caption: linkTo.postCaption,
+            createdAt: linkTo.postCreatedAt,
+            likeCount: linkTo.likePostCount,
+            cmtCount: linkTo.likeCommentCount,
+            id: linkTo.postId,
+            image: linkTo.postUrl);
+        Get.toNamed(Routes.deletedPost, arguments: {
+          Strings.deletedPost: deletedPost,
+        });
       }
     }
   }

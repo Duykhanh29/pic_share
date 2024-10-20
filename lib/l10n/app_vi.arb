@@ -131,5 +131,6 @@
     "unfriend":"Hủy kết bạn",
     "accept":"Chấp nhận",
     "notSupportedForAdminApp":"App không hỗ trợ cho tài khoản Admin. Hãy trải nghiệm trên website",
-    "backToLogin":"Quay lại màn đăng nhập"
+    "backToLogin":"Quay lại màn đăng nhập",
+    "deletedPost":"Bài viết bị xóa"
 }
