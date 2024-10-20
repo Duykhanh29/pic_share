@@ -215,15 +215,25 @@ class ConversationsController extends GetxController {
   }
 
   void onOpenChatFromSearch(UserSummaryModel friend) {
-    Conversation conversation = createNewConversation(friend);
-    addNewConversation(conversation);
-    onClickConversationItem(
-      conversation.id ?? 0,
-      friend,
-      isTempChat: true,
-    );
-    if (!isOpenChatFromSearch.value) {
-      isOpenChatFromSearch.value = true;
+    if (!isConversationExist(friend)) {
+      Conversation conversation = createNewConversation(friend);
+      addNewConversation(conversation);
+      onClickConversationItem(
+        conversation.id ?? 0,
+        friend,
+        isTempChat: true,
+      );
+      if (!isOpenChatFromSearch.value) {
+        isOpenChatFromSearch.value = true;
+      }
+    } else {
+      final conversationId = getConversationId(friend);
+      if (conversationId != null) {
+        onClickConversationItem(
+          conversationId,
+          friend,
+        );
+      }
     }
   }
 
@@ -250,5 +260,22 @@ class ConversationsController extends GetxController {
       conversationData.value =
           currentData.copyWith(conversations: updatedConversations);
     }
+  }
+
+  bool isConversationExist(UserSummaryModel user) {
+    final result = conversationData.value.conversations.any((conversation) =>
+        conversation.currentUser?.id == user.id ||
+        conversation.friend?.id == user.id);
+    return result;
+  }
+
+  int? getConversationId(UserSummaryModel user) {
+    final conversation = conversationData.value.conversations.firstWhereOrNull(
+      (conversation) =>
+          conversation.currentUser?.id == user.id ||
+          conversation.friend?.id == user.id,
+    );
+
+    return conversation?.id;
   }
 }
