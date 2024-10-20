@@ -15,14 +15,19 @@ class FileUtils {
     await Permission.storage.request();
 
     try {
-      await Future.delayed(
-          const Duration(seconds: 5)); // add delay to completely load image
+      // await Future.delayed(
+      //     const Duration(seconds: 5)); // add delay to completely load image
       final response = await Dio().get(
         imageUrl,
-        options: Options(responseType: ResponseType.bytes, headers: {
-          "Connection": "Keep-Alive",
-          "Keep-Alive": "timeout=5, max=1000"
-        }),
+        options: Options(
+          responseType: ResponseType.bytes,
+          receiveTimeout: const Duration(seconds: 10),
+          sendTimeout: const Duration(seconds: 10),
+          headers: {
+            "Connection": "Keep-Alive",
+            "Keep-Alive": "timeout=5, max=1000"
+          },
+        ),
       );
 
       if (response.statusCode == 200) {

@@ -160,7 +160,7 @@ class PusherService extends GetxService {
       final decodedData = jsonDecode(data);
       final Conversation conversation = Conversation.fromJson(decodedData);
       if (conversation.id != null) {
-        final currentList = List<Conversation>.from(conversations);
+        final currentList = conversations.toList();
 
         currentList.removeWhere((c) => c.id == 0);
         currentList.add(conversation);

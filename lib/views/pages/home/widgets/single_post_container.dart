@@ -72,13 +72,13 @@ class SinglePostContainer extends GetView<HomeController> {
                 ? ImageCacheHelper.avatarImage(
                     url: postData.post.user!.urlAvatar!)
                 : const CircleAvatar(
-                    radius: 20,
+                    radius: 18,
                     backgroundImage: AssetImage(
                       AppImage.userEmptyAvatar,
                     ),
                   ),
           ),
-          const SizedBox(width: 15),
+          const SizedBox(width: 10),
           GestureDetector(
             onTap: () {
               controller.onUserClick(postData.post.user);
@@ -99,7 +99,7 @@ class SinglePostContainer extends GetView<HomeController> {
           const SizedBox(width: 15),
           Container(
             constraints: BoxConstraints(
-                maxWidth: MediaQuery.of(context).size.width * 0.3),
+                maxWidth: MediaQuery.of(context).size.width * 0.25),
             padding: const EdgeInsets.all(4),
             decoration: BoxDecoration(
                 color: const Color.fromARGB(255, 223, 219, 219),
@@ -111,6 +111,7 @@ class SinglePostContainer extends GetView<HomeController> {
                       postData.post.createdAt!)
                   : "",
               maxLines: 3,
+              textAlign: TextAlign.center,
               style: AppTextStyles.smallTextStyle(),
             ),
           ),
