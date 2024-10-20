@@ -75,6 +75,7 @@ class FriendController extends GetxController
 
   @override
   void onInit() async {
+    tabController = TabController(length: 2, vsync: this)..index = 0;
     ever(authController.currentUser, (UserModel? user) async {
       if (user != null) {
         await fetchFriends();
@@ -87,7 +88,6 @@ class FriendController extends GetxController
     });
     await fetchFriends();
     await fetchFriendRequests();
-    tabController = TabController(length: 2, vsync: this)..index = 0;
     super.onInit();
   }
 

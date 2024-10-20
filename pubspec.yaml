@@ -104,6 +104,9 @@ dependencies:
 
   # laucher icon
   flutter_launcher_icons: ^0.13.1
+
+  # splash 
+  flutter_native_splash: ^2.3.10
   
 
   # The following adds the Cupertino Icons font to your application.
@@ -150,6 +153,26 @@ flutter_launcher_icons:
     generate: true
     image_path: "assets/images/pic_share_logo.png"
 
+
+
+flutter_native_splash:
+  color: "#FFFFFF"
+  image: "assets/images/pic_share_splash.png"
+  background_image: "assets/images/pic_share_splash.png"
+  background_image_dark: "assets/images/pic_share_splash.png"
+  fullscreen: false
+  android: true
+  ios: true
+  web: false
+  color_dark_android: "#FFFFFF"
+  color_dark_ios: "#FFFFFF"
+  ios_content_mode: scaleAspectFit
+  android_12:
+    color: "#FFFFFF"
+    image: "assets/images/pic_share_splash.png"
+    color_dark: "#FFFFFF"
+    color_dark_android: "#FFFFFF"
+  android_gravity: center
 
 
   # example:

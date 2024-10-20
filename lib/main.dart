@@ -5,14 +5,18 @@ import 'package:pic_share/app/utils/dependencies_injector.dart';
 import 'package:pic_share/firebase_options.dart';
 import 'package:pic_share/views/root_app.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  final WidgetsBinding widgetsBinding =
+      WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await DependenciesInjector.initDependencies();
   await initServices();
   await dotenv.load(fileName: ".env");
+  FlutterNativeSplash.remove();
   runApp(const RootApp());
 }
