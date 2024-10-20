@@ -52,8 +52,8 @@ class SearchPage extends GetView<SearchUserController> {
               bottomRight: Radius.circular(25))),
       pinned: true,
       expandedHeight: controller.isSearchWithCode.value
-          ? MediaQuery.of(Get.context!).size.height * 0.25
-          : MediaQuery.of(Get.context!).size.height * 0.15,
+          ? MediaQuery.of(Get.context!).size.height * 0.3
+          : MediaQuery.of(Get.context!).size.height * 0.2,
       backgroundColor: AppColors.secondaryColor,
       title: Text(
         controller.isSearchWithCode.value ? t.searchWithCode : t.search,
