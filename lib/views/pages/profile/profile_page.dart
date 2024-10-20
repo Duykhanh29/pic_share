@@ -58,7 +58,7 @@ class ProfilePage extends GetView<ProfileController> {
         ),
       ],
       bottom: PreferredSize(
-        preferredSize: const Size.fromHeight(200),
+        preferredSize: const Size.fromHeight(250),
         child: Padding(
           padding: const EdgeInsets.only(bottom: 20),
           child: Column(

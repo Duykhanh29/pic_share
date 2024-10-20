@@ -106,6 +106,7 @@ class EditProfilePage extends GetView<EditProfileController> {
 
   Widget _buildNameTextField(AppLocalizations t) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 10),
@@ -131,6 +132,7 @@ class EditProfilePage extends GetView<EditProfileController> {
     return GestureDetector(
       onTap: controller.updateUserInfo,
       child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
         height: 50,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
@@ -144,7 +146,7 @@ class EditProfilePage extends GetView<EditProfileController> {
 
   Widget _buildSpacing(BuildContext context, {double? height}) {
     return SizedBox(
-      height: height ?? MediaQuery.of(context).size.height * 0.15,
+      height: height ?? MediaQuery.of(context).size.height * 0.08,
     );
   }
 }
