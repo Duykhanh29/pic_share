@@ -27,6 +27,19 @@ class LinkToModel {
   final int? notificationId;
   @JsonKey(name: 'conversation_id')
   final int? conversationId;
+
+  @JsonKey(name: 'post_like_count')
+  final int? likePostCount;
+  @JsonKey(name: 'post_cmt_count')
+  final int? likeCommentCount;
+  @JsonKey(name: 'deletion_reason')
+  final String? deletionReason;
+  @JsonKey(name: 'post_image')
+  final String? postUrl;
+  @JsonKey(name: 'post_created_time')
+  final String? postCreatedAt;
+  @JsonKey(name: 'post_caption')
+  final String? postCaption;
   LinkToModel({
     required this.type,
     this.postId,
@@ -35,6 +48,12 @@ class LinkToModel {
     this.friendNotiType,
     this.conversationId,
     this.notificationId,
+    this.likePostCount,
+    this.likeCommentCount,
+    this.deletionReason,
+    this.postUrl,
+    this.postCreatedAt,
+    this.postCaption,
   });
   factory LinkToModel.fromJson(Map<String, dynamic> json) =>
       _$LinkToModelFromJson(json);
