@@ -3,9 +3,11 @@ import 'dart:io';
 import 'package:get/get.dart' as g;
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:pic_share/app/services/local_storage_service.dart';
 import 'package:pic_share/app/services/token_manager.dart';
 import 'package:pic_share/app/helper/snack_bar_helper.dart';
 import 'package:pic_share/data/providers/network/api_request_representable.dart';
+import 'package:pic_share/routes/app_pages.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 class APIProvider {
@@ -33,6 +35,9 @@ class APIProvider {
         if (e.response?.statusCode == 403) {
           SnackbarHelper.errorSnackbar(
               e.response?.statusMessage ?? "This account has been banned");
+        }
+        if (e.response?.statusCode == 303) {
+          return handleRedirect();
         }
         return handler.next(e);
       },
@@ -84,5 +89,20 @@ class APIProvider {
     } catch (e) {
       rethrow;
     }
+  }
+
+  Future<void> handleRedirect() async {
+    try {
+      await deleteSession();
+      g.Get.offAllNamed(Routes.login);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> deleteSession() async {
+    LocalStorageService localStorageService = g.Get.find<LocalStorageService>();
+    localStorageService.removeAllSharedPreferencesValues();
+    await TokenManager().deleteAll();
   }
 }
