@@ -70,6 +70,7 @@ class NavBottomController extends GetxController {
       PusherService(
         authController: Get.find<AuthController>(),
         conversationsController: Get.find<ConversationsController>(),
+        homeController: Get.find<HomeController>(),
       ),
     );
     final conversationController = Get.find<ConversationsController>();
