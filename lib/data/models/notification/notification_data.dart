@@ -2,7 +2,7 @@ import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:pic_share/data/enums/friend_noti_type.dart';
 import 'package:pic_share/data/enums/link_to_type.dart';
-
+import 'package:pic_share/data/models/user/user_summary_model.dart';
 part 'notification_data.g.dart';
 
 @JsonSerializable()
@@ -28,6 +28,9 @@ class NotificationData {
   final String? notificationId;
   @JsonKey(name: 'conversation_id')
   final String? conversationId;
+
+  @JsonKey(name: 'sender', fromJson: fromJsonString, toJson: userSummaryToJson)
+  final UserSummaryModel? sender;
   NotificationData({
     this.clickAction,
     this.commentId,
@@ -38,6 +41,7 @@ class NotificationData {
     this.type,
     this.conversationId,
     this.notificationId,
+    this.sender,
   });
 
   factory NotificationData.fromJson(Map<String, dynamic> json) =>

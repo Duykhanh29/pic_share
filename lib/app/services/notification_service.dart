@@ -9,6 +9,7 @@ import 'package:pic_share/app/services/local_storage_service.dart';
 import 'package:pic_share/data/enums/friend_noti_type.dart';
 import 'package:pic_share/data/enums/link_to_type.dart';
 import 'package:pic_share/data/models/notification/notification_data.dart';
+import 'package:pic_share/data/models/post/deleted_post.dart';
 import 'package:pic_share/data/repositories/auth/auth_repository.dart';
 import 'package:pic_share/data/repositories/friend/friend_repository.dart';
 import 'package:pic_share/data/repositories/notification/notification_repository.dart';
@@ -253,7 +254,7 @@ Future<void> onHandleNavWithDependencies(
     } else {
       await friendController.onViewInFriend();
     }
-  } else {
+  } else if (notificationData.type == LinkToType.comment) {
     navBottomController.onChangeToHome();
     if (notificationData.postId != null) {
       final postId = int.tryParse(notificationData.postId!);
@@ -264,5 +265,19 @@ Future<void> onHandleNavWithDependencies(
         });
       }
     }
-  }
+  } else if (notificationData.type == LinkToType.chat) {
+    final conversationStringId = notificationData.conversationId;
+    final conversationId = int.tryParse(notificationData.conversationId ?? '');
+    final sender = notificationData.sender;
+    if (conversationStringId == null ||
+        conversationId == null ||
+        sender == null) {
+      navBottomController.onChangeToChat();
+    } else {
+      Get.toNamed(Routes.chat, arguments: {
+        Strings.conversationId: conversationId,
+        Strings.userSummary: sender,
+      });
+    }
+  } else if (notificationData.type == LinkToType.deletion) {}
 }

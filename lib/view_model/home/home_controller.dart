@@ -201,6 +201,7 @@ class HomeController extends GetxController {
     currentIndex.value = index == -1 ? 0 : index;
   }
 
+  // download image
   Future<void> onDownloadImageToGallery(String urlPath) async {
     try {
       String url = AppConfig.baseUrl + urlPath;
@@ -214,6 +215,8 @@ class HomeController extends GetxController {
       debugPrint('Error occured while downloading picture: $e');
     }
   }
+
+  // send message
 
   Future<void> sendMessage(int postId) async {
     try {

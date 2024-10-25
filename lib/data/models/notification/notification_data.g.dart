@@ -25,6 +25,8 @@ abstract class _$NotificationDataCWProxy {
 
   NotificationData notificationId(String? notificationId);
 
+  NotificationData sender(UserSummaryModel? sender);
+
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `NotificationData(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
   /// Usage
@@ -41,6 +43,7 @@ abstract class _$NotificationDataCWProxy {
     LinkToType? type,
     String? conversationId,
     String? notificationId,
+    UserSummaryModel? sender,
   });
 }
 
@@ -82,6 +85,9 @@ class _$NotificationDataCWProxyImpl implements _$NotificationDataCWProxy {
       this(notificationId: notificationId);
 
   @override
+  NotificationData sender(UserSummaryModel? sender) => this(sender: sender);
+
+  @override
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `NotificationData(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -99,6 +105,7 @@ class _$NotificationDataCWProxyImpl implements _$NotificationDataCWProxy {
     Object? type = const $CopyWithPlaceholder(),
     Object? conversationId = const $CopyWithPlaceholder(),
     Object? notificationId = const $CopyWithPlaceholder(),
+    Object? sender = const $CopyWithPlaceholder(),
   }) {
     return NotificationData(
       clickAction: clickAction == const $CopyWithPlaceholder()
@@ -137,6 +144,10 @@ class _$NotificationDataCWProxyImpl implements _$NotificationDataCWProxy {
           ? _value.notificationId
           // ignore: cast_nullable_to_non_nullable
           : notificationId as String?,
+      sender: sender == const $CopyWithPlaceholder()
+          ? _value.sender
+          // ignore: cast_nullable_to_non_nullable
+          : sender as UserSummaryModel?,
     );
   }
 }
@@ -162,6 +173,7 @@ extension $NotificationDataCopyWith on NotificationData {
     bool type = false,
     bool conversationId = false,
     bool notificationId = false,
+    bool sender = false,
   }) {
     return NotificationData(
       clickAction: clickAction == true ? null : this.clickAction,
@@ -173,6 +185,7 @@ extension $NotificationDataCopyWith on NotificationData {
       type: type == true ? null : this.type,
       conversationId: conversationId == true ? null : this.conversationId,
       notificationId: notificationId == true ? null : this.notificationId,
+      sender: sender == true ? null : this.sender,
     );
   }
 }
@@ -192,6 +205,7 @@ NotificationData _$NotificationDataFromJson(Map<String, dynamic> json) =>
       type: linkToTypeFromJson(json['type'] as String?),
       conversationId: json['conversation_id'] as String?,
       notificationId: json['notification_id'] as String?,
+      sender: fromJsonString(json['sender'] as String),
     );
 
 Map<String, dynamic> _$NotificationDataToJson(NotificationData instance) =>
@@ -205,4 +219,5 @@ Map<String, dynamic> _$NotificationDataToJson(NotificationData instance) =>
       'status': instance.status,
       'notification_id': instance.notificationId,
       'conversation_id': instance.conversationId,
+      'sender': userSummaryToJson(instance.sender),
     };
