@@ -107,4 +107,9 @@ class NavBottomController extends GetxController {
     pageIndex.value = 2;
     pageController.index = 2;
   }
+
+  void onChangeToChat() {
+    pageIndex.value = 3;
+    pageController.index = 3;
+  }
 }
