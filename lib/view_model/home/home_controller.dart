@@ -183,7 +183,7 @@ class HomeController extends GetxController {
   }
 
   void listenToNewEvent(PostData postData) {
-    posts.add(postData);
+    posts.insert(0, postData); //
   }
 
   // navigation
