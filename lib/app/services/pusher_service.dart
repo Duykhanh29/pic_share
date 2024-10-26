@@ -5,10 +5,13 @@ import 'package:get/get.dart';
 import 'package:pic_share/app/config/app_config.dart';
 import 'package:pic_share/data/models/conversation/conversation.dart';
 import 'package:pic_share/data/models/conversation/message.dart';
+import 'package:pic_share/data/models/post/post_data.dart';
+import 'package:pic_share/data/models/post/post_detail.dart';
 import 'package:pic_share/data/models/user/user_model.dart';
 import 'package:pic_share/view_model/auth/auth_controller.dart';
 import 'package:pic_share/view_model/chat/chat_controller.dart';
 import 'package:pic_share/view_model/conversations/conversations_controller.dart';
+import 'package:pic_share/view_model/home/home_controller.dart';
 import 'package:pusher_channels_flutter/pusher_channels_flutter.dart';
 
 class PusherService extends GetxService {
@@ -16,9 +19,13 @@ class PusherService extends GetxService {
 
   AuthController authController;
   ConversationsController conversationsController;
+  HomeController homeController;
 
-  PusherService(
-      {required this.authController, required this.conversationsController});
+  PusherService({
+    required this.authController,
+    required this.conversationsController,
+    required this.homeController,
+  });
   RxList<Conversation> conversations = RxList<Conversation>([]);
   Rx<UserModel?> currentUser = Rx<UserModel?>(null);
   RxList<int> subscribedRooms = RxList<int>([]);
@@ -50,6 +57,7 @@ class PusherService extends GetxService {
       }
       currentUser.value = user;
     });
+    // ever(friendController., (callback) => null)
     currentUser.value = authController.getCurrentUser;
     conversations.value = conversationsController.listConversation;
     await initPusher(currentUser.value?.id ?? 0, (event) async {
@@ -79,6 +87,11 @@ class PusherService extends GetxService {
       // Subscribe to user-specific channel
       await _pusher.subscribe(
         channelName: "chat.user.$userId",
+      );
+
+      // Subscribe to user-post channel
+      await _pusher.subscribe(
+        channelName: "post.shared.$userId",
       );
       debugPrint("Subscribed to user channel: chat.user.$userId");
 
@@ -149,6 +162,8 @@ class PusherService extends GetxService {
       await onNewConversationEvent(event);
     } else if (event.eventName.contains("chat.message.sent")) {
       onChatEvent(event);
+    } else if (event.eventName.contains("post.created")) {
+      onNewPostEvent(event);
     } else {
       debugPrint("Aontoher event: $event");
     }
@@ -170,6 +185,18 @@ class PusherService extends GetxService {
         await subscribeToRooms();
         conversationsController.addNewConversation(conversation);
       }
+    } catch (e) {
+      debugPrint("Something went wrong: ${e.toString()}");
+    }
+  }
+
+  void onNewPostEvent(PusherEvent event) {
+    try {
+      final data = event.data;
+      final decodedData = jsonDecode(data);
+      final PostDetail postDetail = PostDetail.fromJson(decodedData);
+      final PostData postData = PostData(post: postDetail, isLike: false);
+      homeController.listenToNewEvent(postData);
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
     }

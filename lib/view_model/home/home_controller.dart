@@ -182,6 +182,12 @@ class HomeController extends GetxController {
     }
   }
 
+  void listenToNewEvent(PostData postData) {
+    posts.insert(0, postData); //
+  }
+
+  // navigation
+
   void onNavToNotification() {
     Get.toNamed(Routes.notification);
   }
