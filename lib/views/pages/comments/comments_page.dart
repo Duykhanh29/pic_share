@@ -49,6 +49,8 @@ class CommentsPage extends GetView<CommentsController> {
                 onReply: () {
                   controller.onClickReplyTo(index);
                 },
+                currentUser: controller.currentUser,
+                onUserClick: controller.onUserClick,
               ),
             );
           },
