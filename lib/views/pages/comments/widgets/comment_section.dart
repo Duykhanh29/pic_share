@@ -7,52 +7,55 @@ import 'package:pic_share/data/models/comment/comment.dart';
 import 'package:pic_share/data/models/comment/reply.dart';
 import 'package:pic_share/app/constants/app_images.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:pic_share/data/models/user/user_model.dart';
+import 'package:pic_share/data/models/user/user_summary_model.dart';
 
-class CommentSection extends StatelessWidget {
-  const CommentSection({super.key, required this.comment, this.onReply});
+class CommentSection extends StatefulWidget {
+  const CommentSection({
+    super.key,
+    required this.comment,
+    this.onReply,
+    required this.currentUser,
+    this.onUserClick,
+  });
   final Comment comment;
   final Function()? onReply;
+  final UserModel? currentUser;
+  final Function(UserSummaryModel? user)? onUserClick;
+
+  @override
+  State<CommentSection> createState() => _CommentSectionState();
+}
+
+class _CommentSectionState extends State<CommentSection> {
+  int index = 1;
+
+  List<Reply> get visibleReplies {
+    int end = index * 3;
+    if (end > widget.comment.listReply.length) {
+      end = widget.comment.listReply.length;
+    }
+    return widget.comment.listReply.sublist(0, end);
+  }
+
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context)!;
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
       child: CommentTreeWidget<Comment, Reply>(
-        comment,
-        comment.listReply,
-        treeThemeData:
-            TreeThemeData(lineColor: Colors.green[500]!, lineWidth: 3),
+        widget.comment,
+        visibleReplies,
+        treeThemeData: TreeThemeData(
+            lineColor: Colors.green[500]!,
+            lineWidth: widget.comment.listReply.isEmpty ? 0 : 3),
         avatarRoot: (context, data) => PreferredSize(
           preferredSize: const Size.fromRadius(18),
-          child: data.user?.urlAvatar != null
-              ? CircleAvatar(
-                  radius: 18,
-                  backgroundColor: Colors.grey,
-                  backgroundImage: NetworkImage(data.user!.urlAvatar!),
-                )
-              : const CircleAvatar(
-                  radius: 18,
-                  backgroundColor: Colors.grey,
-                  backgroundImage: AssetImage(
-                    AppImage.userEmptyAvatar,
-                  ),
-                ),
+          child: _buildAvatar(data.user),
         ),
         avatarChild: (context, data) => PreferredSize(
           preferredSize: const Size.fromRadius(12),
-          child: data.user?.urlAvatar != null
-              ? CircleAvatar(
-                  radius: 12,
-                  backgroundColor: Colors.grey,
-                  backgroundImage: NetworkImage(data.user!.urlAvatar!),
-                )
-              : const CircleAvatar(
-                  radius: 12,
-                  backgroundColor: Colors.grey,
-                  backgroundImage: AssetImage(
-                    AppImage.userEmptyAvatar,
-                  ),
-                ),
+          child: _buildAvatar(data.user),
         ),
         contentChild: (context, data) {
           return Column(
@@ -67,7 +70,9 @@ class CommentSection extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      data.user?.name ?? "",
+                      widget.currentUser?.id == data.user?.id
+                          ? t.you
+                          : data.user?.name ?? "",
                       style: AppTextStyles.headingTextStyle(),
                     ),
                     const SizedBox(
@@ -85,28 +90,46 @@ class CommentSection extends StatelessWidget {
                     color: Colors.grey[700], fontWeight: FontWeight.bold),
                 child: Padding(
                   padding: const EdgeInsets.only(top: 4),
-                  child: Row(
+                  child: Column(
                     children: [
-                      // SizedBox(
-                      //   width: 8,
-                      // ),
-                      // Text('Like'),
-                      const SizedBox(
-                        width: 5,
+                      Row(
+                        children: [
+                          // SizedBox(
+                          //   width: 8,
+                          // ),
+                          // Text('Like'),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          InkWell(
+                            onTap: widget.onReply,
+                            child: Text(
+                              t.reply,
+                              style: AppTextStyles.smallTextStyle().copyWith(
+                                color: AppColors.thirdColor,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      InkWell(
-                        onTap: onReply,
-                        child: Text(
-                          t.reply,
-                          style: AppTextStyles.smallTextStyle().copyWith(
-                            color: AppColors.thirdColor,
+                      if (widget.comment.listReply.length > index * 3 &&
+                          visibleReplies.last.id == data.id)
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              index++;
+                            });
+                          },
+                          child: Text(
+                            t.seeMore,
+                            style: AppTextStyles.seeMoreTextStyle()
+                                .copyWith(fontSize: 12),
                           ),
                         ),
-                      ),
                     ],
                   ),
                 ),
-              )
+              ),
             ],
           );
         },
@@ -123,7 +146,9 @@ class CommentSection extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      data.user?.name ?? "",
+                      widget.currentUser?.id == data.user?.id
+                          ? t.you
+                          : data.user?.name ?? "",
                       style: AppTextStyles.headingTextStyle(),
                     ),
                     const SizedBox(
@@ -151,7 +176,7 @@ class CommentSection extends StatelessWidget {
                         width: 5,
                       ),
                       InkWell(
-                        onTap: onReply,
+                        onTap: widget.onReply,
                         child: Text(
                           t.reply,
                           style: AppTextStyles.smallTextStyle().copyWith(
@@ -167,6 +192,27 @@ class CommentSection extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+
+  Widget _buildAvatar(UserSummaryModel? user) {
+    return InkWell(
+      onTap: () {
+        widget.onUserClick?.call(user);
+      },
+      child: user?.urlAvatar != null
+          ? CircleAvatar(
+              radius: 18,
+              backgroundColor: Colors.grey,
+              backgroundImage: NetworkImage(user!.urlAvatar!),
+            )
+          : const CircleAvatar(
+              radius: 18,
+              backgroundColor: Colors.grey,
+              backgroundImage: AssetImage(
+                AppImage.userEmptyAvatar,
+              ),
+            ),
     );
   }
 }

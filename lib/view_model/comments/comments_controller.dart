@@ -6,6 +6,7 @@ import 'package:pic_share/data/models/comment/reply.dart';
 import 'package:pic_share/data/models/user/user_model.dart';
 import 'package:pic_share/data/models/user/user_summary_model.dart';
 import 'package:pic_share/data/repositories/comments/comment_repository.dart';
+import 'package:pic_share/routes/app_pages.dart';
 import 'package:pic_share/view_model/auth/auth_controller.dart';
 
 class CommentsController extends GetxController {
@@ -140,5 +141,16 @@ class CommentsController extends GetxController {
     final value = listComments[index].id;
     commentId.value = value ?? 0;
     focusNode.requestFocus();
+  }
+
+  void onUserClick(UserSummaryModel? user) {
+    if (user == null) return;
+    if (user.id == currentUser?.id) {
+      Get.toNamed(Routes.profile);
+    } else {
+      Get.toNamed(Routes.friendProfile, arguments: {
+        Strings.userSummary: user,
+      });
+    }
   }
 }
