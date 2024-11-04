@@ -1,5 +1,6 @@
 import 'package:pic_share/data/enums/friend_status.dart';
 import 'package:pic_share/data/models/user/friend.dart';
+import 'package:pic_share/data/models/user/suggested_friend.dart';
 import 'package:pic_share/data/models/user/user_summary_model.dart';
 import 'package:pic_share/data/providers/network/api_provider.dart';
 import 'package:pic_share/data/providers/network/api_request_representable.dart';
@@ -166,6 +167,31 @@ class GetMutualFriendsAPI
 
   @override
   Future<ApiResponse<List<UserSummaryModel>>> request() {
+    return APIProvider().request(this);
+  }
+}
+
+class GetRecommendedFriendsAPI
+    extends APIRequestRepresentable<List<SuggestedFriend>> {
+  GetRecommendedFriendsAPI();
+  @override
+  String get endpoint => '/api/friend/get-recommend-friends';
+
+  @override
+  HTTPMethod get method => HTTPMethod.get;
+
+  @override
+  List<SuggestedFriend> Function(dynamic p1) get fromJson => (json) {
+        if (json == null) return [];
+        if (json is List) {
+          final friends = json.map((e) => SuggestedFriend.fromJson(e)).toList();
+          return friends;
+        }
+        return [SuggestedFriend.fromJson(json)];
+      };
+
+  @override
+  Future<ApiResponse<List<SuggestedFriend>>> request() {
     return APIProvider().request(this);
   }
 }

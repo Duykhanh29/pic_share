@@ -4,6 +4,7 @@ import 'package:pic_share/app/constants/strings.dart';
 import 'package:pic_share/app/helper/snack_bar_helper.dart';
 import 'package:pic_share/data/enums/friend_status.dart';
 import 'package:pic_share/data/models/user/friend.dart';
+import 'package:pic_share/data/models/user/suggested_friend.dart';
 import 'package:pic_share/data/models/user/user_model.dart';
 import 'package:pic_share/data/models/user/user_summary_model.dart';
 import 'package:pic_share/data/repositories/conversations/conversation_repository.dart';
@@ -27,8 +28,10 @@ class FriendController extends GetxController
   RxList<Friend> friendList = <Friend>[].obs;
   RxList<Friend> requestedFriends = <Friend>[].obs;
   RxList<Friend> sentFriends = <Friend>[].obs;
+  RxList<SuggestedFriend> suggestedFriends = <SuggestedFriend>[].obs;
   RxBool isLoadingFriends = true.obs;
   RxBool isLoadingFriendRequests = true.obs;
+  RxBool isLoadingSuggestedFriends = true.obs;
   RxBool isActionLoading = false.obs;
 
   List<Friend> get friends => friendList;
@@ -76,7 +79,7 @@ class FriendController extends GetxController
 
   @override
   void onInit() async {
-    tabController = TabController(length: 2, vsync: this)..index = 0;
+    tabController = TabController(length: 3, vsync: this)..index = 0;
     ever(authController.currentUser, (UserModel? user) async {
       if (user != null) {
         await fetchFriends();
@@ -137,6 +140,22 @@ class FriendController extends GetxController
       debugPrint("Something went wrong: ${e.toString()}");
     } finally {
       isLoadingFriendRequests.value = false;
+    }
+  }
+
+  Future<void> fetchSuggestedFriends() async {
+    try {
+      final response = await friendRepository.getSuggestedFriends();
+      if (response.isSuccess) {
+        final suggestedList = response.data ?? [];
+        suggestedFriends.value = suggestedList.toList();
+      } else {
+        SnackbarHelper.errorSnackbar(response.message ?? '');
+      }
+    } catch (e) {
+      debugPrint("Something went wrong: ${e.toString()}");
+    } finally {
+      isLoadingSuggestedFriends.value = false;
     }
   }
 
@@ -263,6 +282,26 @@ class FriendController extends GetxController
     return null;
   }
 
+  Future<void> makeFriendRequestFromSuggestion(int id) async {
+    isActionLoading.value = true;
+    try {
+      final response = await friendRepository.sendFriendRequest(id);
+      if (!response.isSuccess) {
+        final friend = response.data;
+        if (friend != null) {
+          sentFriends.add(friend);
+          suggestedFriends.removeWhere((element) => element.user.id == id);
+        }
+      } else {
+        SnackbarHelper.errorSnackbar(response.message ?? '');
+      }
+    } catch (e) {
+      debugPrint("Something went wrong: ${e.toString()}");
+    } finally {
+      isActionLoading.value = false;
+    }
+  }
+
   void onNavToChat(int id) {
     final index = friendList.indexWhere((user) => user.id == id);
     if (index != -1) {
@@ -301,5 +340,16 @@ class FriendController extends GetxController
       name: friend.name,
       urlAvatar: friend.avatar,
     );
+  }
+
+  void onUserClick(UserSummaryModel? user) {
+    if (user == null) return;
+    if (user.id == currentUser?.id) {
+      Get.toNamed(Routes.profile);
+    } else {
+      Get.toNamed(Routes.friendProfile, arguments: {
+        Strings.userSummary: user,
+      });
+    }
   }
 }
