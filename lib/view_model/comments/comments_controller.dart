@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:pic_share/app/constants/strings.dart';
+import 'package:pic_share/app/helper/snack_bar_helper.dart';
 import 'package:pic_share/data/models/comment/comment.dart';
 import 'package:pic_share/data/models/comment/reply.dart';
 import 'package:pic_share/data/models/user/user_model.dart';
@@ -90,6 +91,7 @@ class CommentsController extends GetxController {
       }
     } catch (e) {
       debugPrint('Something went wrong: $e');
+      SnackbarHelper.errorSnackbar(e.toString());
     } finally {
       isLoading.value = false;
     }
@@ -132,6 +134,7 @@ class CommentsController extends GetxController {
       }
     } catch (e) {
       debugPrint('Something went wrong: $e');
+      SnackbarHelper.errorSnackbar(e.toString());
     } finally {
       isLoading.value = false;
     }

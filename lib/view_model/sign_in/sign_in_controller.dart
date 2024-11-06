@@ -68,7 +68,7 @@ class SignInController extends GetxController {
                   config: user.value?.config?.copyWith(fcmToken: token));
             }
             localStorageService.setUserModel(value: user.value);
-            SnackbarHelper.successSnackbar("Login successfully");
+            // SnackbarHelper.successSnackbar("Login successfully");
           }
         }
       } else {
@@ -76,6 +76,7 @@ class SignInController extends GetxController {
       }
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
+      SnackbarHelper.errorSnackbar(e.toString());
     } finally {
       isLoading.value = false;
     }
@@ -96,6 +97,7 @@ class SignInController extends GetxController {
       SnackbarHelper.successSnackbar("Login successfully");
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
+      SnackbarHelper.errorSnackbar(e.toString());
     } finally {
       isLoading.value = false;
     }

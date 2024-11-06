@@ -4,6 +4,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pic_share/app/helper/photo_helper.dart';
+import 'package:pic_share/app/helper/snack_bar_helper.dart';
 import 'package:pic_share/data/models/user/user_model.dart';
 import 'package:pic_share/view_model/auth/auth_controller.dart';
 
@@ -36,6 +37,7 @@ class EditProfileController extends GetxController {
       }
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
+      SnackbarHelper.errorSnackbar(e.toString());
     }
   }
 
@@ -51,6 +53,7 @@ class EditProfileController extends GetxController {
       );
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
+      SnackbarHelper.errorSnackbar(e.toString());
     } finally {
       isLoading.value = false;
     }

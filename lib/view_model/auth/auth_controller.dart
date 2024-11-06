@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pic_share/app/helper/snack_bar_helper.dart';
 import 'package:pic_share/app/services/local_storage_service.dart';
 import 'package:pic_share/app/services/notification_service.dart';
 import 'package:pic_share/app/services/pusher_service.dart';
@@ -82,6 +83,7 @@ class AuthController extends GetxController {
       }
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
+      SnackbarHelper.errorSnackbar(e.toString());
     }
   }
 
@@ -96,6 +98,7 @@ class AuthController extends GetxController {
           passwordConfirmation: passwordConfirmation);
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
+      SnackbarHelper.errorSnackbar(e.toString());
     }
   }
 
@@ -108,6 +111,7 @@ class AuthController extends GetxController {
       _tokenManager.deleteAll();
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
+      SnackbarHelper.errorSnackbar(e.toString());
     }
   }
 

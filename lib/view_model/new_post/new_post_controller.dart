@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:pic_share/app/constants/glocal_data.dart';
+import 'package:pic_share/app/helper/snack_bar_helper.dart';
 import 'package:pic_share/app/services/location_service.dart';
 import 'package:pic_share/app/utils/date_utils.dart' as date;
 import 'package:pic_share/app/utils/file_utils.dart';
@@ -173,6 +174,7 @@ class NewPostController extends GetxController {
       }
     } catch (e) {
       debugPrint('Error occured while downloading picture: $e');
+      SnackbarHelper.errorSnackbar(e.toString());
     } finally {
       onSetToDefault();
       isLoading.value = false;

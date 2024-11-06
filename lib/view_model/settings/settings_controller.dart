@@ -2,6 +2,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pic_share/app/constants/strings.dart';
+import 'package:pic_share/app/helper/snack_bar_helper.dart';
 import 'package:pic_share/app/services/local_storage_service.dart';
 import 'package:pic_share/data/models/user/user_model.dart';
 import 'package:pic_share/routes/app_pages.dart';
@@ -48,6 +49,7 @@ class SettingsController extends GetxController {
       await authController.logout();
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
+      SnackbarHelper.errorSnackbar(e.toString());
     } finally {
       isLoading.value = false;
     }
@@ -58,6 +60,7 @@ class SettingsController extends GetxController {
       await authController.deleteUser();
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
+      SnackbarHelper.errorSnackbar(e.toString());
     }
   }
 
