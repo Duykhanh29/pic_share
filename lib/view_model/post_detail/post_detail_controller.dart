@@ -108,6 +108,7 @@ class PostDetailController extends GetxController {
       Get.back();
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
+      SnackbarHelper.errorSnackbar(e.toString());
     }
   }
 

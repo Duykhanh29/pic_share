@@ -14,6 +14,7 @@ import 'package:pic_share/app/constants/strings.dart';
 import 'package:pic_share/views/pages/home/widgets/action_sheet_widget.dart';
 import 'package:pic_share/views/pages/home/widgets/report_action_widget.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:pic_share/app/constants/app_color.dart';
 
 class SinglePostContainer extends GetView<HomeController> {
   const SinglePostContainer({
@@ -36,11 +37,16 @@ class SinglePostContainer extends GetView<HomeController> {
             Stack(
               alignment: Alignment.center,
               children: [
-                ImageCacheHelper.showImage(
-                    url: postData.post.urlImage ??
-                        "https://picsum.photos/seed/picsum/200/300",
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height * 0.55),
+                Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(80),
+                      border: Border.all(color: AppColors.backgroundColor)),
+                  child: ImageCacheHelper.showImage(
+                      url: postData.post.urlImage ??
+                          "https://picsum.photos/seed/picsum/200/300",
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height * 0.55),
+                ),
                 Align(
                   alignment: Alignment.centerRight,
                   child: _buildActionsWidget(),

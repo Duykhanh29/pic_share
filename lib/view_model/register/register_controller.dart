@@ -82,6 +82,7 @@ class RegisterController extends GetxController {
       }
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
+      SnackbarHelper.errorSnackbar(e.toString());
     } finally {
       isLoading.value = false;
     }

@@ -36,7 +36,7 @@ class ImageCacheHelper {
           width: width,
           decoration: BoxDecoration(
             border: Border.all(color: AppColors.backgroundColor, width: 0.4),
-            // borderRadius: BorderRadius.circular(80),
+            borderRadius: BorderRadius.circular(80),
             image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
           ),
         );

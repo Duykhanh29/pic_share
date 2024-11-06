@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:pic_share/app/constants/app_images.dart';
+import 'package:pic_share/app/helper/snack_bar_helper.dart';
 import 'package:pic_share/app/services/local_storage_service.dart';
 import 'package:pic_share/data/models/language.dart';
 import 'package:pic_share/data/repositories/user/user_repository.dart';
@@ -80,6 +81,7 @@ class LanguageController extends GetxController {
       );
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
+      SnackbarHelper.errorSnackbar(e.toString());
     }
   }
 }

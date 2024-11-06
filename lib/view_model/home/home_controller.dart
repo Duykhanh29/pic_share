@@ -130,6 +130,7 @@ class HomeController extends GetxController {
       posts.removeWhere((element) => element.post.id == id);
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
+      SnackbarHelper.errorSnackbar(e.toString());
     }
   }
 
@@ -138,6 +139,7 @@ class HomeController extends GetxController {
       await postRepository.reportPost(id: id, reason: reason);
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
+      SnackbarHelper.errorSnackbar(e.toString());
     }
   }
 
@@ -249,6 +251,7 @@ class HomeController extends GetxController {
       }
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
+      SnackbarHelper.errorSnackbar(e.toString());
     }
   }
 

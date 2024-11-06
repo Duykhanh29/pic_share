@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pic_share/app/constants/strings.dart';
+import 'package:pic_share/app/helper/snack_bar_helper.dart';
 import 'package:pic_share/data/enums/message_type.dart';
 import 'package:pic_share/data/models/conversation/message.dart';
 import 'package:pic_share/data/models/user/user_model.dart';
@@ -70,6 +71,7 @@ class ChatController extends GetxController {
       messages.value = listMsg;
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
+      SnackbarHelper.errorSnackbar(e.toString());
     } finally {
       isLoading.value = false;
     }
@@ -117,6 +119,7 @@ class ChatController extends GetxController {
       }
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
+      SnackbarHelper.errorSnackbar(e.toString());
     } finally {
       isLoading.value = false;
     }
