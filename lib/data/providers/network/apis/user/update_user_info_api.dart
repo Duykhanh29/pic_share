@@ -1,8 +1,10 @@
 import 'package:dio/dio.dart';
+import 'package:pic_share/data/models/user/user_model.dart';
 import 'package:pic_share/data/providers/network/api_provider.dart';
 import 'package:pic_share/data/providers/network/api_request_representable.dart';
+import 'package:pic_share/data/providers/network/api_response.dart';
 
-class GetUserInfoAPI extends APIRequestRepresentable {
+class GetUserInfoAPI extends APIRequestRepresentable<UserModel?> {
   @override
   String get endpoint => '/api/user';
 
@@ -10,7 +12,16 @@ class GetUserInfoAPI extends APIRequestRepresentable {
   HTTPMethod get method => HTTPMethod.get;
 
   @override
-  Future request() {
+  UserModel? Function(dynamic p1) get fromJson => (json) {
+        if (json == null) return null;
+        if (json is List) {
+          return UserModel.fromJson(json[0]);
+        }
+        return UserModel.fromJson(json);
+      };
+
+  @override
+  Future<ApiResponse<UserModel?>> request() {
     return APIProvider().request(this);
   }
 }
@@ -38,7 +49,12 @@ class UpdateUserInfo extends APIRequestRepresentable {
   Map<String, dynamic>? get query => {"_method": 'PATCH'};
 
   @override
-  Future request() {
+  Function(dynamic json) get fromJson => (json) {
+        return json as Map<String, dynamic>;
+      };
+
+  @override
+  Future<ApiResponse> request() {
     return APIProvider().request(this);
   }
 }
@@ -65,7 +81,12 @@ class ChangePasswordAPI extends APIRequestRepresentable {
       };
 
   @override
-  Future request() {
+  Function(dynamic json) get fromJson => (json) {
+        return json;
+      };
+
+  @override
+  Future<ApiResponse> request() {
     return APIProvider().request(this);
   }
 }
@@ -78,7 +99,12 @@ class DeleteUserAccAPI extends APIRequestRepresentable {
   HTTPMethod get method => HTTPMethod.delete;
 
   @override
-  Future request() {
+  Function(dynamic json) get fromJson => (json) {
+        return json;
+      };
+
+  @override
+  Future<ApiResponse> request() {
     return APIProvider().request(this);
   }
 }
@@ -98,7 +124,12 @@ class SetFcmTokenAPI extends APIRequestRepresentable {
       };
 
   @override
-  Future request() {
+  Function(dynamic json) get fromJson => (json) {
+        return json;
+      };
+
+  @override
+  Future<ApiResponse> request() {
     return APIProvider().request(this);
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pic_share/app/constants/strings.dart';
+import 'package:pic_share/app/helper/snack_bar_helper.dart';
 import 'package:pic_share/data/enums/friend_status.dart';
 import 'package:pic_share/data/models/user/friend.dart';
 import 'package:pic_share/data/models/user/user_model.dart';
@@ -101,7 +102,12 @@ class FriendController extends GetxController
 
   Future<void> fetchFriends() async {
     try {
-      friendList.value = await friendRepository.getFriendList();
+      final response = await friendRepository.getFriendList();
+      if (response.isSuccess) {
+        friendList.value = response.data ?? [];
+      } else {
+        SnackbarHelper.errorSnackbar(response.message ?? '');
+      }
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
     } finally {
@@ -111,10 +117,22 @@ class FriendController extends GetxController
 
   Future<void> fetchFriendRequests() async {
     try {
-      final requestedList = await friendRepository.getFriendRequestList();
-      requestedFriends.value = requestedList.reversed.toList();
-      final sentList = await friendRepository.getFriendRequestSentList();
-      sentFriends.value = sentList.reversed.toList();
+      final requestedResponse = await friendRepository.getFriendRequestList();
+      if (requestedResponse.isSuccess) {
+        final requestedList = requestedResponse.data ?? [];
+
+        requestedFriends.value = requestedList.reversed.toList();
+      } else {
+        SnackbarHelper.errorSnackbar(requestedResponse.message ?? '');
+      }
+      // sent requests
+      final sentResponse = await friendRepository.getFriendRequestSentList();
+      if (sentResponse.isSuccess) {
+        final sentList = sentResponse.data ?? [];
+        sentFriends.value = sentList.reversed.toList();
+      } else {
+        SnackbarHelper.errorSnackbar(sentResponse.message ?? '');
+      }
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
     } finally {
@@ -148,9 +166,13 @@ class FriendController extends GetxController
       updateChangesForFriends(id);
       isActionLoading.value = false;
       //
-      await friendRepository.deleteFriend(id);
-      // updateChangesForFriendRequest(id);
-      // updateChangesForFriends(id);
+      final response = await friendRepository.deleteFriend(id);
+      if (response.isSuccess) {
+        // updateChangesForFriendRequest(id);
+        // updateChangesForFriends(id);
+      } else {
+        SnackbarHelper.errorSnackbar(response.message ?? '');
+      }
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
     } finally {
@@ -210,11 +232,15 @@ class FriendController extends GetxController
       updateChangesForFriendRequest(id);
       isActionLoading.value = false;
       //
-      await friendRepository.updateFriendStatus(
+      final response = await friendRepository.updateFriendStatus(
           id: id, status: FriendStatus.friend);
-      // updateChangesForFriendList(
-      //     requestedFriends.firstWhere((element) => element.id == id));
-      // updateChangesForFriendRequest(id);
+      if (response.isSuccess) {
+        // updateChangesForFriendList(
+        //     requestedFriends.firstWhere((element) => element.id == id));
+        // updateChangesForFriendRequest(id);
+      } else {
+        SnackbarHelper.errorSnackbar(response.message ?? '');
+      }
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
     } finally {
@@ -224,7 +250,13 @@ class FriendController extends GetxController
 
   Future<Friend?> makeFriendRequest(int id) async {
     try {
-      return await friendRepository.sendFriendRequest(id);
+      final response = await friendRepository.sendFriendRequest(id);
+      if (response.isSuccess) {
+        return response.data;
+      } else {
+        SnackbarHelper.errorSnackbar(response.message ?? '');
+        return null;
+      }
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
     }

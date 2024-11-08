@@ -132,5 +132,8 @@
     "accept":"Accept",
     "notSupportedForAdminApp":"The app does not support Admin accounts. Please try on the website",
     "backToLogin":"Back to login",
-    "deletedPost":"Deleted post"
+    "deletedPost":"Deleted post",
+    "successTitle":"Success",
+    "errorTitle":"Error",
+    "warningTitle":"Warning"
 }

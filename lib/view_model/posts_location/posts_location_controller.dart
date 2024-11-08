@@ -81,7 +81,11 @@ class PostsLocationController extends GetxController {
   }
 
   Future<void> fetchMemories() async {
-    final listPosts = await postRepository.getPostsWithLocation();
+    List<PostDetail> listPosts = [];
+    final response = await postRepository.getPostsWithLocation();
+    if (response.isSuccess) {
+      listPosts = response.data ?? [];
+    }
     posts.value = listPosts;
 
     markers.value = listPosts.map((post) {

@@ -1,5 +1,7 @@
+import 'package:pic_share/data/models/user/user_model.dart';
 import 'package:pic_share/data/providers/network/api_provider.dart';
 import 'package:pic_share/data/providers/network/api_request_representable.dart';
+import 'package:pic_share/data/providers/network/api_response.dart';
 
 enum AuthType { login, logout, register }
 
@@ -24,12 +26,17 @@ class AuthAPI extends APIRequestRepresentable {
   HTTPMethod get method => HTTPMethod.get;
 
   @override
-  Future request() {
+  Function(dynamic json) get fromJson => (json) {
+        return json as Map<String, dynamic>;
+      };
+
+  @override
+  Future<ApiResponse> request() {
     return APIProvider().request(this);
   }
 }
 
-class RegisterAPI extends APIRequestRepresentable {
+class RegisterAPI extends APIRequestRepresentable<UserModel?> {
   RegisterAPI(
       {required this.email,
       required this.name,
@@ -54,12 +61,20 @@ class RegisterAPI extends APIRequestRepresentable {
       };
 
   @override
-  Future request() {
+  UserModel? Function(dynamic p1) get fromJson => (json) {
+        if (json is List) {
+          return json.map((e) => UserModel.fromJson(e)).toList().first;
+        }
+        return UserModel.fromJson(json);
+      };
+
+  @override
+  Future<ApiResponse<UserModel?>> request() {
     return APIProvider().request(this);
   }
 }
 
-class LoginAPI extends APIRequestRepresentable {
+class LoginAPI extends APIRequestRepresentable<UserModel?> {
   LoginAPI({
     required this.email,
     required this.password,
@@ -77,14 +92,21 @@ class LoginAPI extends APIRequestRepresentable {
         'email': email,
         'password': password,
       };
+  @override
+  UserModel? Function(dynamic p1) get fromJson => (json) {
+        if (json is List) {
+          return json.map((e) => UserModel.fromJson(e)).toList().first;
+        }
+        return UserModel.fromJson(json);
+      };
 
   @override
-  Future request() {
+  Future<ApiResponse<UserModel?>> request() {
     return APIProvider().request(this);
   }
 }
 
-class LoginWithGoogleAPI extends APIRequestRepresentable {
+class LoginWithGoogleAPI extends APIRequestRepresentable<UserModel?> {
   LoginWithGoogleAPI({required this.accessToken});
   final String accessToken;
   @override
@@ -96,7 +118,15 @@ class LoginWithGoogleAPI extends APIRequestRepresentable {
   get body => {'access_token': accessToken};
 
   @override
-  Future request() {
+  UserModel? Function(dynamic p1) get fromJson => (json) {
+        if (json is List) {
+          return json.map((e) => UserModel.fromJson(e)).toList().first;
+        }
+        return UserModel.fromJson(json);
+      };
+
+  @override
+  Future<ApiResponse<UserModel?>> request() {
     return APIProvider().request(this);
   }
 }
@@ -111,7 +141,12 @@ class LogoutAPI extends APIRequestRepresentable {
   HTTPMethod get method => HTTPMethod.get;
 
   @override
-  Future request() {
+  Function(dynamic json) get fromJson => (json) {
+        return json;
+      };
+
+  @override
+  Future<ApiResponse> request() {
     return APIProvider().request(this);
   }
 }

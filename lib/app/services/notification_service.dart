@@ -9,7 +9,6 @@ import 'package:pic_share/app/services/local_storage_service.dart';
 import 'package:pic_share/data/enums/friend_noti_type.dart';
 import 'package:pic_share/data/enums/link_to_type.dart';
 import 'package:pic_share/data/models/notification/notification_data.dart';
-import 'package:pic_share/data/models/post/deleted_post.dart';
 import 'package:pic_share/data/repositories/auth/auth_repository.dart';
 import 'package:pic_share/data/repositories/friend/friend_repository.dart';
 import 'package:pic_share/data/repositories/notification/notification_repository.dart';

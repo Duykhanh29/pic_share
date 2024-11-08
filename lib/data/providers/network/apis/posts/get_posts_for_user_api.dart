@@ -1,7 +1,9 @@
+import 'package:pic_share/data/models/post/post_detail.dart';
 import 'package:pic_share/data/providers/network/api_provider.dart';
 import 'package:pic_share/data/providers/network/api_request_representable.dart';
+import 'package:pic_share/data/providers/network/api_response.dart';
 
-class GetPostsForUserAPI extends APIRequestRepresentable {
+class GetPostsForUserAPI extends APIRequestRepresentable<List<PostDetail>> {
   int? userId;
 
   GetPostsForUserAPI({this.userId});
@@ -12,14 +14,23 @@ class GetPostsForUserAPI extends APIRequestRepresentable {
 
   @override
   HTTPMethod get method => HTTPMethod.get;
+  @override
+  List<PostDetail> Function(dynamic p1) get fromJson => (json) {
+        if (json is Map<String, dynamic>) {
+          return (json['posts'] as List)
+              .map((e) => PostDetail.fromJson(e))
+              .toList();
+        }
+        return [];
+      };
 
   @override
-  Future request() {
+  Future<ApiResponse<List<PostDetail>>> request() {
     return APIProvider().request(this);
   }
 }
 
-class GetPostWithLocationAPI extends APIRequestRepresentable {
+class GetPostWithLocationAPI extends APIRequestRepresentable<List<PostDetail>> {
   @override
   String get endpoint => '/api/post/posts_with_geolocation';
 
@@ -27,7 +38,11 @@ class GetPostWithLocationAPI extends APIRequestRepresentable {
   HTTPMethod get method => HTTPMethod.get;
 
   @override
-  Future request() {
+  List<PostDetail> Function(dynamic p1) get fromJson => (json) {
+        return (json as List).map((e) => PostDetail.fromJson(e)).toList();
+      };
+  @override
+  Future<ApiResponse<List<PostDetail>>> request() {
     return APIProvider().request(this);
   }
 }

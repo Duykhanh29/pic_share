@@ -1,8 +1,12 @@
 import 'package:dio/dio.dart';
+import 'package:pic_share/data/models/post/report.dart';
 import 'package:pic_share/data/providers/network/api_provider.dart';
 import 'package:pic_share/data/providers/network/api_request_representable.dart';
+import 'package:pic_share/data/models/post/post.dart';
+import 'package:pic_share/data/providers/network/api_response.dart';
+import 'package:pic_share/data/models/post/post_detail.dart';
 
-class CreatePostAPI extends APIRequestRepresentable {
+class CreatePostAPI extends APIRequestRepresentable<Post?> {
   CreatePostAPI({
     required this.formData,
   });
@@ -19,12 +23,21 @@ class CreatePostAPI extends APIRequestRepresentable {
   }
 
   @override
-  Future request() {
+  Post? Function(dynamic p1) get fromJson => (json) {
+        if (json == null) return null;
+        if (json is List) {
+          return Post.fromJson(json[0]);
+        }
+        return Post.fromJson(json);
+      };
+
+  @override
+  Future<ApiResponse<Post?>> request() {
     return APIProvider().request(this);
   }
 }
 
-class PostDetailAPI extends APIRequestRepresentable {
+class PostDetailAPI extends APIRequestRepresentable<PostDetail?> {
   int id;
   PostDetailAPI({required this.id});
   @override
@@ -34,7 +47,16 @@ class PostDetailAPI extends APIRequestRepresentable {
   HTTPMethod get method => HTTPMethod.get;
 
   @override
-  Future request() {
+  PostDetail? Function(dynamic p1) get fromJson => (json) {
+        if (json == null) return null;
+        if (json is List) {
+          return PostDetail.fromJson(json[0]);
+        }
+        return PostDetail.fromJson(json);
+      };
+
+  @override
+  Future<ApiResponse<PostDetail?>> request() {
     return APIProvider().request(this);
   }
 }
@@ -49,7 +71,12 @@ class DeletePostAPI extends APIRequestRepresentable {
   HTTPMethod get method => HTTPMethod.delete;
 
   @override
-  Future request() {
+  Function(dynamic json) get fromJson => (json) {
+        return json;
+      };
+
+  @override
+  Future<ApiResponse> request() {
     return APIProvider().request(this);
   }
 }
@@ -67,12 +94,17 @@ class GetPostHistoryAPI extends APIRequestRepresentable {
   HTTPMethod get method => HTTPMethod.get;
 
   @override
-  Future request() {
+  Function(dynamic json) get fromJson => (json) {
+        return json as Map<String, dynamic>;
+      };
+
+  @override
+  Future<ApiResponse> request() {
     return APIProvider().request(this);
   }
 }
 
-class ReportPostAPI extends APIRequestRepresentable {
+class ReportPostAPI extends APIRequestRepresentable<Report?> {
   ReportPostAPI({required this.id, required this.reason});
   final int id;
   final String reason;
@@ -87,7 +119,16 @@ class ReportPostAPI extends APIRequestRepresentable {
       };
 
   @override
-  Future request() {
+  Report? Function(dynamic p1) get fromJson => (json) {
+        if (json == null) return null;
+        if (json is List) {
+          return Report.fromJson(json[0]);
+        }
+        return Report.fromJson(json);
+      };
+
+  @override
+  Future<ApiResponse<Report?>> request() {
     return APIProvider().request(this);
   }
 }

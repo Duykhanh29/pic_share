@@ -64,22 +64,37 @@ class AuthController extends GetxController {
 
   Future<void> logout() async {
     await updateFCMToken(isNull: true);
-    await authRepository.logout();
+    final response = await authRepository.logout();
+    if (response.isSuccess) {
+      SnackbarHelper.successSnackbar(response.message ?? "Logout successfully");
+    } else {
+      SnackbarHelper.errorSnackbar(response.message ?? "");
+    }
     currentUser.value = null;
     Get.offAllNamed(Routes.login);
     localStorageService.removeAllSharedPreferencesValues();
     _tokenManager.deleteAll();
-    deleteControllerDenpendenciesInjection();
+    deleteControllerDependenciesInjection();
   }
 
   Future<void> updateUserInfo(
-      {String? name, File? urlAvatar, String? lanaguage}) async {
+      {String? name, File? urlAvatar, String? language}) async {
     try {
-      await userRepository.updateUserInfo(
-          name: name, urlAvatar: urlAvatar, language: lanaguage);
-      final user = await userRepository.getCurrentUser();
-      if (user != null) {
-        localStorageService.setUserModel(value: user);
+      final response = await userRepository.updateUserInfo(
+          name: name, urlAvatar: urlAvatar, language: language);
+
+      if (response.isSuccess) {
+        final userResponse = await userRepository.getCurrentUser();
+        if (userResponse.isSuccess) {
+          final user = userResponse.data;
+          if (user != null) {
+            localStorageService.setUserModel(value: user);
+          }
+        }
+        SnackbarHelper.successSnackbar(
+            response.message ?? "Update successfully");
+      } else {
+        SnackbarHelper.errorSnackbar(response.message ?? "");
       }
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
@@ -129,7 +144,7 @@ class AuthController extends GetxController {
     }
   }
 
-  Future<void> deleteControllerDenpendenciesInjection() async {
+  Future<void> deleteControllerDependenciesInjection() async {
     try {
       await Get.delete<PusherService>();
     } catch (e) {

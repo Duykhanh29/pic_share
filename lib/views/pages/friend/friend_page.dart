@@ -58,7 +58,7 @@ class FriendPage extends GetView<FriendController> {
                     )),
       title: Obx(
         () => Text(
-          controller.isFriendShipView.value ? t.friend : t.friendRequests,
+          controller.isFriendShipView.value ? t.friends : t.friendRequests,
           style: AppTextStyles.appBarTexStyle(),
         ),
       ),
@@ -77,7 +77,7 @@ class FriendPage extends GetView<FriendController> {
   Widget _buildListFriendView(AppLocalizations t, BuildContext context) {
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-        child: ListView(
+        child: Column(
           children: [
             Container(
               padding: const EdgeInsets.all(5),
@@ -112,47 +112,50 @@ class FriendPage extends GetView<FriendController> {
                 ),
               ),
             ),
-            CustomScrollView(
-              shrinkWrap: true,
-              physics: const BouncingScrollPhysics(),
-              slivers: [
-                Obx(
-                  () => controller.isLoadingFriends.value
-                      ? SliverToBoxAdapter(
-                          child: ShimmerHelper().buildListViewShimmer(),
-                        )
-                      : controller.friendList.isNotEmpty
-                          ? SliverList.builder(
-                              itemBuilder: (context, index) {
-                                final friend = controller.friendList[index];
-                                return FriendCard(
-                                  friend: friend,
-                                  onItemClick: controller.onItemClick,
-                                  onChatClick: controller.onNavToChat,
-                                  key: UniqueKey(),
-                                  onRejectClick:
-                                      controller.onRejectFriendRequest,
-                                  isMe: controller.currentUser?.id ==
-                                      friend.userId,
-                                );
-                              },
-                              itemCount: controller.friendList.length,
-                            )
-                          : SliverToBoxAdapter(
-                              child: SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.6,
-                              child: Center(
-                                child: Text(
-                                  t.noFriends,
-                                  style: AppTextStyles.commonTextStyle()
-                                      .copyWith(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500),
+            Expanded(
+              child: CustomScrollView(
+                // shrinkWrap: true,
+                physics: const BouncingScrollPhysics(),
+                slivers: [
+                  Obx(
+                    () => controller.isLoadingFriends.value
+                        ? SliverToBoxAdapter(
+                            child: ShimmerHelper().buildListViewShimmer(),
+                          )
+                        : controller.friendList.isNotEmpty
+                            ? SliverList.builder(
+                                itemBuilder: (context, index) {
+                                  final friend = controller.friendList[index];
+                                  return FriendCard(
+                                    friend: friend,
+                                    onItemClick: controller.onItemClick,
+                                    onChatClick: controller.onNavToChat,
+                                    key: UniqueKey(),
+                                    onRejectClick:
+                                        controller.onRejectFriendRequest,
+                                    isMe: controller.currentUser?.id ==
+                                        friend.userId,
+                                  );
+                                },
+                                itemCount: controller.friendList.length,
+                              )
+                            : SliverToBoxAdapter(
+                                child: SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.6,
+                                child: Center(
+                                  child: Text(
+                                    t.noFriends,
+                                    style: AppTextStyles.commonTextStyle()
+                                        .copyWith(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
+                                  ),
                                 ),
-                              ),
-                            )),
-                ),
-              ],
+                              )),
+                  ),
+                ],
+              ),
             ),
           ],
         ));

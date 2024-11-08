@@ -37,16 +37,11 @@ class SinglePostContainer extends GetView<HomeController> {
             Stack(
               alignment: Alignment.center,
               children: [
-                Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(80),
-                      border: Border.all(color: AppColors.backgroundColor)),
-                  child: ImageCacheHelper.showImage(
-                      url: postData.post.urlImage ??
-                          "https://picsum.photos/seed/picsum/200/300",
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height * 0.55),
-                ),
+                ImageCacheHelper.showImage(
+                    url: postData.post.urlImage ??
+                        "https://picsum.photos/seed/picsum/200/300",
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height * 0.55),
                 Align(
                   alignment: Alignment.centerRight,
                   child: _buildActionsWidget(),

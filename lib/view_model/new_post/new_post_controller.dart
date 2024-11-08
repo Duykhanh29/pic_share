@@ -162,7 +162,7 @@ class NewPostController extends GetxController {
       if (isReadyToUpload) {
         SharedPostType type = getType();
         List<int> shareWiths = getShareWiths();
-        Post? post = await postRepository.createPost(
+        final response = await postRepository.createPost(
           type: type,
           urlImage: File(pictureFile.value?.path ?? ""),
           caption: captionController.text.trim(),
@@ -170,7 +170,12 @@ class NewPostController extends GetxController {
           latitude: latitude.value,
           longitude: longitude.value,
         );
-        debugPrint("New post: $post");
+        if (response.isSuccess) {
+          Post? post = response.data;
+          debugPrint("New post: $post");
+        } else {
+          SnackbarHelper.errorSnackbar(response.message ?? '');
+        }
       }
     } catch (e) {
       debugPrint('Error occured while downloading picture: $e');

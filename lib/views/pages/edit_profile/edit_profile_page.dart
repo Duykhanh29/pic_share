@@ -132,11 +132,12 @@ class EditProfilePage extends GetView<EditProfileController> {
     return GestureDetector(
       onTap: controller.updateUserInfo,
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+        margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
         height: 50,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          color: AppColors.lightTabarColor,
+          // color: AppColors.lightTabarColor,
+          border: Border.all(color: AppColors.lightTabarColor),
         ),
         alignment: Alignment.center,
         child: Text(t.save, style: AppTextStyles.headingTextStyle()),

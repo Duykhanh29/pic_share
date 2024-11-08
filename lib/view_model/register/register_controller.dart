@@ -63,20 +63,25 @@ class RegisterController extends GetxController {
     try {
       var isValid = formKey.currentState!.validate();
       if (isValid) {
-        user.value = await authRepository.registerUserByEmailAndPass(
+        final response = await authRepository.registerUserByEmailAndPass(
             email: emailController.text.trim(),
             password: passController.text,
             confirmPassword: confirmPasswordController.text,
             name: nameController.text.trim());
-        await _tokenManager.setAccessToken(user.value?.accessToken);
-        String? token = await notificationsService.getToken();
-        if (token != null) {
-          await userRepository.updateFcmToken(fcmToken: token);
-          user.value = user.value
-              ?.copyWith(config: user.value?.config?.copyWith(fcmToken: token));
+
+        if (response.isSuccess) {
+          user.value = response.data;
+          await _tokenManager.setAccessToken(user.value?.accessToken);
+          String? token = await notificationsService.getToken();
+          if (token != null) {
+            await updateFcmToken(token);
+          }
+          localStorageService.setUserModel(value: user.value);
+          SnackbarHelper.successSnackbar(
+              response.message ?? "Register successfully");
+        } else {
+          SnackbarHelper.errorSnackbar(response.message ?? "");
         }
-        localStorageService.setUserModel(value: user.value);
-        SnackbarHelper.successSnackbar("Register successfully");
       } else {
         debugPrint("Form is not valid");
       }
@@ -85,6 +90,15 @@ class RegisterController extends GetxController {
       SnackbarHelper.errorSnackbar(e.toString());
     } finally {
       isLoading.value = false;
+    }
+  }
+
+  Future<void> updateFcmToken(String token) async {
+    final responseFCM = await userRepository.updateFcmToken(fcmToken: token);
+
+    if (responseFCM.isSuccess) {
+      user.value = user.value
+          ?.copyWith(config: user.value?.config?.copyWith(fcmToken: token));
     }
   }
 }

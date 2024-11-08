@@ -66,9 +66,15 @@ class ChatController extends GetxController {
   Future<void> fetchMessages() async {
     isLoading.value = true;
     try {
-      final listMsg =
+      final response =
           await conversationRepository.getMessages(conversationId.value);
-      messages.value = listMsg;
+      if (response.isSuccess) {
+        List<Message> listMsg = response.data ?? [];
+        messages.value = listMsg;
+      } else {
+        messages.value = [];
+        SnackbarHelper.errorSnackbar(response.message ?? "");
+      }
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
       SnackbarHelper.errorSnackbar(e.toString());

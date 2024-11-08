@@ -132,5 +132,8 @@
     "accept":"Chấp nhận",
     "notSupportedForAdminApp":"App không hỗ trợ cho tài khoản Admin. Hãy trải nghiệm trên website",
     "backToLogin":"Quay lại màn đăng nhập",
-    "deletedPost":"Bài viết bị xóa"
+    "deletedPost":"Bài viết bị xóa",
+    "successTitle":"Thành công",
+    "errorTitle":"Lỗi",
+    "warningTitle":"Cảnh báo"
 }

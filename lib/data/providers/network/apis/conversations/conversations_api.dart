@@ -1,6 +1,8 @@
 import 'package:pic_share/data/enums/message_type.dart';
+import 'package:pic_share/data/models/conversation/message.dart';
 import 'package:pic_share/data/providers/network/api_provider.dart';
 import 'package:pic_share/data/providers/network/api_request_representable.dart';
+import 'package:pic_share/data/providers/network/api_response.dart';
 
 class GetConversationsAPI extends APIRequestRepresentable {
   GetConversationsAPI();
@@ -13,7 +15,12 @@ class GetConversationsAPI extends APIRequestRepresentable {
   HTTPMethod get method => HTTPMethod.get;
 
   @override
-  Future request() {
+  Function(dynamic json) get fromJson => (json) {
+        return json as Map<String, dynamic>;
+      };
+
+  @override
+  Future<ApiResponse> request() {
     return APIProvider().request(this);
   }
 }
@@ -49,12 +56,16 @@ class SendMessageAPI extends APIRequestRepresentable {
       };
 
   @override
-  Future request() {
+  Function(dynamic json) get fromJson => (json) {
+        return json as Map<String, dynamic>;
+      };
+  @override
+  Future<ApiResponse> request() {
     return APIProvider().request(this);
   }
 }
 
-class GetMessagesAPI extends APIRequestRepresentable {
+class GetMessagesAPI extends APIRequestRepresentable<List<Message>> {
   final int id;
   GetMessagesAPI({required this.id});
   @override
@@ -66,7 +77,16 @@ class GetMessagesAPI extends APIRequestRepresentable {
   HTTPMethod get method => HTTPMethod.get;
 
   @override
-  Future request() {
+  List<Message> Function(dynamic p1) get fromJson => (json) {
+        if (json == null) return [];
+        if (json is List) {
+          return json.map((e) => Message.fromJson(e)).toList().cast<Message>();
+        }
+        return [];
+      };
+
+  @override
+  Future<ApiResponse<List<Message>>> request() {
     return APIProvider().request(this);
   }
 }
@@ -81,7 +101,11 @@ class UpdateMarkAsReadAPI extends APIRequestRepresentable {
   HTTPMethod get method => HTTPMethod.post;
 
   @override
-  Future request() {
+  Function(dynamic json) get fromJson => (json) {
+        return json;
+      };
+  @override
+  Future<ApiResponse> request() {
     return APIProvider().request(this);
   }
 }

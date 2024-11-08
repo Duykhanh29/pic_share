@@ -1,4 +1,5 @@
 import 'package:pic_share/app/config/app_config.dart';
+import 'package:pic_share/data/providers/network/api_response.dart';
 
 enum HTTPMethod { get, post, delete, put, patch }
 
@@ -19,7 +20,7 @@ extension HTTPMethodString on HTTPMethod {
   }
 }
 
-abstract class APIRequestRepresentable {
+abstract class APIRequestRepresentable<T> {
   HTTPMethod get method;
   Map<String, String>? get headers => null;
 
@@ -29,5 +30,6 @@ abstract class APIRequestRepresentable {
   Map<String, dynamic>? get query => null;
   String get endpoint;
   dynamic get body => null;
-  Future request();
+  T Function(dynamic json) get fromJson;
+  Future<ApiResponse<T>> request();
 }
