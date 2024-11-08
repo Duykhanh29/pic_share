@@ -59,8 +59,8 @@ class ActionSheetWidget extends StatelessWidget {
                       title: t.warning,
                       message: t.areYouSureToDeleteThisPost,
                       onConfirm: () async {
-                        await onDeletePost?.call();
                         Get.back();
+                        await onDeletePost?.call();
                       },
                       onCancel: () {
                         Get.back();

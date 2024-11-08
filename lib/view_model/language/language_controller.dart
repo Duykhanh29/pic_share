@@ -76,9 +76,15 @@ class LanguageController extends GetxController {
       Get.updateLocale(Locale(code));
       localStorageService.setLanguage = code;
       selectedLanguage.value = index;
-      await userRepository.updateUserInfo(
+      final response = await userRepository.updateUserInfo(
         language: code,
       );
+      if (response.isSuccess) {
+        SnackbarHelper.successSnackbar(
+            response.message ?? "Update successfully");
+      } else {
+        SnackbarHelper.errorSnackbar(response.message ?? "");
+      }
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
       SnackbarHelper.errorSnackbar(e.toString());

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pic_share/app/constants/strings.dart';
+import 'package:pic_share/app/helper/snack_bar_helper.dart';
 import 'package:pic_share/data/enums/user_relationship.dart';
 import 'package:pic_share/data/models/paging.dart';
 import 'package:pic_share/data/models/post/post.dart';
@@ -62,12 +63,11 @@ class FriendProfileController extends GetxController
     getCurrentFriendRelationship();
     await getMutualFriend();
     await fecthUserLog();
-     pagingController.addPageRequestListener((pageKey) async {
+    pagingController.addPageRequestListener((pageKey) async {
       await fetchPosts(page: pageKey);
     });
     await fetchPosts();
     super.onInit();
-   
   }
 
   @override
@@ -85,13 +85,18 @@ class FriendProfileController extends GetxController
     isMutualFriendLoading.value = true;
     try {
       if (friend.value?.id == null) return;
-      mutualFriends.value =
+      final response =
           await friendRepository.getMutualFriends(friend.value!.id!);
-      if (mutualFriends.isNotEmpty) {
-        for (var user in mutualFriends) {
-          UserFriendShipModel userFriendShipModel = getUserSearchResult(user);
-          listMutualFriend.add(userFriendShipModel);
+      if (response.isSuccess) {
+        mutualFriends.value = response.data ?? [];
+        if (mutualFriends.isNotEmpty) {
+          for (var user in mutualFriends) {
+            UserFriendShipModel userFriendShipModel = getUserSearchResult(user);
+            listMutualFriend.add(userFriendShipModel);
+          }
         }
+      } else {
+        SnackbarHelper.errorSnackbar(response.message ?? '');
       }
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
@@ -135,7 +140,14 @@ class FriendProfileController extends GetxController
     isUserLogLoading.value = true;
     try {
       if (friend.value?.id == null) return;
-      userLog.value = await userRepository.getUserLog(userId: friend.value!.id);
+
+      final response =
+          await userRepository.getUserLog(userId: friend.value!.id);
+      if (response.isSuccess) {
+        userLog.value = response.data;
+      } else {
+        SnackbarHelper.errorSnackbar(response.message ?? '');
+      }
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
     } finally {

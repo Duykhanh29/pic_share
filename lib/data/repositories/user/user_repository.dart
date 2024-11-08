@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:pic_share/data/models/user/user_log.dart';
 import 'package:pic_share/data/models/user/user_model.dart';
+import 'package:pic_share/data/providers/network/api_response.dart';
 import 'package:pic_share/data/providers/network/apis/user/update_user_info_api.dart';
 import 'package:dio/dio.dart';
 import 'package:path/path.dart';
@@ -18,101 +19,73 @@ abstract class UserRepository {
   Future<void> checkUserExists({String? uid, String? email, String? phone});
   */
 
-  Future<void> updateUserInfo(
+  Future<ApiResponse> updateUserInfo(
       {String? name, File? urlAvatar, String? language});
-  Future<void> changePassword(
+  Future<ApiResponse> changePassword(
       {required String currentPassword,
       required String newPassword,
       required String passwordConfirmation});
-  Future<void> updateFcmToken({required String? fcmToken});
-  Future<void> deleteUser();
-  Future<UserModel?> getCurrentUser();
-  Future<UserLog?> getUserLog({int? userId});
+  Future<ApiResponse> updateFcmToken({required String? fcmToken});
+  Future<ApiResponse> deleteUser();
+  Future<ApiResponse<UserModel?>> getCurrentUser();
+  Future<ApiResponse<UserLog?>> getUserLog({int? userId});
 }
 
 class UserRepositoryImpl implements UserRepository {
   @override
-  Future<void> changePassword(
+  Future<ApiResponse> changePassword(
       {required String currentPassword,
       required String newPassword,
       required String passwordConfirmation}) async {
-    try {
-      final response = await ChangePasswordAPI(
-              currentPassword: currentPassword,
-              newPassword: newPassword,
-              passwordConfirmation: passwordConfirmation)
-          .request();
-      debugPrint("Message: ${response['message']}");
-    } catch (e) {
-      debugPrint("Something went wrong: ${e.toString()}");
-    }
+    final response = await ChangePasswordAPI(
+            currentPassword: currentPassword,
+            newPassword: newPassword,
+            passwordConfirmation: passwordConfirmation)
+        .request();
+    return response;
   }
 
   @override
-  Future<void> deleteUser() async {
-    try {
-      final response = await DeleteUserAccAPI().request();
-      debugPrint("Message: ${response['message']}");
-    } catch (e) {
-      debugPrint("Something went wrong: ${e.toString()}");
-    }
+  Future<ApiResponse> deleteUser() async {
+    final response = await DeleteUserAccAPI().request();
+    return response;
   }
 
   @override
-  Future<void> updateUserInfo(
+  Future<ApiResponse> updateUserInfo(
       {String? name, File? urlAvatar, String? language}) async {
-    try {
-      FormData formData = FormData.fromMap({
-        if (name != null) "name": name,
-        if (urlAvatar != null)
-          "url_avatar": await MultipartFile.fromFile(
-            urlAvatar.path,
-            filename: basename(urlAvatar.path),
-          ),
-        if (language != null) "language": language
-      });
-      debugPrint(formData.fields.toString());
-      debugPrint(formData.files.toString());
-      final response = await UpdateUserInfo(formData: formData).request();
-      debugPrint("Message: ${response['message']}");
-    } catch (e) {
-      debugPrint("Something went wrong: ${e.toString()}");
-    }
+    FormData formData = FormData.fromMap({
+      if (name != null) "name": name,
+      if (urlAvatar != null)
+        "url_avatar": await MultipartFile.fromFile(
+          urlAvatar.path,
+          filename: basename(urlAvatar.path),
+        ),
+      if (language != null) "language": language
+    });
+    debugPrint(formData.fields.toString());
+    debugPrint(formData.files.toString());
+    final response = await UpdateUserInfo(formData: formData).request();
+    return response;
   }
 
   @override
-  Future<UserModel?> getCurrentUser() async {
-    try {
-      final response = await GetUserInfoAPI().request();
-      final userModel = UserModel.fromJson(response as Map<String, dynamic>);
-      return userModel;
-    } catch (e) {
-      debugPrint("Something went wrong: ${e.toString()}");
-    }
-    return null;
+  Future<ApiResponse<UserModel?>> getCurrentUser() async {
+    final response = await GetUserInfoAPI().request();
+
+    return response;
   }
 
   @override
-  Future<void> updateFcmToken({required String? fcmToken}) async {
-    try {
-      final response = await SetFcmTokenAPI(fcmToken: fcmToken).request();
-      debugPrint("Message: ${response['message']}");
-    } catch (e) {
-      debugPrint("Something went wrong: ${e.toString()}");
-    }
+  Future<ApiResponse> updateFcmToken({required String? fcmToken}) async {
+    final response = await SetFcmTokenAPI(fcmToken: fcmToken).request();
+    return response;
   }
 
   @override
-  Future<UserLog?> getUserLog({int? userId}) async {
-    try {
-      final response = await UserLogAPI(userId: userId).request();
-      final data = response['data'] as Map<String, dynamic>;
-      final userLog = UserLog.fromJson(data);
-      return userLog;
-    } catch (e) {
-      debugPrint("Something went wrong: ${e.toString()}");
-    }
-    return null;
+  Future<ApiResponse<UserLog?>> getUserLog({int? userId}) async {
+    final response = await UserLogAPI(userId: userId).request();
+    return response;
   }
 
   /* OLD VERSION ( USING FIREBASE TO GET USER DATA)

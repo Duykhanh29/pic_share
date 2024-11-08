@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SnackbarHelper {
   static void successSnackbar(
@@ -8,6 +9,11 @@ class SnackbarHelper {
     Duration duration = const Duration(seconds: 2),
     SnackPosition position = SnackPosition.TOP,
   }) {
+    final locale = Get.locale;
+    final context = Get.context;
+    if (locale != null && context != null) {
+      title = AppLocalizations.of(context)?.successTitle ?? 'Success';
+    }
     Get.snackbar(
       title,
       message,
@@ -29,6 +35,11 @@ class SnackbarHelper {
     Duration duration = const Duration(seconds: 2),
     SnackPosition position = SnackPosition.TOP,
   }) {
+    final locale = Get.locale;
+    final context = Get.context;
+    if (locale != null && context != null) {
+      title = AppLocalizations.of(context)?.errorTitle ?? 'Error';
+    }
     Get.snackbar(
       title,
       message,
@@ -49,6 +60,11 @@ class SnackbarHelper {
     Duration duration = const Duration(seconds: 2),
     SnackPosition position = SnackPosition.TOP,
   }) {
+    final locale = Get.locale;
+    final context = Get.context;
+    if (locale != null && context != null) {
+      title = AppLocalizations.of(context)?.warningTitle ?? 'Warning';
+    }
     Get.snackbar(
       title,
       message,

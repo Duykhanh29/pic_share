@@ -84,8 +84,8 @@ class NotificationController extends GetxController {
 
   Future<void> updateNotification(int id) async {
     try {
-      final isSucess = await notificationRepository.updateNotification(id);
-      if (isSucess) {
+      final isSuccess = await notificationRepository.updateNotification(id);
+      if (isSuccess) {
         final updatedList = pagingController.itemList?.map((noti) {
           if (noti.id == id) {
             noti.isSeen = true;
@@ -117,7 +117,7 @@ class NotificationController extends GetxController {
       if (linkTo.type == LinkToType.friend) {
         navBottomController.onChangeToFriend();
         if (linkTo.friendNotiType == FriendNotiType.requested) {
-          await friendController.onViewInFriendReuquests();
+          await friendController.onViewInFriendRequests();
         } else {
           await friendController.onViewInFriend();
         }

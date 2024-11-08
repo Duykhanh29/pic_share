@@ -1,7 +1,9 @@
+import 'package:pic_share/data/models/user/user_summary_model.dart';
 import 'package:pic_share/data/providers/network/api_provider.dart';
 import 'package:pic_share/data/providers/network/api_request_representable.dart';
+import 'package:pic_share/data/providers/network/api_response.dart';
 
-class GetUserLikeAPI extends APIRequestRepresentable {
+class GetUserLikeAPI extends APIRequestRepresentable<List<UserSummaryModel>> {
   final int id;
   GetUserLikeAPI({required this.id});
   @override
@@ -11,7 +13,18 @@ class GetUserLikeAPI extends APIRequestRepresentable {
   HTTPMethod get method => HTTPMethod.get;
 
   @override
-  Future request() {
+  List<UserSummaryModel> Function(dynamic p1) get fromJson => (json) {
+        if (json is Map<String, dynamic>) {
+          final listUser = json['user_likes'] as List<dynamic>;
+          final listUserSummary =
+              listUser.map((e) => UserSummaryModel.fromJson(e)).toList();
+          return listUserSummary;
+        }
+        return [];
+      };
+
+  @override
+  Future<ApiResponse<List<UserSummaryModel>>> request() {
     return APIProvider().request(this);
   }
 }
@@ -26,7 +39,12 @@ class AddNewLikeAPI extends APIRequestRepresentable {
   HTTPMethod get method => HTTPMethod.get;
 
   @override
-  Future request() {
+  Function(dynamic json) get fromJson => (json) {
+        return json;
+      };
+
+  @override
+  Future<ApiResponse> request() {
     return APIProvider().request(this);
   }
 }
@@ -46,7 +64,12 @@ class DisLikeAPI extends APIRequestRepresentable {
       };
 
   @override
-  Future request() {
+  Function(dynamic json) get fromJson => (json) {
+        return json;
+      };
+
+  @override
+  Future<ApiResponse> request() {
     return APIProvider().request(this);
   }
 }

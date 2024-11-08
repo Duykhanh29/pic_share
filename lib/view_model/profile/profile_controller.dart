@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:pic_share/app/constants/strings.dart';
+import 'package:pic_share/app/helper/snack_bar_helper.dart';
 import 'package:pic_share/data/models/paging.dart';
 import 'package:pic_share/data/models/post/post.dart';
 import 'package:pic_share/data/models/post/post_detail.dart';
@@ -41,7 +42,12 @@ class ProfileController extends GetxController {
   Future<void> fecthUserLog() async {
     isUserLogLoading.value = true;
     try {
-      userLog.value = await userRepository.getUserLog();
+      final response = await userRepository.getUserLog();
+      if (response.isSuccess) {
+        userLog.value = response.data;
+      } else {
+        SnackbarHelper.errorSnackbar(response.message ?? "");
+      }
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
     } finally {

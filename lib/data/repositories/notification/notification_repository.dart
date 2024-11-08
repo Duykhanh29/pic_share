@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:pic_share/data/providers/network/api_response.dart';
 import 'package:pic_share/data/providers/network/apis/notifications/get_notification_api.dart';
 import 'package:pic_share/data/providers/network/apis/notifications/multiple_notification_api.dart';
 import 'package:pic_share/data/providers/network/apis/notifications/notification_api.dart';
@@ -6,41 +7,34 @@ import 'package:pic_share/data/models/paging.dart';
 import 'package:pic_share/data/models/notification/notification.dart';
 
 abstract class NotificationRepository {
-  Future<void> sendNotification(String token);
-  Future<void> sendNotiToMultipleDevice(List<String> tokens);
+  Future<ApiResponse> sendNotification(String token);
+  Future<ApiResponse> sendNotiToMultipleDevice(List<String> tokens);
 
   Future<Paging<Notification>> getNotifications(int? page);
 
   Future<bool> updateNotification(int id);
-  Future<void> updateUnseenNotification();
+  Future<ApiResponse> updateUnseenNotification();
   Future<int> getUnseenNotificationCount();
 }
 
 class NotificationRepositoryImpl extends NotificationRepository {
   @override
-  Future<void> sendNotiToMultipleDevice(List<String> tokens) async {
-    try {
-      await MultipleNotificationAPI(tokens: tokens).request();
-    } catch (e) {
-      debugPrint("Something went wrong: ${e.toString()}");
-    }
+  Future<ApiResponse> sendNotiToMultipleDevice(List<String> tokens) async {
+    final response = await MultipleNotificationAPI(tokens: tokens).request();
+    return response;
   }
 
   @override
-  Future<void> sendNotification(String token) async {
-    try {
-      debugPrint("Token is: $token");
-      await NotificationAPI(token: token).request();
-    } catch (e) {
-      debugPrint("Something went wrong: ${e.toString()}");
-    }
+  Future<ApiResponse> sendNotification(String token) async {
+    final response = await NotificationAPI(token: token).request();
+    return response;
   }
 
   @override
   Future<Paging<Notification>> getNotifications(int? page) async {
     try {
       final response = await GetNotificationAPI(page: page).request();
-      final data = response['data'] as Map<String, dynamic>;
+      final data = response.data as Map<String, dynamic>;
       int totalItems = data['totalItems'] as int;
       final notificationData = data['notifications'] as List<dynamic>;
       final posts =
@@ -70,31 +64,21 @@ class NotificationRepositoryImpl extends NotificationRepository {
 
   @override
   Future<bool> updateNotification(int id) async {
-    try {
-      final response = await UpdateUnreadNotificationAPI(id: id).request();
-      debugPrint("Message: ${response['message']}");
-      return true;
-    } catch (e) {
-      debugPrint("Something went wrong: ${e.toString()}");
-    }
-    return false;
+    final response = await UpdateUnreadNotificationAPI(id: id).request();
+    return response.isSuccess;
   }
 
   @override
-  Future<void> updateUnseenNotification() async {
-    try {
-      final response = await UpdateUnseenNotificationAPI().request();
-      debugPrint("Message: ${response['message']}");
-    } catch (e) {
-      debugPrint("Something went wrong: ${e.toString()}");
-    }
+  Future<ApiResponse> updateUnseenNotification() async {
+    final response = await UpdateUnseenNotificationAPI().request();
+    return response;
   }
 
   @override
   Future<int> getUnseenNotificationCount() async {
     try {
       final response = await GetUnseenNotificationAPI().request();
-      final data = response['data'] as Map<String, dynamic>;
+      final data = response.data as Map<String, dynamic>;
       final total = data['unseen_count'] as int;
       return total;
     } catch (e) {

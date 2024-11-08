@@ -59,16 +59,21 @@ class SearchUserController extends GetxController {
       listSearchUser.clear();
       isSearch.value = true;
       isLoading.value = true;
-      final listUser = await searchRepository.searchByName(name: text);
-      if (listUser.isNotEmpty) {
-        for (var user in listUser) {
-          UserFriendShipModel userFriendShipModel = getUserSearchResult(user);
-          // UserRelationship relationship =
-          //     getRelationship(user.id?.toInt() ?? 0);
-          // userFriendShipModel =
-          //     UserFriendShipModel(relationship: relationship, user: user);
-          listSearchUser.add(userFriendShipModel);
+      final response = await searchRepository.searchByName(name: text);
+      if (response.isSuccess) {
+        final listUser = response.data ?? [];
+        if (listUser.isNotEmpty) {
+          for (var user in listUser) {
+            UserFriendShipModel userFriendShipModel = getUserSearchResult(user);
+            // UserRelationship relationship =
+            //     getRelationship(user.id?.toInt() ?? 0);
+            // userFriendShipModel =
+            //     UserFriendShipModel(relationship: relationship, user: user);
+            listSearchUser.add(userFriendShipModel);
+          }
         }
+      } else {
+        SnackbarHelper.errorSnackbar(response.message ?? '');
       }
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
@@ -82,9 +87,14 @@ class SearchUserController extends GetxController {
     try {
       isSearch.value = true;
       isLoading.value = true;
-      final user = await searchRepository.searchByUserCode(code: code);
-      if (user != null) {
-        userSearchResult.value = getUserSearchResult(user);
+      final response = await searchRepository.searchByUserCode(code: code);
+      if (response.isSuccess) {
+        final user = response.data;
+        if (user != null) {
+          userSearchResult.value = getUserSearchResult(user);
+        }
+      } else {
+        SnackbarHelper.errorSnackbar(response.message ?? '');
       }
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");

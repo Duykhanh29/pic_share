@@ -39,14 +39,19 @@ class PostDetailController extends GetxController {
   Future<void> fetchPostDetail() async {
     isLoading.value = true;
     try {
-      PostDetail? postDetail = await postRepository.getPostDetail(postId.value);
-      if (postDetail != null) {
-        bool isLike = false;
-        if (postDetail.userLikes
-            .any((element) => element.id == currentUser?.id)) {
-          isLike = true;
+      final response = await postRepository.getPostDetail(postId.value);
+      if (response.isSuccess) {
+        PostDetail? postDetail = response.data;
+        if (postDetail != null) {
+          bool isLike = false;
+          if (postDetail.userLikes
+              .any((element) => element.id == currentUser?.id)) {
+            isLike = true;
+          }
+          postData.value = PostData(post: postDetail, isLike: isLike);
         }
-        postData.value = PostData(post: postDetail, isLike: isLike);
+      } else {
+        SnackbarHelper.errorSnackbar(response.message ?? '');
       }
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
@@ -57,8 +62,12 @@ class PostDetailController extends GetxController {
 
   Future<void> addLike(int id) async {
     try {
-      await postRepository.addNewUserLike(id);
-      updatePostsData(true);
+      final response = await postRepository.addNewUserLike(id);
+      if (response.isSuccess) {
+        updatePostsData(true);
+      } else {
+        SnackbarHelper.errorSnackbar(response.message ?? '');
+      }
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
     }
@@ -66,8 +75,12 @@ class PostDetailController extends GetxController {
 
   Future<void> dislikePost({required int id, required int userId}) async {
     try {
-      await postRepository.dislikePost(id: id, userId: userId);
-      updatePostsData(false);
+      final response = await postRepository.dislikePost(id: id, userId: userId);
+      if (response.isSuccess) {
+        updatePostsData(false);
+      } else {
+        SnackbarHelper.errorSnackbar(response.message ?? '');
+      }
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
     }
@@ -80,7 +93,12 @@ class PostDetailController extends GetxController {
   Future<void> fetchUserViews(int id) async {
     isUserViewsLoading.value = true;
     try {
-      listViews.value = await postRepository.getUserViews(id);
+      final response = await postRepository.getUserViews(id);
+      if (response.isSuccess) {
+        listViews.value = response.data ?? <UserSummaryModel>[];
+      } else {
+        SnackbarHelper.errorSnackbar(response.message ?? '');
+      }
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
     } finally {
@@ -104,8 +122,12 @@ class PostDetailController extends GetxController {
 
   Future<void> deletePost(int id) async {
     try {
-      await postRepository.deletePost(id);
-      Get.back();
+      final response = await postRepository.deletePost(id);
+      if (response.isSuccess) {
+        Get.back();
+      } else {
+        SnackbarHelper.errorSnackbar(response.message ?? '');
+      }
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
       SnackbarHelper.errorSnackbar(e.toString());

@@ -2,11 +2,11 @@ import 'dart:async';
 import 'dart:io';
 import 'package:get/get.dart' as g;
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:pic_share/app/services/local_storage_service.dart';
 import 'package:pic_share/app/services/token_manager.dart';
 import 'package:pic_share/app/helper/snack_bar_helper.dart';
 import 'package:pic_share/data/providers/network/api_request_representable.dart';
+import 'package:pic_share/data/providers/network/api_response.dart';
 import 'package:pic_share/routes/app_pages.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
@@ -52,10 +52,9 @@ class APIProvider {
   }
   Dio get instance => _dio;
 
-  Future<dynamic> request<T extends dynamic>(
-      APIRequestRepresentable request) async {
+  Future<ApiResponse<T>> request<T>(APIRequestRepresentable<T> request) async {
     try {
-      final Response<T> response = await _dio.request(
+      final Response response = await _dio.request(
         request.url,
         options:
             Options(method: request.method.string, headers: request.headers),
@@ -65,29 +64,42 @@ class APIProvider {
         onSendProgress: (val1, val2) {},
       );
       if (response.statusCode == 200 || response.statusCode == 201) {
-        return response.data;
+        final apiResponse = ApiResponse.fromJson(
+            response.data as Map<String, dynamic>, request.fromJson);
+        return apiResponse;
       } else if (response.statusCode == 403) {
         SnackbarHelper.errorSnackbar(
             response.statusMessage ?? "This account has been banned");
       }
-      return null;
+      return ApiResponse(
+          status: ApiStatus.failure, message: response.statusMessage);
     } on TimeoutException catch (_) {
-      throw DioException.sendTimeout(
-          timeout: const Duration(seconds: 25),
-          requestOptions: RequestOptions());
-    } on SocketException {
-      throw DioException.connectionError(
-        requestOptions: RequestOptions(),
-        reason: 'Network is not available',
+      return ApiResponse(
+        status: ApiStatus.failure,
+        message: "Request time out",
       );
+      // throw DioException.sendTimeout(
+      //     timeout: const Duration(seconds: 25),
+      //     requestOptions: RequestOptions());
+    } on SocketException {
+      return ApiResponse(
+        status: ApiStatus.failure,
+        message: "Network is not available",
+      );
+      // throw DioException.connectionError(
+      //   requestOptions: RequestOptions(),
+      //   reason: 'Network is not available',
+      // );
     } on DioException catch (e) {
       final message = e.response?.data['message'];
-      if (g.Get.isSnackbarOpen == false) {
-        SnackbarHelper.errorSnackbar(message);
-      }
-      debugPrint("Something went wrong: ${e.toString()}");
+      // if (g.Get.isSnackbarOpen == false) {
+      //   SnackbarHelper.errorSnackbar(message);
+      // }
+      return ApiResponse(status: ApiStatus.failure, message: message);
+      // debugPrint("Something went wrong: ${e.toString()}");
     } catch (e) {
-      rethrow;
+      return ApiResponse(status: ApiStatus.failure, message: e.toString());
+      // rethrow;
     }
   }
 

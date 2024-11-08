@@ -60,8 +60,13 @@ class CommentsController extends GetxController {
   Future<void> fetchComments() async {
     isLoading.value = true;
     try {
-      final list = await commentRepository.getComments(postId.value);
-      listComments.assignAll(list);
+      final response = await commentRepository.getComments(postId.value);
+      if (response.isSuccess) {
+        final list = response.data ?? [];
+        listComments.assignAll(list);
+      } else {
+        SnackbarHelper.errorSnackbar(response.message ?? '');
+      }
     } catch (e) {
       debugPrint('Something went wrong: $e');
     } finally {
@@ -82,11 +87,17 @@ class CommentsController extends GetxController {
         listComments.add(tempComment);
         isLoading.value = false;
         commentController.clear();
-        final comment =
+        final response =
             await commentRepository.addComment(id: postId.value, content: text);
-        if (comment != null) {
-          // listComments.add(comment);
+        if (response.isSuccess) {
+          final comment = response.data;
+          if (comment != null) {
+            // listComments.add(comment);
+          }
+        } else {
+          SnackbarHelper.errorSnackbar(response.message ?? '');
         }
+
         // commentController.clear();
       }
     } catch (e) {
@@ -123,13 +134,18 @@ class CommentsController extends GetxController {
             .add(tempReply);
         isLoading.value = false;
         commentController.clear();
-        final reply = await commentRepository.addReply(
+        final response = await commentRepository.addReply(
             cmtId: commentId, content: text, id: postId.value);
-        if (reply != null) {
-          // listComments
-          //     .firstWhere((element) => element.id == commentId)
-          //     .listReply
-          //     .add(reply);
+        if (response.isSuccess) {
+          final reply = response.data;
+          if (reply != null) {
+            // listComments
+            //     .firstWhere((element) => element.id == commentId)
+            //     .listReply
+            //     .add(reply);
+          } else {
+            SnackbarHelper.errorSnackbar(response.message ?? '');
+          }
         }
       }
     } catch (e) {

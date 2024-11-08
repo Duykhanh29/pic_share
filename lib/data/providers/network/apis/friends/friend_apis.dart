@@ -1,8 +1,11 @@
 import 'package:pic_share/data/enums/friend_status.dart';
+import 'package:pic_share/data/models/user/friend.dart';
+import 'package:pic_share/data/models/user/user_summary_model.dart';
 import 'package:pic_share/data/providers/network/api_provider.dart';
 import 'package:pic_share/data/providers/network/api_request_representable.dart';
+import 'package:pic_share/data/providers/network/api_response.dart';
 
-class MakeFriendRequestAPI extends APIRequestRepresentable {
+class MakeFriendRequestAPI extends APIRequestRepresentable<Friend?> {
   final int friendId;
   MakeFriendRequestAPI({required this.friendId});
   @override
@@ -17,7 +20,15 @@ class MakeFriendRequestAPI extends APIRequestRepresentable {
       };
 
   @override
-  Future request() {
+  Friend? Function(dynamic p1) get fromJson => (json) {
+        if (json == null) return null;
+        if (json is List) {
+          return Friend.fromJson(json[0]);
+        }
+        return Friend.fromJson(json);
+      };
+  @override
+  Future<ApiResponse<Friend?>> request() {
     return APIProvider().request(this);
   }
 }
@@ -38,7 +49,10 @@ class UpdateFriendRequestAPI extends APIRequestRepresentable {
       };
 
   @override
-  Future request() {
+  Function(dynamic json) get fromJson => (json) => json;
+
+  @override
+  Future<ApiResponse> request() {
     return APIProvider().request(this);
   }
 }
@@ -53,25 +67,37 @@ class DeleteFriendRequestAPI extends APIRequestRepresentable {
   HTTPMethod get method => HTTPMethod.get;
 
   @override
-  Future request() {
+  Function(dynamic json) get fromJson => (json) => json;
+
+  @override
+  Future<ApiResponse> request() {
     return APIProvider().request(this);
   }
 }
 
-class GetListFriendsAPI extends APIRequestRepresentable {
+class GetListFriendsAPI extends APIRequestRepresentable<List<Friend>> {
   @override
   String get endpoint => '/api/friend/get_friends';
 
   @override
   HTTPMethod get method => HTTPMethod.get;
-
   @override
-  Future request() {
+  List<Friend> Function(dynamic p1) get fromJson => (json) {
+        if (json == null || json is List) return [];
+        if (json is Map<String, dynamic>) {
+          final friendsData = json['list_friend'] as List<dynamic>;
+          final friends = friendsData.map((e) => Friend.fromJson(e)).toList();
+          return friends;
+        }
+        return [];
+      };
+  @override
+  Future<ApiResponse<List<Friend>>> request() {
     return APIProvider().request(this);
   }
 }
 
-class GetRequestedFriendsAPI extends APIRequestRepresentable {
+class GetRequestedFriendsAPI extends APIRequestRepresentable<List<Friend>> {
   @override
   String get endpoint => '/api/friend/get_requested_friends';
 
@@ -79,12 +105,22 @@ class GetRequestedFriendsAPI extends APIRequestRepresentable {
   HTTPMethod get method => HTTPMethod.get;
 
   @override
-  Future request() {
+  List<Friend> Function(dynamic p1) get fromJson => (json) {
+        if (json == null || json is List) return [];
+        if (json is Map<String, dynamic>) {
+          final friendsData = json['list_request'] as List<dynamic>;
+          final friends = friendsData.map((e) => Friend.fromJson(e)).toList();
+          return friends;
+        }
+        return [];
+      };
+  @override
+  Future<ApiResponse<List<Friend>>> request() {
     return APIProvider().request(this);
   }
 }
 
-class GetSentFriendsAPI extends APIRequestRepresentable {
+class GetSentFriendsAPI extends APIRequestRepresentable<List<Friend>> {
   @override
   String get endpoint => '/api/friend/get_sent_friends';
 
@@ -92,12 +128,23 @@ class GetSentFriendsAPI extends APIRequestRepresentable {
   HTTPMethod get method => HTTPMethod.get;
 
   @override
-  Future request() {
+  List<Friend> Function(dynamic p1) get fromJson => (json) {
+        if (json == null || json is List) return [];
+        if (json is Map<String, dynamic>) {
+          final friendsData = json['list_request'] as List<dynamic>;
+          final friends = friendsData.map((e) => Friend.fromJson(e)).toList();
+          return friends;
+        }
+        return [];
+      };
+  @override
+  Future<ApiResponse<List<Friend>>> request() {
     return APIProvider().request(this);
   }
 }
 
-class GetMutualFriendsAPI extends APIRequestRepresentable {
+class GetMutualFriendsAPI
+    extends APIRequestRepresentable<List<UserSummaryModel>> {
   final int friendId;
   GetMutualFriendsAPI({required this.friendId});
   @override
@@ -107,7 +154,18 @@ class GetMutualFriendsAPI extends APIRequestRepresentable {
   HTTPMethod get method => HTTPMethod.get;
 
   @override
-  Future request() {
+  List<UserSummaryModel> Function(dynamic p1) get fromJson => (json) {
+        if (json == null) return [];
+        if (json is List) {
+          final friends =
+              json.map((e) => UserSummaryModel.fromJson(e)).toList();
+          return friends;
+        }
+        return [UserSummaryModel.fromJson(json)];
+      };
+
+  @override
+  Future<ApiResponse<List<UserSummaryModel>>> request() {
     return APIProvider().request(this);
   }
 }

@@ -52,24 +52,30 @@ class SignInController extends GetxController {
     try {
       var isValid = formKey.currentState!.validate();
       if (isValid) {
-        user.value = await authRepository.signInWithEmailPass(
+        final response = await authRepository.signInWithEmailPass(
             email: emailController.text.trim(), password: passController.text);
-        if (user.value != null) {
-          if (user.value!.roleType == RoleType.admin) {
-            Get.toNamed(Routes.adminPage);
-          } else {
-            await _tokenManager.setAccessToken(user.value?.accessToken);
-            String? token = await notificationsService.getToken();
+        if (response.isSuccess) {
+          user.value = response.data;
+          if (user.value != null) {
+            if (user.value!.roleType == RoleType.admin) {
+              Get.toNamed(Routes.adminPage);
+            } else {
+              await _tokenManager.setAccessToken(user.value?.accessToken);
+              String? token = await notificationsService.getToken();
 
-            if (token != null) {
-              debugPrint("TOken of FCM is: $token");
-              await userRepository.updateFcmToken(fcmToken: token);
-              user.value = user.value?.copyWith(
-                  config: user.value?.config?.copyWith(fcmToken: token));
+              if (token != null) {
+                debugPrint("TOken of FCM is: $token");
+                await userRepository.updateFcmToken(fcmToken: token);
+                user.value = user.value?.copyWith(
+                    config: user.value?.config?.copyWith(fcmToken: token));
+              }
+              localStorageService.setUserModel(value: user.value);
+              SnackbarHelper.successSnackbar(
+                  response.message ?? "Login successfully");
             }
-            localStorageService.setUserModel(value: user.value);
-            // SnackbarHelper.successSnackbar("Login successfully");
           }
+        } else {
+          SnackbarHelper.errorSnackbar(response.message ?? "");
         }
       } else {
         debugPrint('form is not valid');
@@ -85,16 +91,22 @@ class SignInController extends GetxController {
   Future<void> signInWithGoogle() async {
     isLoading.value = true;
     try {
-      user.value = await authRepository.signInWithGoogle();
-      await _tokenManager.setAccessToken(user.value?.accessToken);
-      String? token = await notificationsService.getToken();
-      if (token != null) {
-        await userRepository.updateFcmToken(fcmToken: token);
-        user.value = user.value
-            ?.copyWith(config: user.value?.config?.copyWith(fcmToken: token));
+      final response = await authRepository.signInWithGoogle();
+      if (response.isSuccess) {
+        user.value = response.data;
+        await _tokenManager.setAccessToken(user.value?.accessToken);
+        String? token = await notificationsService.getToken();
+        if (token != null) {
+          await userRepository.updateFcmToken(fcmToken: token);
+          user.value = user.value
+              ?.copyWith(config: user.value?.config?.copyWith(fcmToken: token));
+        }
+        localStorageService.setUserModel(value: user.value);
+        SnackbarHelper.successSnackbar(
+            response.message ?? "Login successfully");
+      } else {
+        SnackbarHelper.errorSnackbar(response.message ?? "");
       }
-      localStorageService.setUserModel(value: user.value);
-      SnackbarHelper.successSnackbar("Login successfully");
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
       SnackbarHelper.errorSnackbar(e.toString());

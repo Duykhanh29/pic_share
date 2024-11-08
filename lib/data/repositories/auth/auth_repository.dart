@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:pic_share/data/models/user/user_model.dart';
+import 'package:pic_share/data/providers/network/api_response.dart';
 import 'package:pic_share/data/providers/network/apis/auth/auth_api.dart';
 
 abstract class AuthRepository {
-  Future<UserModel?> registerUserByEmailAndPass(
+  Future<ApiResponse<UserModel?>> registerUserByEmailAndPass(
       {required String email,
       required String password,
       required String name,
       required String confirmPassword});
-  Future<UserModel?> signInWithEmailPass(
+  Future<ApiResponse<UserModel?>> signInWithEmailPass(
       {required String email, required String password});
-  Future<UserModel?> signInWithGoogle();
-  Future<void> logout();
+  Future<ApiResponse<UserModel?>> signInWithGoogle();
+  Future<ApiResponse> logout();
 
   /*
    OLD VERSION ( USING FIREBASE TO IMPLEMENT AUTHEN)
@@ -29,7 +30,7 @@ abstract class AuthRepository {
 
 class AuthRepositoryImpl extends AuthRepository {
   @override
-  Future<UserModel?> registerUserByEmailAndPass(
+  Future<ApiResponse<UserModel?>> registerUserByEmailAndPass(
       {required String email,
       required String password,
       required String name,
@@ -40,57 +41,63 @@ class AuthRepositoryImpl extends AuthRepository {
             password: password,
             passwordConfirmation: confirmPassword)
         .request();
-    final userData = response['user'];
-    UserModel user = UserModel.fromJson(userData);
-    return user;
+    // final userData = response.data;
+    // UserModel user = UserModel.fromJson(userData);
+    return response;
   }
 
   @override
-  Future<UserModel?> signInWithEmailPass(
+  Future<ApiResponse<UserModel?>> signInWithEmailPass(
       {required String email, required String password}) async {
     final response = await LoginAPI(
       email: email,
       password: password,
     ).request();
-    final userData = response['user'];
-    UserModel user = UserModel.fromJson(userData);
-    return user;
+    // final userData = response['user'];
+    // UserModel user = UserModel.fromJson(userData);
+    return response;
   }
 
   @override
-  Future<UserModel?> signInWithGoogle() async {
-    try {
-      final GoogleSignIn googleSignIn = GoogleSignIn();
-      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
-      if (googleUser == null) {
-        return null;
-      }
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
-      debugPrint("TOken iss: ${googleAuth.idToken}");
-      debugPrint("Access Token: ${googleAuth.accessToken}");
-      if (googleAuth.accessToken != null) {
-        final response =
-            await LoginWithGoogleAPI(accessToken: googleAuth.accessToken!)
-                .request();
-        final userData = response['data'];
-        UserModel user = UserModel.fromJson(userData);
-        return user;
-      }
-    } catch (e) {
-      debugPrint("Something went wrong: ${e.toString()}");
+  Future<ApiResponse<UserModel?>> signInWithGoogle() async {
+    // try {
+    final GoogleSignIn googleSignIn = GoogleSignIn();
+    final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+    if (googleUser == null) {
+      return ApiResponse(
+        status: ApiStatus.failure,
+      );
     }
-    return null;
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser.authentication;
+    debugPrint("TOken iss: ${googleAuth.idToken}");
+    debugPrint("Access Token: ${googleAuth.accessToken}");
+    if (googleAuth.accessToken != null) {
+      final response =
+          await LoginWithGoogleAPI(accessToken: googleAuth.accessToken!)
+              .request();
+      // final userData = response['data'];
+      // UserModel user = UserModel.fromJson(userData);
+      return response;
+    }
+    return ApiResponse(
+      status: ApiStatus.failure,
+    );
+    // } catch (e) {
+    //   debugPrint("Something went wrong: ${e.toString()}");
+    // }
+    // return null;
   }
 
   @override
-  Future<void> logout() async {
-    try {
-      final response = await LogoutAPI().request();
-      debugPrint("Message: ${response['message']}");
-    } catch (e) {
-      debugPrint("Something went wrong: ${e.toString()}");
-    }
+  Future<ApiResponse> logout() async {
+    // try {
+    final response = await LogoutAPI().request();
+    // debugPrint("Message: ${response['message']}");
+    return response;
+    // } catch (e) {
+    //   debugPrint("Something went wrong: ${e.toString()}");
+    // }
   }
 
   /* OLD VERSION ( USING FIREBASE TO IMPLEMENT AUTHEN)

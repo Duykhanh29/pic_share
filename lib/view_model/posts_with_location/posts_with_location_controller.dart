@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:pic_share/app/helper/snack_bar_helper.dart';
+import 'package:pic_share/data/models/post/post_detail.dart';
 import 'package:pic_share/data/repositories/posts/post_repository.dart';
 
 class PostWithLocationController extends GetxController {
@@ -17,8 +19,13 @@ class PostWithLocationController extends GetxController {
   }
 
   Future<void> fetchMemories() async {
-    final listPosts = await postRepository.getPostsWithLocation();
-
+    final response = await postRepository.getPostsWithLocation();
+    List<PostDetail> listPosts = [];
+    if (response.isSuccess) {
+      listPosts = response.data ?? [];
+    } else {
+      SnackbarHelper.errorSnackbar(response.message ?? '');
+    }
     markers.value = listPosts.map((post) {
       final String id =
           post.id?.toString() ?? "${post.latitude}${post.longitude}";

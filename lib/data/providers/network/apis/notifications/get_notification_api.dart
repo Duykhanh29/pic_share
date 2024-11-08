@@ -1,5 +1,6 @@
 import 'package:pic_share/data/providers/network/api_provider.dart';
 import 'package:pic_share/data/providers/network/api_request_representable.dart';
+import 'package:pic_share/data/providers/network/api_response.dart';
 
 class GetNotificationAPI extends APIRequestRepresentable {
   final int? page;
@@ -13,7 +14,12 @@ class GetNotificationAPI extends APIRequestRepresentable {
   HTTPMethod get method => HTTPMethod.get;
 
   @override
-  Future request() {
+  Function(dynamic json) get fromJson => (json) {
+        return json as Map<String, dynamic>;
+      };
+
+  @override
+  Future<ApiResponse> request() {
     return APIProvider().request(this);
   }
 }
@@ -28,7 +34,12 @@ class GetUnseenNotificationAPI extends APIRequestRepresentable {
   HTTPMethod get method => HTTPMethod.get;
 
   @override
-  Future request() {
+  Function(dynamic json) get fromJson => (json) {
+        return json as Map<String, dynamic>;
+      };
+
+  @override
+  Future<ApiResponse> request() {
     return APIProvider().request(this);
   }
 }
@@ -43,7 +54,12 @@ class UpdateUnreadNotificationAPI extends APIRequestRepresentable {
   HTTPMethod get method => HTTPMethod.post;
 
   @override
-  Future request() {
+  Function(dynamic json) get fromJson => (json) {
+        return json;
+      };
+
+  @override
+  Future<ApiResponse> request() {
     return APIProvider().request(this);
   }
 }
@@ -57,7 +73,12 @@ class UpdateUnseenNotificationAPI extends APIRequestRepresentable {
   HTTPMethod get method => HTTPMethod.post;
 
   @override
-  Future request() {
+  Function(dynamic json) get fromJson => (json) {
+        return json;
+      };
+
+  @override
+  Future<ApiResponse> request() {
     return APIProvider().request(this);
   }
 }
