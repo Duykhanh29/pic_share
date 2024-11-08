@@ -21,7 +21,7 @@ import 'package:pic_share/view_model/nav_bottom/nav_bottom_controller.dart';
 import 'package:pic_share/view_model/notifications/notification_controller.dart';
 
 const channel = AndroidNotificationChannel(
-    'high_importance_channel', 'Hign Importance Notifications',
+    'high_importance_channel', 'High Importance Notifications',
     description: 'This channel is used for important notifications.',
     importance: Importance.max,
     playSound: true);
@@ -197,13 +197,13 @@ class NotificationsService extends GetxService {
   }
 
   Future<void> handleNavigation(NotificationData notificationData) async {
-    final isRegisterd = Get.isRegistered<NavBottomController>();
+    final isRegistered = Get.isRegistered<NavBottomController>();
     final localStorageService = Get.find<LocalStorageService>();
-    final isLoggedin = !localStorageService.isUserNull.value;
-    if (isRegisterd) {
+    final isLoggedIn = !localStorageService.isUserNull.value;
+    if (isRegistered) {
       await onHandleNavWithDependencies(notificationData);
     } else {
-      if (isLoggedin) {
+      if (isLoggedIn) {
         Get.put<AuthController>(
           AuthController(
             localStorageService: Get.find<LocalStorageService>(),
@@ -249,7 +249,7 @@ Future<void> onHandleNavWithDependencies(
   if (notificationData.type == LinkToType.friend) {
     navBottomController.onChangeToFriend();
     if (notificationData.friendType == FriendNotiType.requested) {
-      await friendController.onViewInFriendReuquests();
+      await friendController.onViewInFriendRequests();
     } else {
       await friendController.onViewInFriend();
     }

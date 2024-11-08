@@ -54,9 +54,6 @@ class APIProvider {
 
   Future<ApiResponse<T>> request<T>(APIRequestRepresentable<T> request) async {
     try {
-      print("The type of T is: ${T.toString()}");
-      print("Type of request.fromJson: ${request.fromJson.runtimeType}");
-      print("request url: ${request.url}");
       final Response response = await _dio.request(
         request.url,
         options:
@@ -67,7 +64,6 @@ class APIProvider {
         onSendProgress: (val1, val2) {},
       );
       if (response.statusCode == 200 || response.statusCode == 201) {
-        print("Response DATA: ${response.data.toString()}");
         final apiResponse = ApiResponse.fromJson(
             response.data as Map<String, dynamic>, request.fromJson);
         return apiResponse;
@@ -80,6 +76,7 @@ class APIProvider {
     } on TimeoutException catch (_) {
       return ApiResponse(
         status: ApiStatus.failure,
+        message: "Request time out",
       );
       // throw DioException.sendTimeout(
       //     timeout: const Duration(seconds: 25),
@@ -87,13 +84,13 @@ class APIProvider {
     } on SocketException {
       return ApiResponse(
         status: ApiStatus.failure,
+        message: "Network is not available",
       );
       // throw DioException.connectionError(
       //   requestOptions: RequestOptions(),
       //   reason: 'Network is not available',
       // );
     } on DioException catch (e) {
-      print("DioException caught: ${e.toString()}");
       final message = e.response?.data['message'];
       // if (g.Get.isSnackbarOpen == false) {
       //   SnackbarHelper.errorSnackbar(message);

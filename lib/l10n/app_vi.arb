@@ -135,5 +135,7 @@
     "deletedPost":"Bài viết bị xóa",
     "successTitle":"Thành công",
     "errorTitle":"Lỗi",
-    "warningTitle":"Cảnh báo"
+    "warningTitle":"Cảnh báo",
+    "downloadSuccessfully":"Tải về thành công",
+    "downloadFailed":"Tải về thất bại"
 }

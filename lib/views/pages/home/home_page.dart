@@ -9,6 +9,7 @@ import 'package:pic_share/views/pages/home/widgets/single_post_container.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pic_share/views/widgets/keyboard_dismiss.dart';
 import 'package:badges/badges.dart' as badges;
+import 'package:pic_share/views/widgets/loading_widget.dart';
 
 class HomePage extends GetView<HomeController> {
   const HomePage({super.key});
@@ -53,43 +54,46 @@ class HomePage extends GetView<HomeController> {
               border: Border.all(color: Colors.black12, width: 2),
             ),
             child: Obx(
-              () => controller.isLoading.value
-                  ? ShimmerHelper().buildCarouselSliderShimmer(context)
-                  : Obx(
-                      () => CarouselSlider.builder(
-                        key: ValueKey(controller.currentIndex.value),
-                        options: CarouselOptions(
-                          autoPlayAnimationDuration: const Duration(seconds: 1),
-                          autoPlayCurve: Curves.linear,
-                          enlargeCenterPage: true,
-                          enlargeStrategy: CenterPageEnlargeStrategy.height,
-                          initialPage: controller.currentIndex.value,
-                          pageSnapping: true,
-                          autoPlay: false,
-                          // autoPlay: true,
-                          height: MediaQuery.of(context).size.height,
-                          viewportFraction: 1.0,
-                          enableInfiniteScroll: false,
-                          autoPlayInterval: const Duration(seconds: 4),
-                          scrollDirection: Axis.vertical,
-                          onPageChanged: (
-                            index,
-                            reason,
-                          ) {
-                            controller.currentIndex.value = index;
-                          },
+              () => controller.isActionLoading.value
+                  ? const LoadingWidget()
+                  : controller.isLoading.value
+                      ? ShimmerHelper().buildCarouselSliderShimmer(context)
+                      : Obx(
+                          () => CarouselSlider.builder(
+                            key: ValueKey(controller.currentIndex.value),
+                            options: CarouselOptions(
+                              autoPlayAnimationDuration:
+                                  const Duration(seconds: 1),
+                              autoPlayCurve: Curves.linear,
+                              enlargeCenterPage: true,
+                              enlargeStrategy: CenterPageEnlargeStrategy.height,
+                              initialPage: controller.currentIndex.value,
+                              pageSnapping: true,
+                              autoPlay: false,
+                              // autoPlay: true,
+                              height: MediaQuery.of(context).size.height,
+                              viewportFraction: 1.0,
+                              enableInfiniteScroll: false,
+                              autoPlayInterval: const Duration(seconds: 4),
+                              scrollDirection: Axis.vertical,
+                              onPageChanged: (
+                                index,
+                                reason,
+                              ) {
+                                controller.currentIndex.value = index;
+                              },
+                            ),
+                            itemCount: controller.actualDisplayPosts.length,
+                            itemBuilder: (context, index, realIndex) {
+                              final post = controller.actualDisplayPosts[index];
+                              return SinglePostContainer(
+                                postData: post,
+                                isMe: controller.currentUser?.id ==
+                                    post.post.user?.id,
+                              );
+                            },
+                          ),
                         ),
-                        itemCount: controller.actualDisplayPosts.length,
-                        itemBuilder: (context, index, realIndex) {
-                          final post = controller.actualDisplayPosts[index];
-                          return SinglePostContainer(
-                            postData: post,
-                            isMe: controller.currentUser?.id ==
-                                post.post.user?.id,
-                          );
-                        },
-                      ),
-                    ),
             ),
           ),
         ),

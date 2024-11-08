@@ -14,7 +14,6 @@ import 'package:pic_share/app/constants/strings.dart';
 import 'package:pic_share/views/pages/home/widgets/action_sheet_widget.dart';
 import 'package:pic_share/views/pages/home/widgets/report_action_widget.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:pic_share/app/constants/app_color.dart';
 
 class SinglePostContainer extends GetView<HomeController> {
   const SinglePostContainer({
@@ -310,16 +309,21 @@ class SinglePostContainer extends GetView<HomeController> {
   }
 
   Future<void> showActionSheet(BuildContext context, int postOwnerID) async {
+    final t = AppLocalizations.of(context)!;
     return Get.bottomSheet(
       Obx(
         () => ActionSheetWidget(
           isPostOwner: controller.currentUser?.id == postOwnerID,
           onDeletePost: () async {
+            Get.back();
             await controller.deletePost(postData.post.id ?? 0);
           },
           onDownloadImage: () async {
-            await controller
-                .onDownloadImageToGallery(postData.post.urlImage ?? "");
+            await controller.onDownloadImageToGallery(
+              postData.post.urlImage ?? "",
+              t.downloadSuccessfully,
+              t.downloadFailed,
+            );
           },
           onOpenReportSheetAction: () async {
             controller.onOpenReportSHeet();
@@ -335,9 +339,9 @@ class SinglePostContainer extends GetView<HomeController> {
     return Get.bottomSheet(
       ReportActionWidget(
           onReportPost: () async {
+            Get.back();
             await controller.reportPost(
                 postId, controller.reasonController.text);
-            Get.back();
           },
           reasonController: controller.reasonController),
       useRootNavigator: true,

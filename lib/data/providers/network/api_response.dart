@@ -15,7 +15,6 @@ class ApiResponse<T> {
     Map<String, dynamic> json,
     T Function(dynamic)? fromJson,
   ) {
-    print("The type of T is in api response: ${T.toString()}");
     final dynamic jsonData = json['data'];
 
     if (jsonData is List) {

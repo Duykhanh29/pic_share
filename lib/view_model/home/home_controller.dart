@@ -37,6 +37,7 @@ class HomeController extends GetxController {
   RxBool isLoading = false.obs;
   RxBool isUserViewsLoading = false.obs;
   Rx<int> currentIndex = 0.obs;
+  RxBool isActionLoading = false.obs;
 
   UserModel? get currentUser => authController.getCurrentUser;
   Rx<int> unseenNotiCount = 0.obs;
@@ -132,6 +133,7 @@ class HomeController extends GetxController {
   }
 
   Future<void> deletePost(int id) async {
+    isActionLoading.value = true;
     try {
       final response = await postRepository.deletePost(id);
       if (response.isSuccess) {
@@ -143,10 +145,13 @@ class HomeController extends GetxController {
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
       SnackbarHelper.errorSnackbar(e.toString());
+    } finally {
+      isActionLoading.value = false;
     }
   }
 
   Future<void> reportPost(int id, String reason) async {
+    isActionLoading.value = true;
     try {
       final response = await postRepository.reportPost(id: id, reason: reason);
       if (response.isSuccess) {
@@ -157,6 +162,8 @@ class HomeController extends GetxController {
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
       SnackbarHelper.errorSnackbar(e.toString());
+    } finally {
+      isActionLoading.value = false;
     }
   }
 
@@ -236,17 +243,18 @@ class HomeController extends GetxController {
   }
 
   // download image
-  Future<void> onDownloadImageToGallery(String urlPath) async {
+  Future<void> onDownloadImageToGallery(
+      String urlPath, String successText, String errorText) async {
     try {
       String url = AppConfig.baseUrl + urlPath;
       bool? result = await FileUtils().saveImageFromUrlToGallery(url);
       if (result == true) {
-        SnackbarHelper.successSnackbar("Downloaded successfully");
+        SnackbarHelper.successSnackbar(successText);
       } else {
-        SnackbarHelper.errorSnackbar("Download failed");
+        SnackbarHelper.errorSnackbar(errorText);
       }
     } catch (e) {
-      debugPrint('Error occured while downloading picture: $e');
+      debugPrint('Error occurred while downloading picture: $e');
     }
   }
 

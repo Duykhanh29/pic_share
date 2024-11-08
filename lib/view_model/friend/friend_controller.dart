@@ -42,7 +42,7 @@ class FriendController extends GetxController
     isFriendShipView.value = !isFriendShipView.value;
   }
 
-  Future<void> onViewInFriendReuquests() async {
+  Future<void> onViewInFriendRequests() async {
     try {
       isFriendShipView.value = false;
       isLoadingFriendRequests.value = true;
@@ -161,7 +161,7 @@ class FriendController extends GetxController
   Future<void> onRejectFriendRequest(int id) async {
     isActionLoading.value = true;
     try {
-      // just for improvinf loading time
+      // just for improving loading time
       updateChangesForFriendRequest(id);
       updateChangesForFriends(id);
       isActionLoading.value = false;

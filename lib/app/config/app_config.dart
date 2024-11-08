@@ -5,6 +5,6 @@ class AppConfig {
 
   static String pusherAppID = dotenv.env['pusherAppID'] ?? '';
   static String pusherApiKey = dotenv.env['pusherApiKey'] ?? '';
-  static String pusherSercet = dotenv.env['pusherSercet'] ?? '';
+  static String pusherSecret = dotenv.env['pusherSecret'] ?? '';
   static String pusherApiCluster = dotenv.env['pusherApiCluster'] ?? '';
 }

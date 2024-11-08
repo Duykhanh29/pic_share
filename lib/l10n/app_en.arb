@@ -135,5 +135,7 @@
     "deletedPost":"Deleted post",
     "successTitle":"Success",
     "errorTitle":"Error",
-    "warningTitle":"Warning"
+    "warningTitle":"Warning",
+    "downloadSuccessfully":"Downloaded successfully",
+    "downloadFailed":"Download failed"
 }
