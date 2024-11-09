@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pic_share/app/constants/app_color.dart';
-import 'package:pic_share/app/constants/app_images.dart';
 import 'package:pic_share/app/constants/app_text_styles.dart';
-import 'package:pic_share/app/helper/image_cache_helper.dart';
 import 'package:pic_share/data/models/user/user_summary_model.dart';
+import 'package:pic_share/views/widgets/avatar_widget.dart';
 
 class SuggestedFriendCard extends StatelessWidget {
   const SuggestedFriendCard({
@@ -44,17 +43,7 @@ class SuggestedFriendCard extends StatelessWidget {
   }
 
   Widget _buildAvatar(BuildContext context) {
-    return user?.urlAvatar != null
-        ? ImageCacheHelper.avatarImage(
-            url: user!.urlAvatar!,
-            width: MediaQuery.of(context).size.height * 0.08,
-            height: MediaQuery.of(context).size.height * 0.08)
-        : CircleAvatar(
-            radius: MediaQuery.of(context).size.height * 0.04,
-            backgroundImage: const AssetImage(
-              AppImage.userEmptyAvatar,
-            ),
-          );
+    return AvatarWidget(urlAvatar: user?.urlAvatar);
   }
 
   Widget _buildName() {
