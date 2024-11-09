@@ -317,4 +317,10 @@ class HomeController extends GetxController {
       });
     }
   }
+
+  void resetIndexes() {
+    currentIndex.value = 0;
+    posts.value = [];
+    actualDisplayPosts.value = [];
+  }
 }

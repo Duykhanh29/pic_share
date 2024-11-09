@@ -52,7 +52,7 @@ class AuthView extends GetView<AuthController> {
               gradient: LinearGradient(
                 colors: [
                   AppColors.backgroundColor,
-                  AppColors.backgrounAuthScreendColor,
+                  AppColors.backgroundAuthScreenColor,
                   AppColors.thirdColor,
                 ],
                 begin: Alignment.topCenter,

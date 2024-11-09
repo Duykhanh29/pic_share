@@ -19,7 +19,7 @@ class SettingsController extends GetxController {
     required this.localStorageService,
   });
 
-  UserModel? get currentUser => authController.getCurrentUser;
+  Rx<UserModel?> get currentUser => authController.currentUser;
 
   String get language => authController.language;
   RxBool isShowNotification = true.obs;
@@ -29,6 +29,11 @@ class SettingsController extends GetxController {
 
   @override
   void onInit() {
+    ever(authController.currentUser, (user) {
+      if (user != null) {
+        currentUser.value = user;
+      }
+    });
     _initializeNotificationSettings();
     super.onInit();
   }

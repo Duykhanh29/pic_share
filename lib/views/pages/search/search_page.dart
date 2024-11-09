@@ -128,7 +128,7 @@ class SearchPage extends GetView<SearchUserController> {
                 children: [
                   Icon(
                     Icons.done,
-                    color: AppColors.sencondaryBorder,
+                    color: AppColors.secondaryBorder,
                     size: 14,
                   ),
                   Expanded(

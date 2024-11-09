@@ -131,16 +131,24 @@ class EditProfilePage extends GetView<EditProfileController> {
   Widget _buildEditButton(AppLocalizations t) {
     return GestureDetector(
       onTap: controller.updateUserInfo,
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-        height: 50,
-        decoration: BoxDecoration(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+        child: Material(
+          elevation: 5,
           borderRadius: BorderRadius.circular(20),
-          // color: AppColors.lightTabarColor,
-          border: Border.all(color: AppColors.lightTabarColor),
+          child: Container(
+            height: 50,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: AppColors.lightTabBarColor),
+            ),
+            alignment: Alignment.center,
+            child: Text(
+              t.save,
+              style: AppTextStyles.headingTextStyle(),
+            ),
+          ),
         ),
-        alignment: Alignment.center,
-        child: Text(t.save, style: AppTextStyles.headingTextStyle()),
       ),
     );
   }

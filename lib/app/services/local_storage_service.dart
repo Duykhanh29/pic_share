@@ -19,9 +19,11 @@ class LocalStorageService extends GetxService {
   UserModel? get userModel {
     final rawJson = _sharedPreferences?.getString(_Key.user.toString());
     if (rawJson == null) {
+      isUserNull.value = true;
       return null;
     }
     Map<String, dynamic> map = jsonDecode(rawJson);
+    isUserNull.value = false;
     return UserModel.fromJson(map);
   }
 

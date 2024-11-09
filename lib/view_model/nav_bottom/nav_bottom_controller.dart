@@ -113,4 +113,9 @@ class NavBottomController extends GetxController {
     pageIndex.value = 3;
     pageController.index = 3;
   }
+
+  void resetIndexes() {
+    pageIndex.value = 0;
+    pageController.index = 0;
+  }
 }

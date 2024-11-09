@@ -5,6 +5,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:pic_share/app/custom/app_bar_custom.dart';
 import 'package:pic_share/view_model/posts_location/posts_location_controller.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:pic_share/views/widgets/loading_widget.dart';
 
 class PostsLocationPage extends GetView<PostsLocationController> {
   const PostsLocationPage({super.key});
@@ -31,37 +32,39 @@ class PostsLocationPage extends GetView<PostsLocationController> {
   Widget _buildMap(BuildContext context, AppLocalizations t) {
     return Obx(() {
       final markers = controller.markers.toList();
-      return markers.isNotEmpty
-          ? FlutterMap(
-              mapController: controller.mapController,
-              options: MapOptions(
-                center: LatLng(
-                  markers[0].point.latitude,
-                  markers[0].point.longitude,
-                ),
-                zoom: 8,
-                onTap: (_, __) {
-                  controller
-                      .deselectMarker(); // Deselect when tapping on the map
-                },
-              ),
-              children: [
-                TileLayer(
-                  urlTemplate:
-                      'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                  subdomains: const ['a', 'b', 'c'],
-                ),
-                MarkerLayer(
-                  markers: markers,
-                ),
-              ],
-            )
-          : SizedBox(
-              height: MediaQuery.of(context).size.height * 0.8,
-              child: Center(
-                child: Text(t.noPosts),
-              ),
-            );
+      return controller.isLoading.value
+          ? const LoadingWidget()
+          : markers.isNotEmpty
+              ? FlutterMap(
+                  mapController: controller.mapController,
+                  options: MapOptions(
+                    center: LatLng(
+                      markers[0].point.latitude,
+                      markers[0].point.longitude,
+                    ),
+                    zoom: 8,
+                    onTap: (_, __) {
+                      controller
+                          .deselectMarker(); // Deselect when tapping on the map
+                    },
+                  ),
+                  children: [
+                    TileLayer(
+                      urlTemplate:
+                          'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                      subdomains: const ['a', 'b', 'c'],
+                    ),
+                    MarkerLayer(
+                      markers: markers,
+                    ),
+                  ],
+                )
+              : SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.8,
+                  child: Center(
+                    child: Text(t.noPosts),
+                  ),
+                );
     });
   }
 

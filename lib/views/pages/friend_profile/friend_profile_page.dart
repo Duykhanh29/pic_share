@@ -56,7 +56,7 @@ class FriendProfilePage extends GetView<FriendProfileController> {
                 ],
                 labelStyle: AppTextStyles.tabBarTextStyle(),
                 controller: controller.tabController,
-                indicatorColor: AppColors.lightTabarColor,
+                indicatorColor: AppColors.lightTabBarColor,
                 mouseCursor: MouseCursor.defer,
                 splashBorderRadius: BorderRadius.circular(5),
               ),
