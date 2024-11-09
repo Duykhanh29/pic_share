@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pic_share/app/constants/app_images.dart';
 import 'package:pic_share/app/constants/app_text_styles.dart';
 import 'package:pic_share/app/helper/bottom_sheet_helper.dart';
 import 'package:pic_share/app/helper/image_cache_helper.dart';
@@ -14,6 +13,7 @@ import 'package:pic_share/app/constants/strings.dart';
 import 'package:pic_share/views/pages/home/widgets/action_sheet_widget.dart';
 import 'package:pic_share/views/pages/home/widgets/report_action_widget.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:pic_share/views/widgets/avatar_widget.dart';
 
 class SinglePostContainer extends GetView<HomeController> {
   const SinglePostContainer({
@@ -59,26 +59,23 @@ class SinglePostContainer extends GetView<HomeController> {
   }
 
   Widget _buildTopInfo(BuildContext context, AppLocalizations t) {
+    final size = MediaQuery.of(context).size.width;
     return Padding(
       padding: const EdgeInsets.only(left: 5, top: 10, bottom: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           GestureDetector(
-            onTap: () {
-              controller.onUserClick(postData.post.user);
-            },
-            child: postData.post.user?.urlAvatar != null
-                ? ImageCacheHelper.avatarImage(
-                    url: postData.post.user!.urlAvatar!)
-                : const CircleAvatar(
-                    radius: 18,
-                    backgroundImage: AssetImage(
-                      AppImage.userEmptyAvatar,
-                    ),
-                  ),
-          ),
-          const SizedBox(width: 10),
+              onTap: () {
+                controller.onUserClick(postData.post.user);
+              },
+              child: AvatarWidget(
+                urlAvatar: postData.post.user?.urlAvatar,
+                width: size * 0.1,
+                height: size * 0.1,
+                radius: size * 0.05,
+              )),
+          SizedBox(width: size * 0.02),
           GestureDetector(
             onTap: () {
               controller.onUserClick(postData.post.user);
@@ -96,10 +93,9 @@ class SinglePostContainer extends GetView<HomeController> {
               ),
             ),
           ),
-          const SizedBox(width: 15),
+          SizedBox(width: size * 0.025),
           Container(
-            constraints: BoxConstraints(
-                maxWidth: MediaQuery.of(context).size.width * 0.25),
+            constraints: BoxConstraints(maxWidth: size * 0.25),
             padding: const EdgeInsets.all(4),
             decoration: BoxDecoration(
                 color: const Color.fromARGB(255, 223, 219, 219),
@@ -234,6 +230,7 @@ class SinglePostContainer extends GetView<HomeController> {
   }
 
   Widget _buildUsersView(BuildContext context, List<UserSummaryModel> users) {
+    final size = MediaQuery.of(context).size.width;
     return Container(
       padding: const EdgeInsets.all(10),
       child: Row(
@@ -261,13 +258,13 @@ class SinglePostContainer extends GetView<HomeController> {
           } else {
             return Column(
               children: [
-                users[index].urlAvatar != null
-                    ? ImageCacheHelper.avatarImage(url: users[index].urlAvatar!)
-                    : const CircleAvatar(
-                        radius: 15,
-                        backgroundImage: AssetImage(AppImage.userEmptyAvatar),
-                      ),
-                const SizedBox(width: 10),
+                AvatarWidget(
+                  urlAvatar: users[index].urlAvatar,
+                  height: size * 0.05,
+                  width: size * 0.05,
+                  radius: size * 0.025,
+                ),
+                SizedBox(width: size * 0.02),
               ],
             );
           }
@@ -277,8 +274,11 @@ class SinglePostContainer extends GetView<HomeController> {
   }
 
   void showUserViewSheet(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final widthSize = size.width;
+    final heightSize = size.height;
     return BottomSheetHelper.showBottomSheet(
-      height: MediaQuery.of(context).size.height * 0.7,
+      height: heightSize * 0.7,
       context: context,
       child: Obx(
         () => controller.listViews.isNotEmpty
@@ -288,13 +288,12 @@ class SinglePostContainer extends GetView<HomeController> {
                   final user = controller.listViews[index];
                   return ListTile(
                     onTap: () {},
-                    leading: user.urlAvatar != null
-                        ? ImageCacheHelper.avatarImage(url: user.urlAvatar!)
-                        : const CircleAvatar(
-                            radius: 15,
-                            backgroundImage:
-                                AssetImage(AppImage.userEmptyAvatar),
-                          ),
+                    leading: AvatarWidget(
+                      urlAvatar: user.urlAvatar,
+                      height: widthSize * 0.05,
+                      width: widthSize * 0.05,
+                      radius: widthSize * 0.025,
+                    ),
                     title: Text(
                       user.name ?? "",
                       style: AppTextStyles.commonTextStyle(),

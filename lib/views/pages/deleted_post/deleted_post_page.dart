@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pic_share/app/constants/app_images.dart';
 import 'package:pic_share/app/constants/app_text_styles.dart';
 import 'package:pic_share/app/custom/app_bar_custom.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pic_share/app/helper/image_cache_helper.dart';
 import 'package:pic_share/view_model/deleted_post/deleted_post_controller.dart';
 import 'package:pic_share/app/utils/date_utils.dart' as helper;
+import 'package:pic_share/views/widgets/avatar_widget.dart';
 
 class DeletedPostPage extends GetView<DeletedPostController> {
   const DeletedPostPage({super.key});
@@ -45,22 +45,20 @@ class DeletedPostPage extends GetView<DeletedPostController> {
   }
 
   Widget _buildTopInfo(BuildContext context, AppLocalizations t) {
+    final size = MediaQuery.of(context).size.width;
     final post = controller.deletedPost.value;
     return Padding(
       padding: const EdgeInsets.only(left: 5, top: 10, bottom: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          controller.currentUser?.urlAvatar != null
-              ? ImageCacheHelper.avatarImage(
-                  url: controller.currentUser!.urlAvatar!)
-              : const CircleAvatar(
-                  radius: 18,
-                  backgroundImage: AssetImage(
-                    AppImage.userEmptyAvatar,
-                  ),
-                ),
-          const SizedBox(width: 10),
+          AvatarWidget(
+            urlAvatar: controller.currentUser?.urlAvatar,
+            width: size * 0.1,
+            height: size * 0.1,
+            radius: size * 0.05,
+          ),
+          SizedBox(width: size * 0.02),
           Container(
             padding: const EdgeInsets.all(4),
             decoration: BoxDecoration(
@@ -73,10 +71,9 @@ class DeletedPostPage extends GetView<DeletedPostController> {
               ),
             ),
           ),
-          const SizedBox(width: 15),
+          SizedBox(width: size * 0.025),
           Container(
-            constraints: BoxConstraints(
-                maxWidth: MediaQuery.of(context).size.width * 0.25),
+            constraints: BoxConstraints(maxWidth: size * 0.25),
             padding: const EdgeInsets.all(4),
             decoration: BoxDecoration(
                 color: const Color.fromARGB(255, 223, 219, 219),

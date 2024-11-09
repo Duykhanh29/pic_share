@@ -14,6 +14,7 @@ class SignInPage extends GetView<SignInController> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size.height;
     final t = AppLocalizations.of(context)!;
     return Obx(
       () => Stack(
@@ -24,13 +25,11 @@ class SignInPage extends GetView<SignInController> {
             onSubmitted: controller.signInWithEmailPass,
             passwordController: controller.passController,
             formKey: controller.formKey,
-            isPassVissibility: controller.isPassVissibility.value,
-            onChangePassVissibility: controller.onChangePassVissibility,
+            isPassVisibility: controller.isPassVisibility.value,
+            onChangePassVisibility: controller.onChangePassVisibility,
             child: Column(
               children: [
-                const SizedBox(
-                  height: 20,
-                ),
+                SizedBox(height: size * 0.01),
                 Container(
                   alignment: Alignment.centerLeft,
                   child: TextButton(
@@ -51,17 +50,11 @@ class SignInPage extends GetView<SignInController> {
                     ),
                   ),
                 ),
-                const SizedBox(
-                  height: 40,
-                ),
+                SizedBox(height: size * 0.02),
                 _buildOrLine(t),
-                const SizedBox(
-                  height: 20,
-                ),
+                SizedBox(height: size * 0.02),
                 _buildSignInOptions(t),
-                const SizedBox(
-                  height: 40,
-                ),
+                SizedBox(height: size * 0.02),
               ],
             ),
           ),

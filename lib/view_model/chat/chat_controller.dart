@@ -135,7 +135,7 @@ class ChatController extends GetxController {
     messages.add(message);
   }
 
-  DateTime getgroupByDateTime(String? createdAt) {
+  DateTime getGroupByDateTime(String? createdAt) {
     DateTime dateTime = helper.DateUtils.convertStringToDateTime(createdAt);
     return DateTime(
       dateTime.year,

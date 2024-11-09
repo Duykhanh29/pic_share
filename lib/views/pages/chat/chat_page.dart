@@ -4,13 +4,12 @@ import 'package:grouped_list/grouped_list.dart';
 import 'package:pic_share/app/constants/app_color.dart';
 import 'package:pic_share/app/constants/app_text_styles.dart';
 import 'package:pic_share/app/custom/custom_back_button.dart';
-import 'package:pic_share/app/helper/image_cache_helper.dart';
 import 'package:pic_share/data/models/conversation/message.dart';
 import 'package:pic_share/view_model/chat/chat_controller.dart';
 import 'package:pic_share/views/pages/chat/widgets/message_tile.dart';
+import 'package:pic_share/views/widgets/avatar_widget.dart';
 import 'package:pic_share/views/widgets/keyboard_dismiss.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:pic_share/app/constants/app_images.dart';
 import 'package:pic_share/app/utils/date_utils.dart' as helper;
 import 'package:pic_share/views/widgets/loading_widget.dart';
 
@@ -21,7 +20,7 @@ class ChatPage extends GetView<ChatController> {
   Widget build(BuildContext context) {
     return KeyboardDismiss(
       child: Scaffold(
-        appBar: _buildAppbar(context),
+        appBar: _buildAppBar(context),
         body: Obx(
           () => Stack(
             children: [
@@ -44,7 +43,8 @@ class ChatPage extends GetView<ChatController> {
     );
   }
 
-  AppBar _buildAppbar(BuildContext context) {
+  AppBar _buildAppBar(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return AppBar(
       backgroundColor: AppColors.secondaryColor,
       elevation: 5,
@@ -57,13 +57,15 @@ class ChatPage extends GetView<ChatController> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          controller.user?.urlAvatar != null
-              ? ImageCacheHelper.avatarImage(url: controller.user!.urlAvatar!)
-              : CircleAvatar(
-                  radius: MediaQuery.of(context).size.height * 0.02,
-                  backgroundImage: const AssetImage(AppImage.userEmptyAvatar),
-                ),
-          const SizedBox(width: 10),
+          AvatarWidget(
+            urlAvatar: controller.user?.urlAvatar,
+            height: size.height * 0.04,
+            width: size.height * 0.04,
+            radius: size.height * 0.02,
+          ),
+          SizedBox(
+            width: size.width * 0.04,
+          ),
           Text(
             controller.user?.name ?? "",
             style: AppTextStyles.headingTextStyle(),
@@ -79,7 +81,7 @@ class ChatPage extends GetView<ChatController> {
         child: GroupedListView<Message, DateTime>(
           order: GroupedListOrder.DESC,
           elements: controller.messages.toList(),
-          groupBy: (msg) => controller.getgroupByDateTime(msg.createdAt),
+          groupBy: (msg) => controller.getGroupByDateTime(msg.createdAt),
           physics: const BouncingScrollPhysics(),
           reverse: true,
           floatingHeader: true,

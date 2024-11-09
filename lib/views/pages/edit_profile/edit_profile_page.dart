@@ -3,12 +3,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pic_share/app/constants/app_color.dart';
-import 'package:pic_share/app/constants/app_images.dart';
 import 'package:pic_share/app/constants/app_text_styles.dart';
 import 'package:pic_share/app/custom/app_bar_custom.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:pic_share/app/helper/image_cache_helper.dart';
 import 'package:pic_share/view_model/edit_profile/edit_profile_controller.dart';
+import 'package:pic_share/views/widgets/avatar_widget.dart';
 import 'package:pic_share/views/widgets/loading_widget.dart';
 
 class EditProfilePage extends GetView<EditProfileController> {
@@ -61,24 +60,21 @@ class EditProfilePage extends GetView<EditProfileController> {
   }
 
   Widget _buildAvatar(BuildContext context) {
+    final size = MediaQuery.of(context).size.height;
     return Obx(
       () => controller.isNewAvatar.value && controller.avatarFile.value != null
           ? CircleAvatar(
-              radius: MediaQuery.of(context).size.height * 0.05,
+              radius: size * 0.05,
               backgroundImage: FileImage(
                 File(controller.avatarFile.value!.path),
               ),
             )
-          : controller.currentUser?.urlAvatar != null
-              ? ImageCacheHelper.avatarImage(
-                  url: controller.currentUser!.urlAvatar!,
-                  width: MediaQuery.of(context).size.height * 0.1,
-                  height: MediaQuery.of(context).size.height * 0.1,
-                )
-              : CircleAvatar(
-                  radius: MediaQuery.of(context).size.height * 0.05,
-                  backgroundImage: const AssetImage(AppImage.userEmptyAvatar),
-                ),
+          : AvatarWidget(
+              urlAvatar: controller.currentUser?.urlAvatar,
+              width: size * 0.1,
+              height: size * 0.1,
+              radius: size * 0.05,
+            ),
     );
   }
 

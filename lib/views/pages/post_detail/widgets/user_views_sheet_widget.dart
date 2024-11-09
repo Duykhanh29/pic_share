@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pic_share/app/constants/app_images.dart';
 import 'package:pic_share/app/constants/app_text_styles.dart';
-import 'package:pic_share/app/helper/image_cache_helper.dart';
 import 'package:pic_share/data/models/user/user_summary_model.dart';
+import 'package:pic_share/views/widgets/avatar_widget.dart';
 
 class UserViewsSheetWidget extends StatelessWidget {
   const UserViewsSheetWidget({
@@ -12,18 +11,19 @@ class UserViewsSheetWidget extends StatelessWidget {
   final List<UserSummaryModel> listViews;
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size.width;
     return ListView.builder(
       shrinkWrap: true,
       itemBuilder: (context, index) {
         final user = listViews[index];
         return ListTile(
           onTap: () {},
-          leading: user.urlAvatar != null
-              ? ImageCacheHelper.avatarImage(url: user.urlAvatar!)
-              : const CircleAvatar(
-                  radius: 15,
-                  backgroundImage: AssetImage(AppImage.userEmptyAvatar),
-                ),
+          leading: AvatarWidget(
+            urlAvatar: user.urlAvatar,
+            height: size * 0.05,
+            width: size * 0.05,
+            radius: size * 0.025,
+          ),
           title: Text(
             user.name ?? "",
             style: AppTextStyles.commonTextStyle(),

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pic_share/app/constants/app_color.dart';
-import 'package:pic_share/app/constants/app_images.dart';
 import 'package:pic_share/app/constants/app_text_styles.dart';
 import 'package:pic_share/app/custom/custom_back_button.dart';
-import 'package:pic_share/app/helper/image_cache_helper.dart';
 import 'package:pic_share/app/helper/shimmer_helper.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pic_share/view_model/friend_profile/friend_profile_controller.dart';
@@ -12,6 +10,7 @@ import 'package:pic_share/views/pages/friend_profile/widgets/button_row_widget.d
 import 'package:pic_share/views/pages/friend_profile/widgets/mutual_friend_list_view.dart';
 import 'package:pic_share/views/pages/friend_profile/widgets/page_grid_posts_view.dart';
 import 'package:pic_share/views/pages/friend_profile/widgets/user_log_vertical.dart';
+import 'package:pic_share/views/widgets/avatar_widget.dart';
 
 class FriendProfilePage extends GetView<FriendProfileController> {
   const FriendProfilePage({super.key});
@@ -94,26 +93,25 @@ class FriendProfilePage extends GetView<FriendProfileController> {
   }
 
   Widget _buildAvatarAndName(BuildContext context) {
+    final size = MediaQuery.of(context).size.height;
+    final avatarSize = size * 0.1;
     return Column(
       children: [
-        controller.friend.value?.urlAvatar != null
-            ? ImageCacheHelper.avatarImage(
-                url: controller.friend.value!.urlAvatar!,
-                height: MediaQuery.of(context).size.height * 0.1,
-                width: MediaQuery.of(context).size.height * 0.1)
-            : CircleAvatar(
-                radius: MediaQuery.of(context).size.height * 0.05,
-                backgroundImage: const AssetImage(AppImage.userEmptyAvatar),
-              ),
-        const SizedBox(
-          height: 15,
+        AvatarWidget(
+          urlAvatar: controller.friend.value?.urlAvatar,
+          height: avatarSize,
+          width: avatarSize,
+          radius: avatarSize / 2,
+        ),
+        SizedBox(
+          height: size * 0.02,
         ),
         Text(
           controller.friend.value?.name ?? "",
           style: AppTextStyles.headingTextStyle(),
         ),
-        const SizedBox(
-          height: 15,
+        SizedBox(
+          height: size * 0.02,
         ),
       ],
     );

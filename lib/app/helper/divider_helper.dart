@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class DividerHelper {
   DividerHelper._();
-  static Widget sizedboxDivider({double? height}) {
+  static Widget sizedBoxDivider({double? height}) {
     return SizedBox(
       height: height ?? 5,
     );

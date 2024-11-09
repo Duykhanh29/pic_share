@@ -230,7 +230,7 @@ class SearchPage extends GetView<SearchUserController> {
               onTapAddFriend: controller.onMakeFriendRequest,
             );
           },
-          separatorBuilder: (context, index) => DividerHelper.sizedboxDivider(),
+          separatorBuilder: (context, index) => DividerHelper.sizedBoxDivider(),
           itemCount: controller.listSearchUser.length,
         ),
       ),

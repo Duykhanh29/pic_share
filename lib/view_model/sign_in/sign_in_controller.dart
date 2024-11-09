@@ -26,7 +26,7 @@ class SignInController extends GetxController {
   final formKey = GlobalKey<FormState>();
   late TextEditingController emailController;
   late TextEditingController passController;
-  RxBool isPassVissibility = false.obs;
+  RxBool isPassVisibility = false.obs;
   RxBool isLoading = false.obs;
 
   @override
@@ -43,8 +43,8 @@ class SignInController extends GetxController {
     super.onClose();
   }
 
-  void onChangePassVissibility() {
-    isPassVissibility.value = !isPassVissibility.value;
+  void onChangePassVisibility() {
+    isPassVisibility.value = !isPassVisibility.value;
   }
 
   Future<void> signInWithEmailPass() async {

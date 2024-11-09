@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pic_share/app/constants/app_images.dart';
 import 'package:pic_share/app/constants/app_text_styles.dart';
 import 'package:pic_share/app/custom/app_bar_custom.dart';
 import 'package:pic_share/app/helper/bottom_sheet_helper.dart';
@@ -14,6 +13,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pic_share/views/pages/post_detail/widgets/action_column_widget.dart';
 import 'package:pic_share/views/pages/post_detail/widgets/action_sheet_widget.dart';
 import 'package:pic_share/views/pages/post_detail/widgets/user_views_sheet_widget.dart';
+import 'package:pic_share/views/widgets/avatar_widget.dart';
 
 class PostDetailPage extends GetView<PostDetailController> {
   const PostDetailPage({super.key});
@@ -89,21 +89,19 @@ class PostDetailPage extends GetView<PostDetailController> {
   }
 
   Widget _buildTopPostDetail(BuildContext context, PostData? postData) {
+    final size = MediaQuery.of(context).size.width;
     return Padding(
       padding: const EdgeInsets.only(left: 5, top: 10, bottom: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          postData?.post.user?.urlAvatar != null
-              ? ImageCacheHelper.avatarImage(
-                  url: postData!.post.user!.urlAvatar!)
-              : const CircleAvatar(
-                  radius: 20,
-                  backgroundImage: AssetImage(
-                    AppImage.userEmptyAvatar,
-                  ),
-                ),
-          const SizedBox(width: 20),
+          AvatarWidget(
+            urlAvatar: postData?.post.user?.urlAvatar,
+            width: size * 0.1,
+            height: size * 0.1,
+            radius: size * 0.05,
+          ),
+          SizedBox(width: size * 0.015),
           Container(
             padding: const EdgeInsets.all(4),
             decoration: BoxDecoration(
@@ -116,7 +114,7 @@ class PostDetailPage extends GetView<PostDetailController> {
               ),
             ),
           ),
-          const SizedBox(width: 20),
+          SizedBox(width: size * 0.015),
           Container(
             padding: const EdgeInsets.all(4),
             decoration: BoxDecoration(
@@ -161,6 +159,7 @@ class PostDetailPage extends GetView<PostDetailController> {
 
   Widget _buildUsersView(
       BuildContext context, PostData postData, List<UserSummaryModel> users) {
+    final size = MediaQuery.of(context).size.width;
     return Container(
       padding: const EdgeInsets.all(10),
       child: Row(
@@ -188,13 +187,13 @@ class PostDetailPage extends GetView<PostDetailController> {
           } else {
             return Column(
               children: [
-                users[index].urlAvatar != null
-                    ? ImageCacheHelper.avatarImage(url: users[index].urlAvatar!)
-                    : const CircleAvatar(
-                        radius: 15,
-                        backgroundImage: AssetImage(AppImage.userEmptyAvatar),
-                      ),
-                const SizedBox(width: 10),
+                AvatarWidget(
+                  urlAvatar: users[index].urlAvatar,
+                  height: size * 0.05,
+                  width: size * 0.05,
+                  radius: size * 0.025,
+                ),
+                SizedBox(width: size * 0.01),
               ],
             );
           }

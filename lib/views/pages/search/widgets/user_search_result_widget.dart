@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pic_share/app/constants/app_color.dart';
-import 'package:pic_share/app/constants/app_images.dart';
 import 'package:pic_share/app/constants/app_text_styles.dart';
-import 'package:pic_share/app/helper/image_cache_helper.dart';
 import 'package:pic_share/data/enums/user_relationship.dart';
 import 'package:pic_share/data/models/user/user_friendship_model.dart';
+import 'package:pic_share/views/widgets/avatar_widget.dart';
 
 class UserSearchResultWidget extends StatelessWidget {
   const UserSearchResultWidget(
@@ -51,17 +50,9 @@ class UserSearchResultWidget extends StatelessWidget {
   }
 
   Widget _buildAvatar(BuildContext context) {
-    return userSummaryModel.user.urlAvatar != null
-        ? ImageCacheHelper.avatarImage(
-            url: userSummaryModel.user.urlAvatar!,
-            width: MediaQuery.of(context).size.height * 0.06,
-            height: MediaQuery.of(context).size.height * 0.06)
-        : CircleAvatar(
-            radius: MediaQuery.of(context).size.height * 0.03,
-            backgroundImage: const AssetImage(
-              AppImage.userEmptyAvatar,
-            ),
-          );
+    return AvatarWidget(
+      urlAvatar: userSummaryModel.user.urlAvatar,
+    );
   }
 
   Widget _buildName() {

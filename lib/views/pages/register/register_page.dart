@@ -11,27 +11,28 @@ class RegisterPage extends GetView<RegisterController> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size.height;
     final t = AppLocalizations.of(context)!;
     return Obx(
       () => Stack(
         children: [
           AuthView(
             confirmPassController: controller.confirmPasswordController,
-            isConfirmPassVissibility: controller.isConfirmPassVissibility.value,
+            isConfirmPassVisibility: controller.isConfirmPassVisibility.value,
             nameController: controller.nameController,
-            onChangeConfirmPassVissibility:
-                controller.onChangeConfirmPassVissibility,
+            onChangeConfirmPassVisibility:
+                controller.onChangeConfirmPassVisibility,
             isRegister: true,
             title: t.register,
             emailController: controller.emailController,
             onSubmitted: controller.registerUserByEmailAndPass,
             passwordController: controller.passController,
             formKey: controller.formKey,
-            isPassVissibility: controller.isPassVissibility.value,
-            onChangePassVissibility: controller.onChangePassVissibility,
+            isPassVisibility: controller.isPassVisibility.value,
+            onChangePassVisibility: controller.onChangePassVisibility,
             child: Column(
               children: [
-                const SizedBox(height: 30),
+                SizedBox(height: size * 0.01),
                 Container(
                   alignment: Alignment.centerLeft,
                   child: TextButton(
@@ -53,7 +54,7 @@ class RegisterPage extends GetView<RegisterController> {
                   ),
                 ),
                 SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.08,
+                  height: size * 0.06,
                 ),
               ],
             ),

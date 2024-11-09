@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pic_share/app/constants/app_color.dart';
-import 'package:pic_share/app/constants/app_images.dart';
 import 'package:pic_share/app/constants/app_text_styles.dart';
-import 'package:pic_share/app/helper/image_cache_helper.dart';
 import 'package:pic_share/view_model/settings/settings_controller.dart';
 import 'package:pic_share/app/utils/date_utils.dart' as helper;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:pic_share/views/widgets/avatar_widget.dart';
 
 class UserSectionWidget extends GetView<SettingsController> {
   const UserSectionWidget({super.key});
@@ -35,17 +34,9 @@ class UserSectionWidget extends GetView<SettingsController> {
                   shape: BoxShape.circle,
                 ),
                 alignment: Alignment.center,
-                child: controller.currentUser.value?.urlAvatar != null
-                    ? ImageCacheHelper.avatarImage(
-                        url: controller.currentUser.value!.urlAvatar!,
-                        width: MediaQuery.of(context).size.height * 0.06,
-                        height: MediaQuery.of(context).size.height * 0.06,
-                      )
-                    : CircleAvatar(
-                        radius: MediaQuery.of(context).size.height * 0.03,
-                        backgroundImage:
-                            const AssetImage(AppImage.userEmptyAvatar),
-                      ),
+                child: AvatarWidget(
+                  urlAvatar: controller.currentUser.value?.urlAvatar,
+                ),
               ),
               const SizedBox(width: 16),
               Column(

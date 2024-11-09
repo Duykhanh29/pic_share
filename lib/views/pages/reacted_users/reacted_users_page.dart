@@ -27,7 +27,7 @@ class ReactedUsersPage extends StatelessWidget {
               );
             },
             separatorBuilder: (context, index) =>
-                DividerHelper.sizedboxDivider(),
+                DividerHelper.sizedBoxDivider(),
             itemCount: 30),
       ),
     );

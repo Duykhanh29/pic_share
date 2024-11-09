@@ -9,9 +9,15 @@ class LogoWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        border: Border.all(color: AppColors.white, width: 2),
-      ),
+          shape: BoxShape.circle,
+          border: Border.all(color: AppColors.white, width: 2),
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.backgroundAuthScreenColor,
+              blurRadius: 4,
+              offset: const Offset(0, 1),
+            )
+          ]),
       margin: const EdgeInsets.symmetric(vertical: 50),
       alignment: Alignment.topCenter,
       child: Image.asset(

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pic_share/app/constants/app_color.dart';
-import 'package:pic_share/app/constants/app_images.dart';
 import 'package:pic_share/app/constants/app_text_styles.dart';
-import 'package:pic_share/app/helper/image_cache_helper.dart';
 import 'package:pic_share/view_model/new_post/new_post_controller.dart';
+import 'package:pic_share/views/widgets/avatar_widget.dart';
 
 class SharedUserWidget extends GetView<NewPostController> {
   const SharedUserWidget({
@@ -39,17 +38,12 @@ class SharedUserWidget extends GetView<NewPostController> {
                     size: isSelected ? 40 : 30,
                     color: AppColors.white,
                   )
-                : url != null
-                    ? ImageCacheHelper.avatarImage(
-                        url: url!,
-                        height: isSelected ? 40 : 30,
-                        width: isSelected ? 40 : 30,
-                      )
-                    : CircleAvatar(
-                        radius: isSelected ? 20 : 15,
-                        backgroundImage:
-                            const AssetImage(AppImage.userEmptyAvatar),
-                      ),
+                : AvatarWidget(
+                    urlAvatar: url,
+                    height: isSelected ? 40 : 30,
+                    width: isSelected ? 40 : 30,
+                    radius: isSelected ? 20 : 15,
+                  ),
           ),
           Text(
             name,
