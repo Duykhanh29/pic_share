@@ -17,7 +17,7 @@ class AdminPage extends StatelessWidget {
           gradient: LinearGradient(
             colors: [
               AppColors.backgroundColor,
-              AppColors.backgrounAuthScreendColor,
+              AppColors.backgroundAuthScreenColor,
               AppColors.thirdColor,
             ],
             begin: Alignment.topCenter,

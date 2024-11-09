@@ -17,22 +17,22 @@ class AuthView extends GetView<AuthController> {
     required this.onSubmitted,
     required this.passwordController,
     required this.formKey,
-    required this.isPassVissibility,
-    required this.onChangePassVissibility,
+    required this.isPassVisibility,
+    required this.onChangePassVisibility,
     required this.child,
     this.isRegister = false,
-    this.onChangeConfirmPassVissibility,
+    this.onChangeConfirmPassVisibility,
     this.confirmPassController,
     this.nameController,
-    this.isConfirmPassVissibility,
+    this.isConfirmPassVisibility,
   });
   final Future<void> Function() onSubmitted;
   final TextEditingController emailController;
   final TextEditingController passwordController;
-  final bool isPassVissibility;
-  final bool? isConfirmPassVissibility;
-  final void Function() onChangePassVissibility;
-  final void Function()? onChangeConfirmPassVissibility;
+  final bool isPassVisibility;
+  final bool? isConfirmPassVisibility;
+  final void Function() onChangePassVisibility;
+  final void Function()? onChangeConfirmPassVisibility;
   final TextEditingController? nameController;
   final TextEditingController? confirmPassController;
   final String title;
@@ -41,18 +41,21 @@ class AuthView extends GetView<AuthController> {
   final bool isRegister;
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final heightSize = size.height;
     final t = AppLocalizations.of(context)!;
     return KeyboardDismiss(
       child: Scaffold(
         // backgroundColor: AppColors.backgrounAuthScreendColor,
-        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: true,
         body: SingleChildScrollView(
           child: Container(
+            height: MediaQuery.of(context).size.height,
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
                   AppColors.backgroundColor,
-                  AppColors.backgrounAuthScreendColor,
+                  AppColors.backgroundAuthScreenColor,
                   AppColors.thirdColor,
                 ],
                 begin: Alignment.topCenter,
@@ -80,7 +83,9 @@ class AuthView extends GetView<AuthController> {
                               ),
                               hintText: t.name),
                         ),
-                        const SizedBox(height: 15),
+                        SizedBox(
+                          height: heightSize * 0.01,
+                        ),
                       ],
                     ),
                   ),
@@ -102,7 +107,9 @@ class AuthView extends GetView<AuthController> {
                         ),
                         hintText: t.email),
                   ),
-                  const SizedBox(height: 15),
+                  SizedBox(
+                    height: heightSize * 0.01,
+                  ),
                   TextFormField(
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -120,19 +127,21 @@ class AuthView extends GetView<AuthController> {
                           borderRadius: BorderRadius.circular(15),
                         ),
                         suffixIcon: IconButton(
-                          onPressed: onChangePassVissibility,
-                          icon: Icon(isPassVissibility
+                          onPressed: onChangePassVisibility,
+                          icon: Icon(isPassVisibility
                               ? Icons.visibility_off_sharp
                               : Icons.visibility_sharp),
                         ),
                         hintText: t.password),
-                    obscureText: !isPassVissibility,
+                    obscureText: !isPassVisibility,
                   ),
                   Visibility(
                     visible: isRegister,
                     child: Column(
                       children: [
-                        const SizedBox(height: 15),
+                        SizedBox(
+                          height: heightSize * 0.01,
+                        ),
                         TextFormField(
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -150,27 +159,27 @@ class AuthView extends GetView<AuthController> {
                                 borderRadius: BorderRadius.circular(15),
                               ),
                               suffixIcon: IconButton(
-                                onPressed: onChangeConfirmPassVissibility,
-                                icon: Icon(isConfirmPassVissibility == true
+                                onPressed: onChangeConfirmPassVisibility,
+                                icon: Icon(isConfirmPassVisibility == true
                                     ? Icons.visibility_off_sharp
                                     : Icons.visibility_sharp),
                               ),
                               hintText: t.passwordConfirmation),
-                          obscureText: isConfirmPassVissibility != null
-                              ? !isConfirmPassVissibility!
+                          obscureText: isConfirmPassVisibility != null
+                              ? !isConfirmPassVisibility!
                               : false,
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(
-                    height: 30,
+                  SizedBox(
+                    height: heightSize * 0.02,
                   ),
                   GestureDetector(
                     onTap: onSubmitted,
                     child: Container(
                       padding: const EdgeInsets.all(5),
-                      height: 50,
+                      height: heightSize * 0.06,
                       decoration: BoxDecoration(
                           color: AppColors.postViewColor,
                           borderRadius: BorderRadius.circular(10)),

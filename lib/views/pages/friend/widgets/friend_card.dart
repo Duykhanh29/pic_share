@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:pic_share/app/constants/app_color.dart';
-import 'package:pic_share/app/constants/app_images.dart';
 import 'package:pic_share/app/constants/app_text_styles.dart';
-import 'package:pic_share/app/helper/image_cache_helper.dart';
 import 'package:pic_share/data/enums/friend_status.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pic_share/data/models/user/friend.dart';
+import 'package:pic_share/views/widgets/avatar_widget.dart';
 
 class FriendCard extends StatelessWidget {
   const FriendCard({
@@ -30,7 +29,7 @@ class FriendCard extends StatelessWidget {
     final t = AppLocalizations.of(context)!;
     return GestureDetector(
       onTap: () {
-        onItemClick( friend.id);
+        onItemClick(friend.id);
       },
       child: Container(
         padding: const EdgeInsets.all(10),
@@ -48,17 +47,7 @@ class FriendCard extends StatelessWidget {
   }
 
   Widget _buildAvatar(BuildContext context) {
-    return friend.avatar != null
-        ? ImageCacheHelper.avatarImage(
-            url: friend.avatar!,
-            width: MediaQuery.of(context).size.height * 0.08,
-            height: MediaQuery.of(context).size.height * 0.08)
-        : CircleAvatar(
-            radius: MediaQuery.of(context).size.height * 0.04,
-            backgroundImage: const AssetImage(
-              AppImage.userEmptyAvatar,
-            ),
-          );
+    return AvatarWidget(urlAvatar: friend.avatar);
   }
 
   Widget _buildName() {

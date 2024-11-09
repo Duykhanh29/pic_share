@@ -29,7 +29,7 @@ class LanguagePage extends GetView<LanguageController> {
               );
             },
             separatorBuilder: (context, index) =>
-                DividerHelper.sizedboxDivider(),
+                DividerHelper.sizedBoxDivider(),
             itemCount: controller.languages.length),
       ),
     );

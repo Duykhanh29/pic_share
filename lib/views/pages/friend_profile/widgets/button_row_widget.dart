@@ -62,7 +62,7 @@ class ButtonRowWidget extends StatelessWidget {
                           await onAddFriendTap.call(friend!.user.id!);
                         },
                         icon: Icons.person_add_alt_1,
-                        backgroundColor: AppColors.sencondaryBorder,
+                        backgroundColor: AppColors.secondaryBorder,
                         borderColor: AppColors.white),
                   ],
                 )
@@ -130,7 +130,7 @@ class ButtonRowWidget extends StatelessWidget {
         height: 50,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
-          color: backgroundColor ?? AppColors.lightTabarColor,
+          color: backgroundColor ?? AppColors.lightTabBarColor,
           border: Border.all(color: borderColor ?? AppColors.appBorder),
         ),
         child: Row(

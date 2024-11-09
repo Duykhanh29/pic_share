@@ -11,6 +11,8 @@ import 'package:pic_share/data/models/user/user_model.dart';
 import 'package:pic_share/data/repositories/auth/auth_repository.dart';
 import 'package:pic_share/data/repositories/user/user_repository.dart';
 import 'package:pic_share/routes/app_pages.dart';
+import 'package:pic_share/view_model/home/home_controller.dart';
+import 'package:pic_share/view_model/nav_bottom/nav_bottom_controller.dart';
 
 class AuthController extends GetxController {
   // final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -62,6 +64,10 @@ class AuthController extends GetxController {
     });
   }
 
+  void setUser(UserModel? user) {
+    currentUser.value = user;
+  }
+
   Future<void> logout() async {
     await updateFCMToken(isNull: true);
     final response = await authRepository.logout();
@@ -74,6 +80,7 @@ class AuthController extends GetxController {
     Get.offAllNamed(Routes.login);
     localStorageService.removeAllSharedPreferencesValues();
     _tokenManager.deleteAll();
+    resetIndexes();
     deleteControllerDependenciesInjection();
   }
 
@@ -89,6 +96,7 @@ class AuthController extends GetxController {
           final user = userResponse.data;
           if (user != null) {
             localStorageService.setUserModel(value: user);
+            setUser(user);
           }
         }
         SnackbarHelper.successSnackbar(
@@ -149,6 +157,19 @@ class AuthController extends GetxController {
       await Get.delete<PusherService>();
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
+    }
+  }
+
+  void resetIndexes() {
+    final isRegisteredNavBottom = Get.isRegistered<NavBottomController>();
+    final isRegisteredHome = Get.isRegistered<HomeController>();
+    if (isRegisteredNavBottom) {
+      final navBottomController = Get.find<NavBottomController>();
+      navBottomController.resetIndexes();
+    }
+    if (isRegisteredHome) {
+      final homeController = Get.find<HomeController>();
+      homeController.resetIndexes();
     }
   }
 

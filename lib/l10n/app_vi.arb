@@ -137,5 +137,7 @@
     "errorTitle":"Lỗi",
     "warningTitle":"Cảnh báo",
     "downloadSuccessfully":"Tải về thành công",
-    "downloadFailed":"Tải về thất bại"
+    "downloadFailed":"Tải về thất bại",
+    "youHaveNoName":"Bạn chưa thiết lập tên",
+    "noName":"Chưa đặt tên"
 }

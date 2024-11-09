@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pic_share/app/constants/app_images.dart';
 import 'package:pic_share/app/constants/app_text_styles.dart';
-import 'package:pic_share/app/helper/image_cache_helper.dart';
 import 'package:pic_share/data/models/user/user_summary_model.dart';
+import 'package:pic_share/views/widgets/avatar_widget.dart';
 
 class MutualFriendCard extends StatelessWidget {
   const MutualFriendCard(
@@ -27,17 +26,7 @@ class MutualFriendCard extends StatelessWidget {
   }
 
   Widget _buildAvatar(BuildContext context) {
-    return friend.urlAvatar != null
-        ? ImageCacheHelper.avatarImage(
-            url: friend.urlAvatar!,
-            width: MediaQuery.of(context).size.height * 0.06,
-            height: MediaQuery.of(context).size.height * 0.06)
-        : CircleAvatar(
-            radius: MediaQuery.of(context).size.height * 0.03,
-            backgroundImage: const AssetImage(
-              AppImage.userEmptyAvatar,
-            ),
-          );
+    return AvatarWidget(urlAvatar: friend.urlAvatar);
   }
 
   Widget _buildName() {

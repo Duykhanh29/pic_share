@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pic_share/app/constants/app_color.dart';
-import 'package:pic_share/app/constants/app_images.dart';
 import 'package:pic_share/app/constants/app_text_styles.dart';
-import 'package:pic_share/app/helper/image_cache_helper.dart';
 import 'package:pic_share/app/utils/date_utils.dart' as date;
 import 'package:pic_share/data/models/notification/notification.dart' as model;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:pic_share/views/widgets/avatar_widget.dart';
 
 // ignore: must_be_immutable
 class NotificationItemCard extends StatelessWidget {
@@ -20,6 +19,10 @@ class NotificationItemCard extends StatelessWidget {
   final Function(int)? onCLick;
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final widthSize = size.width;
+    final heightSize = size.height;
+    final avatarSize = widthSize * 0.12;
     return GestureDetector(
       onTap: () {
         onCLick?.call(notification.id ?? 0);
@@ -28,7 +31,7 @@ class NotificationItemCard extends StatelessWidget {
           margin: const EdgeInsets.symmetric(vertical: 2, horizontal: 5),
           padding: const EdgeInsets.all(5),
           constraints: BoxConstraints(
-            minHeight: MediaQuery.of(context).size.height * 0.1,
+            minHeight: heightSize * 0.1,
           ),
           decoration: BoxDecoration(
             color: notification.isSeen
@@ -44,16 +47,12 @@ class NotificationItemCard extends StatelessWidget {
             children: [
               Container(
                 padding: const EdgeInsets.all(10),
-                child: notification.sender?.urlAvatar != null
-                    ? ImageCacheHelper.avatarImage(
-                        url: notification.sender!.urlAvatar!,
-                        height: MediaQuery.of(context).size.width * 0.12,
-                        width: MediaQuery.of(context).size.width * 0.12)
-                    : CircleAvatar(
-                        radius: MediaQuery.of(context).size.width * 0.06,
-                        backgroundImage:
-                            const AssetImage(AppImage.userEmptyAvatar),
-                      ),
+                child: AvatarWidget(
+                  urlAvatar: notification.sender?.urlAvatar,
+                  width: avatarSize,
+                  height: avatarSize,
+                  radius: avatarSize / 2,
+                ),
               ),
               Flexible(
                 flex: 6,

@@ -29,8 +29,8 @@ class RegisterController extends GetxController {
   late TextEditingController confirmPasswordController;
 
   Rx<UserModel?> user = Rx<UserModel?>(null);
-  RxBool isPassVissibility = false.obs;
-  RxBool isConfirmPassVissibility = false.obs;
+  RxBool isPassVisibility = false.obs;
+  RxBool isConfirmPassVisibility = false.obs;
   RxBool isLoading = false.obs;
   @override
   void onInit() {
@@ -50,12 +50,12 @@ class RegisterController extends GetxController {
     super.onClose();
   }
 
-  void onChangePassVissibility() {
-    isPassVissibility.value = !isPassVissibility.value;
+  void onChangePassVisibility() {
+    isPassVisibility.value = !isPassVisibility.value;
   }
 
-  void onChangeConfirmPassVissibility() {
-    isConfirmPassVissibility.value = !isConfirmPassVissibility.value;
+  void onChangeConfirmPassVisibility() {
+    isConfirmPassVisibility.value = !isConfirmPassVisibility.value;
   }
 
   Future<void> registerUserByEmailAndPass() async {

@@ -14,6 +14,7 @@ class PostsLocationController extends GetxController {
   Rx<PostMarker?> selectedMarker = Rx<PostMarker?>(null);
   RxList<PostDetail> posts = <PostDetail>[].obs;
   Rx<PostDetail?> selectedPost = Rx<PostDetail?>(null);
+  RxBool isLoading = true.obs;
   late MapController mapController;
 
   PostRepository postRepository;
@@ -78,6 +79,7 @@ class PostsLocationController extends GetxController {
         )
       ];
     }
+    isLoading.value = false;
   }
 
   Future<void> fetchMemories() async {
@@ -117,6 +119,7 @@ class PostsLocationController extends GetxController {
         ),
       );
     }).toList();
+    isLoading.value = false;
   }
 
   void _showInfoBottomSheet({

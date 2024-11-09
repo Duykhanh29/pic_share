@@ -10,6 +10,7 @@ import 'package:pic_share/views/pages/profile/widgets/user_code_section.dart';
 import 'package:pic_share/views/pages/profile/widgets/user_detail_section.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pic_share/views/pages/profile/widgets/user_log_widget.dart';
+import 'package:pic_share/views/widgets/avatar_widget.dart';
 
 class ProfilePage extends GetView<ProfileController> {
   const ProfilePage({super.key});
@@ -38,7 +39,7 @@ class ProfilePage extends GetView<ProfileController> {
               ),
             ),
             _buildRowForHistory(context, t),
-            _buildHisories(context, t),
+            _buildHistories(context, t),
           ],
         ),
       ),
@@ -46,6 +47,8 @@ class ProfilePage extends GetView<ProfileController> {
   }
 
   AppBar _buildAppBar(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final width = size.width * 0.2;
     return AppBar(
       leading: const CustomBackButton(),
       actions: [
@@ -64,24 +67,21 @@ class ProfilePage extends GetView<ProfileController> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              controller.currentUser?.urlAvatar != null
-                  ? ImageCacheHelper.avatarImage(
-                      url: controller.currentUser!.urlAvatar!,
-                      height: 100,
-                      width: 100)
-                  : const CircleAvatar(
-                      radius: 50,
-                      backgroundImage: AssetImage(AppImage.userEmptyAvatar),
-                    ),
-              const SizedBox(
-                height: 15,
+              AvatarWidget(
+                urlAvatar: controller.currentUser?.urlAvatar,
+                height: width,
+                width: width,
+                radius: width / 2,
+              ),
+              SizedBox(
+                height: size.height * 0.02,
               ),
               Text(
                 controller.currentUser?.name ?? "",
                 style: AppTextStyles.headingTextStyle(),
               ),
-              const SizedBox(
-                height: 15,
+              SizedBox(
+                height: size.height * 0.02,
               ),
               Obx(
                 () => controller.isUserLogLoading.value
@@ -129,7 +129,7 @@ class ProfilePage extends GetView<ProfileController> {
     );
   }
 
-  Widget _buildHisories(BuildContext context, AppLocalizations t) {
+  Widget _buildHistories(BuildContext context, AppLocalizations t) {
     return Obx(() => controller.isLoading.value
         ? SliverToBoxAdapter(
             child: ShimmerHelper().buildGridShimmer(),

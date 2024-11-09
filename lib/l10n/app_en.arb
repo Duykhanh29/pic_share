@@ -137,5 +137,7 @@
     "errorTitle":"Error",
     "warningTitle":"Warning",
     "downloadSuccessfully":"Downloaded successfully",
-    "downloadFailed":"Download failed"
+    "downloadFailed":"Download failed",
+    "youHaveNoName":"You haven't set name",
+    "noName":"No name"
 }
