@@ -8,6 +8,7 @@ import 'package:pic_share/app/helper/shimmer_helper.dart';
 import 'package:pic_share/view_model/friend/friend_controller.dart';
 import 'package:pic_share/views/pages/friend/widgets/custom_header_delegate.dart';
 import 'package:pic_share/views/pages/friend/widgets/friend_card.dart';
+import 'package:pic_share/views/pages/friend/widgets/suggested_friend_card.dart';
 import 'package:pic_share/views/widgets/loading_widget.dart';
 
 class FriendPage extends GetView<FriendController> {
@@ -171,12 +172,20 @@ class FriendPage extends GetView<FriendController> {
             minHeight: 40,
             maxHeight: 50,
             child: TabBar(
+              onTap: (value) {
+                if (value == 2) {
+                  controller.fetchSuggestedFriends();
+                }
+              },
               tabs: [
                 Tab(
                   text: t.received,
                 ),
                 Tab(
                   text: t.sent,
+                ),
+                Tab(
+                  text: t.suggestions,
                 ),
               ],
               labelStyle: AppTextStyles.tabBarTextStyle(),
@@ -195,64 +204,83 @@ class FriendPage extends GetView<FriendController> {
                 : TabBarView(
                     controller: controller.tabController,
                     children: [
-                      controller.requestedFriends.isNotEmpty
-                          ? ListView.builder(
-                              itemBuilder: (context, index) {
-                                final friend =
-                                    controller.requestedFriends[index];
-                                return FriendCard(
-                                  friend: friend,
-                                  onItemClick: controller.onItemClick,
-                                  isSent: false,
-                                  onRejectClick:
-                                      controller.onRejectFriendRequest,
-                                  onAccepttClick:
-                                      controller.onAcceptFriendRequest,
-                                  key: UniqueKey(),
-                                  isMe: controller.currentUser?.id ==
-                                      friend.userId,
-                                );
-                              },
-                              itemCount: controller.requestedFriends.length,
-                            )
-                          : Center(
-                              child: Text(
-                                t.noFriendRequests,
-                                style: AppTextStyles.commonTextStyle().copyWith(
-                                    fontSize: 16, fontWeight: FontWeight.w500),
-                              ),
-                            ),
-                      controller.sentFriends.isNotEmpty
-                          ? ListView.builder(
-                              itemBuilder: (context, index) {
-                                final friend = controller.sentFriends[index];
-                                return FriendCard(
-                                  friend: friend,
-                                  onItemClick: controller.onItemClick,
-                                  isSent: true,
-                                  onRejectClick:
-                                      controller.onRejectFriendRequest,
-                                  onAccepttClick:
-                                      controller.onAcceptFriendRequest,
-                                  key: UniqueKey(),
-                                  isMe: controller.currentUser?.id ==
-                                      friend.userId,
-                                );
-                              },
-                              itemCount: controller.sentFriends.length,
-                            )
-                          : Center(
-                              child: Text(
-                                t.noFriendRequests,
-                                style: AppTextStyles.commonTextStyle().copyWith(
-                                    fontSize: 16, fontWeight: FontWeight.w500),
-                              ),
-                            ),
+                      _buildReceivedFriendRequestsView(t),
+                      _buildSentFriendRequestsView(t),
+                      _buildSuggestListView(t),
                     ],
                   ),
           ),
         ),
       ],
     );
+  }
+
+  Widget _buildReceivedFriendRequestsView(AppLocalizations t) {
+    return controller.requestedFriends.isNotEmpty
+        ? ListView.builder(
+            itemBuilder: (context, index) {
+              final friend = controller.requestedFriends[index];
+              return FriendCard(
+                friend: friend,
+                onItemClick: controller.onItemClick,
+                isSent: false,
+                onRejectClick: controller.onRejectFriendRequest,
+                onAccepttClick: controller.onAcceptFriendRequest,
+                key: UniqueKey(),
+                isMe: controller.currentUser?.id == friend.userId,
+              );
+            },
+            itemCount: controller.requestedFriends.length,
+          )
+        : _buildNoFriendRequestsView(t);
+  }
+
+  Widget _buildSentFriendRequestsView(AppLocalizations t) {
+    return controller.sentFriends.isNotEmpty
+        ? ListView.builder(
+            itemBuilder: (context, index) {
+              final friend = controller.sentFriends[index];
+              return FriendCard(
+                friend: friend,
+                onItemClick: controller.onItemClick,
+                isSent: true,
+                onRejectClick: controller.onRejectFriendRequest,
+                onAccepttClick: controller.onAcceptFriendRequest,
+                key: UniqueKey(),
+                isMe: controller.currentUser?.id == friend.userId,
+              );
+            },
+            itemCount: controller.sentFriends.length,
+          )
+        : _buildNoFriendRequestsView(t);
+  }
+
+  Widget _buildNoFriendRequestsView(AppLocalizations t) {
+    return Center(
+      child: Text(
+        t.noFriendRequests,
+        style: AppTextStyles.commonTextStyle()
+            .copyWith(fontSize: 16, fontWeight: FontWeight.w500),
+      ),
+    );
+  }
+
+  Widget _buildSuggestListView(AppLocalizations t) {
+    return controller.isLoadingSuggestedFriends.value
+        ? ShimmerHelper().buildListViewShimmer()
+        : controller.suggestedFriends.isNotEmpty
+            ? ListView.builder(
+                itemBuilder: (context, index) {
+                  final friend = controller.suggestedFriends[index];
+                  return SuggestedFriendCard(
+                    user: friend.user,
+                    onTap: controller.onUserClick,
+                    onMakeFriend: controller.makeFriendRequestFromSuggestion,
+                    key: UniqueKey(),
+                  );
+                },
+                itemCount: controller.suggestedFriends.length,
+              )
+            : _buildNoFriendRequestsView(t);
   }
 }

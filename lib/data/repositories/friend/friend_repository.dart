@@ -1,5 +1,6 @@
 import 'package:pic_share/data/enums/friend_status.dart';
 import 'package:pic_share/data/models/user/friend.dart';
+import 'package:pic_share/data/models/user/suggested_friend.dart';
 import 'package:pic_share/data/models/user/user_summary_model.dart';
 import 'package:pic_share/data/providers/network/api_response.dart';
 import 'package:pic_share/data/providers/network/apis/friends/friend_apis.dart';
@@ -16,6 +17,7 @@ abstract class FriendRepository {
 
   Future<ApiResponse<List<Friend>>> getFriendRequestSentList();
   Future<ApiResponse<List<UserSummaryModel>>> getMutualFriends(int friendId);
+  Future<ApiResponse<List<SuggestedFriend>>> getSuggestedFriends();
 }
 
 class FriendRepositoryImpl implements FriendRepository {
@@ -61,6 +63,12 @@ class FriendRepositoryImpl implements FriendRepository {
   Future<ApiResponse<List<UserSummaryModel>>> getMutualFriends(
       int friendId) async {
     final response = await GetMutualFriendsAPI(friendId: friendId).request();
+    return response;
+  }
+
+  @override
+  Future<ApiResponse<List<SuggestedFriend>>> getSuggestedFriends() async {
+    final response = await GetRecommendedFriendsAPI().request();
     return response;
   }
 }

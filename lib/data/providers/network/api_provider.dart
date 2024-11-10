@@ -91,7 +91,7 @@ class APIProvider {
       //   reason: 'Network is not available',
       // );
     } on DioException catch (e) {
-      final message = e.response?.data['message'];
+      final message = e.response?.data['message'] ?? e.error.toString();
       // if (g.Get.isSnackbarOpen == false) {
       //   SnackbarHelper.errorSnackbar(message);
       // }
