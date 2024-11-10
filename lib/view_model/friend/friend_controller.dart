@@ -77,6 +77,12 @@ class FriendController extends GetxController
     isViewInTabbar = true.obs;
   }
 
+  void resetToDefault() {
+    onResetViewInTabBar();
+    isFriendShipView.value = true;
+    tabController.index = 0;
+  }
+
   @override
   void onInit() async {
     tabController = TabController(length: 3, vsync: this)..index = 0;
@@ -271,6 +277,7 @@ class FriendController extends GetxController
     try {
       final response = await friendRepository.sendFriendRequest(id);
       if (response.isSuccess) {
+        SnackbarHelper.successSnackbar(response.message ?? '');
         return response.data;
       } else {
         SnackbarHelper.errorSnackbar(response.message ?? '');
@@ -286,12 +293,13 @@ class FriendController extends GetxController
     isActionLoading.value = true;
     try {
       final response = await friendRepository.sendFriendRequest(id);
-      if (!response.isSuccess) {
+      if (response.isSuccess) {
         final friend = response.data;
         if (friend != null) {
           sentFriends.add(friend);
           suggestedFriends.removeWhere((element) => element.user.id == id);
         }
+        SnackbarHelper.successSnackbar(response.message ?? '');
       } else {
         SnackbarHelper.errorSnackbar(response.message ?? '');
       }

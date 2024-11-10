@@ -11,6 +11,8 @@ import 'package:pic_share/data/models/user/user_model.dart';
 import 'package:pic_share/data/repositories/auth/auth_repository.dart';
 import 'package:pic_share/data/repositories/user/user_repository.dart';
 import 'package:pic_share/routes/app_pages.dart';
+import 'package:pic_share/view_model/friend/friend_controller.dart';
+import 'package:pic_share/view_model/friend_profile/friend_profile_controller.dart';
 import 'package:pic_share/view_model/home/home_controller.dart';
 import 'package:pic_share/view_model/nav_bottom/nav_bottom_controller.dart';
 
@@ -163,6 +165,9 @@ class AuthController extends GetxController {
   void resetIndexes() {
     final isRegisteredNavBottom = Get.isRegistered<NavBottomController>();
     final isRegisteredHome = Get.isRegistered<HomeController>();
+    final isRegisteredFriend = Get.isRegistered<FriendController>();
+    final isRegisteredFriendProfile =
+        Get.isRegistered<FriendProfileController>();
     if (isRegisteredNavBottom) {
       final navBottomController = Get.find<NavBottomController>();
       navBottomController.resetIndexes();
@@ -170,6 +175,14 @@ class AuthController extends GetxController {
     if (isRegisteredHome) {
       final homeController = Get.find<HomeController>();
       homeController.resetIndexes();
+    }
+    if (isRegisteredFriend) {
+      final friendController = Get.find<FriendController>();
+      friendController.resetToDefault();
+    }
+    if (isRegisteredFriendProfile) {
+      final friendProfileController = Get.find<FriendProfileController>();
+      friendProfileController.onResetTabIndex();
     }
   }
 

@@ -70,6 +70,10 @@ class FriendProfileController extends GetxController
     super.onInit();
   }
 
+  void onResetTabIndex() {
+    tabController.index = 0;
+  }
+
   @override
   void dispose() {
     tabController.dispose();
