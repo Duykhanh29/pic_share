@@ -164,13 +164,13 @@ class FriendProfilePage extends GetView<FriendProfileController> {
   Widget _buildGridViewPosts(AppLocalizations t) {
     return PageGridPostsView(
         pagingController: controller.pagingController,
-        ontap: (index) {
+        onTap: (index) {
           controller.onClick(index);
         });
   }
 
   Widget _buildMutualFriendsView(BuildContext context, AppLocalizations t) {
-    return MuatualFriendListView(
+    return MutualFriendListView(
       isLoading: controller.isMutualFriendLoading.value,
       mutualFriends: controller.mutualFriends,
       onTap: controller.onMutualFriendClick,

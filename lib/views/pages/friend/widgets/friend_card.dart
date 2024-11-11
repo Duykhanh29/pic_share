@@ -11,7 +11,7 @@ class FriendCard extends StatelessWidget {
     super.key,
     this.isSent,
     this.onChatClick,
-    this.onAccepttClick,
+    this.onAcceptClick,
     this.onRejectClick,
     required this.onItemClick,
     required this.friend,
@@ -20,7 +20,7 @@ class FriendCard extends StatelessWidget {
   final Friend friend;
   final bool? isSent;
   final void Function(int)? onChatClick;
-  final Future<void> Function(int)? onAccepttClick;
+  final Future<void> Function(int)? onAcceptClick;
   final Future<void> Function(int)? onRejectClick;
   final void Function(int) onItemClick;
   final bool isMe;
@@ -124,8 +124,8 @@ class FriendCard extends StatelessWidget {
           IconButton.filled(
             color: AppColors.secondaryColor,
             onPressed: () async {
-              if (onAccepttClick != null) {
-                await onAccepttClick!(friend.id);
+              if (onAcceptClick != null) {
+                await onAcceptClick!(friend.id);
               }
             },
             icon: Icon(

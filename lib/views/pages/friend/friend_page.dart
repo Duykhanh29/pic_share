@@ -225,7 +225,7 @@ class FriendPage extends GetView<FriendController> {
                 onItemClick: controller.onItemClick,
                 isSent: false,
                 onRejectClick: controller.onRejectFriendRequest,
-                onAccepttClick: controller.onAcceptFriendRequest,
+                onAcceptClick: controller.onAcceptFriendRequest,
                 key: UniqueKey(),
                 isMe: controller.currentUser?.id == friend.userId,
               );
@@ -245,7 +245,7 @@ class FriendPage extends GetView<FriendController> {
                 onItemClick: controller.onItemClick,
                 isSent: true,
                 onRejectClick: controller.onRejectFriendRequest,
-                onAccepttClick: controller.onAcceptFriendRequest,
+                onAcceptClick: controller.onAcceptFriendRequest,
                 key: UniqueKey(),
                 isMe: controller.currentUser?.id == friend.userId,
               );
@@ -255,10 +255,11 @@ class FriendPage extends GetView<FriendController> {
         : _buildNoFriendRequestsView(t);
   }
 
-  Widget _buildNoFriendRequestsView(AppLocalizations t) {
+  Widget _buildNoFriendRequestsView(AppLocalizations t,
+      {bool isSuggestion = false}) {
     return Center(
       child: Text(
-        t.noFriendRequests,
+        isSuggestion ? t.noFriendSuggestion : t.noFriendRequests,
         style: AppTextStyles.commonTextStyle()
             .copyWith(fontSize: 16, fontWeight: FontWeight.w500),
       ),

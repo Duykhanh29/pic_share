@@ -57,7 +57,7 @@ class HomePage extends GetView<HomeController> {
               () => controller.isActionLoading.value
                   ? const LoadingWidget()
                   : controller.isLoading.value
-                      ? ShimmerHelper().buildCarouselSliderShimmer(context)
+                      ? ShimmerHelper().buildListPostShimmer(context)
                       : Obx(
                           () => CarouselSlider.builder(
                             key: ValueKey(controller.currentIndex.value),

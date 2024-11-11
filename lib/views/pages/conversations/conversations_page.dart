@@ -18,21 +18,27 @@ class ConversationPage extends GetView<ConversationsController> {
         child: Padding(
           padding: const EdgeInsets.all(10),
           child: Obx(
-            () => ListView.builder(
-              itemBuilder: (context, index) {
-                final conversation =
-                    controller.conversationData.value.conversations[index];
-                return ConversationItemCard(
-                  conversation: conversation,
-                  onTap: controller.onClickConversationItem,
-                  isMe: conversation.currentUser?.id ==
-                      controller.currentUser?.id,
-                  isLastChatByMyself: conversation.lastMessage?.sender?.id ==
-                      controller.currentUser?.id,
-                );
-              },
-              itemCount: controller.conversationData.value.conversations.length,
-            ),
+            () => controller.conversationData.value.conversations.isEmpty
+                ? Center(
+                    child: Text(t.noConversation),
+                  )
+                : ListView.builder(
+                    itemBuilder: (context, index) {
+                      final conversation = controller
+                          .conversationData.value.conversations[index];
+                      return ConversationItemCard(
+                        conversation: conversation,
+                        onTap: controller.onClickConversationItem,
+                        isMe: conversation.currentUser?.id ==
+                            controller.currentUser?.id,
+                        isLastChatByMyself:
+                            conversation.lastMessage?.sender?.id ==
+                                controller.currentUser?.id,
+                      );
+                    },
+                    itemCount:
+                        controller.conversationData.value.conversations.length,
+                  ),
           ),
         ),
       ),

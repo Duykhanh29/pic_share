@@ -38,6 +38,7 @@ import 'package:pic_share/views/pages/grid_posts_view/grid_posts_page.dart';
 import 'package:pic_share/views/pages/home/home_page.dart';
 import 'package:pic_share/views/pages/languages/language_page.dart';
 import 'package:pic_share/views/pages/new_post/new_post_page.dart';
+import 'package:pic_share/views/pages/not_found/not_found_page.dart';
 import 'package:pic_share/views/pages/notification/notification_page.dart';
 import 'package:pic_share/views/pages/post_detail/post_detail_page.dart';
 import 'package:pic_share/views/pages/post_histories/post_history_page.dart';
@@ -64,7 +65,7 @@ abstract class AppPages {
     GetPage(
       name: Routes.navBar,
       page: () => NavBottomPage(),
-      binding: NavBottomBindinngs(),
+      binding: NavBottomBindings(),
     ),
     GetPage(
       name: Routes.home,
@@ -74,12 +75,12 @@ abstract class AppPages {
     GetPage(
       name: Routes.conversation,
       page: () => const ConversationPage(),
-      binding: ConversationsBidings(),
+      binding: ConversationsBindings(),
     ),
     GetPage(
       name: Routes.newPost,
       page: () => const NewPostPage(),
-      binding: NewPostBidings(),
+      binding: NewPostBindings(),
     ),
     GetPage(
       name: Routes.notification,
@@ -88,7 +89,7 @@ abstract class AppPages {
     ),
     GetPage(
       name: Routes.settings,
-      page: () => const SettinngsPage(),
+      page: () => const SettingsPage(),
     ),
     GetPage(
       name: Routes.gridPostView,
@@ -128,7 +129,7 @@ abstract class AppPages {
     GetPage(
       name: Routes.profile,
       page: () => const ProfilePage(),
-      binding: ProfileBindinsgs(),
+      binding: ProfileBindings(),
     ),
     GetPage(
       name: Routes.changePassword,
@@ -177,7 +178,7 @@ abstract class AppPages {
     GetPage(
       name: Routes.postsWithLocation,
       page: () => const PostsWithLocationPage(),
-      binding: PostsWithLocationBindinsgs(),
+      binding: PostsWithLocationBindings(),
     ),
     GetPage(
       name: Routes.postsLocation,
@@ -197,6 +198,10 @@ abstract class AppPages {
       name: Routes.deletedPost,
       page: () => const DeletedPostPage(),
       binding: DeletedPostBindings(),
+    ),
+    GetPage(
+      name: Routes.notFound,
+      page: () => const NotFoundPage(),
     ),
   ];
 }

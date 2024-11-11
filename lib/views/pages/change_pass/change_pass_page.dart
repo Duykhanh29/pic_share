@@ -13,6 +13,7 @@ class ChangePasswordPage extends GetView<ChangePasswordController> {
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context)!;
+    final heightSize = MediaQuery.of(context).size.height;
     return Stack(
       children: [
         Scaffold(
@@ -26,17 +27,23 @@ class ChangePasswordPage extends GetView<ChangePasswordController> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.05,
+                      height: heightSize * 0.05,
                     ),
                     Text(
                       t.pleaseEnterNewPassword,
                       style: AppTextStyles.commonLightTextStyle(),
                     ),
-                    const SizedBox(height: 30),
+                    SizedBox(
+                      height: heightSize * 0.03,
+                    ),
                     _buildCurrentPassTextField(t),
-                    const SizedBox(height: 10),
+                    SizedBox(
+                      height: heightSize * 0.01,
+                    ),
                     _buildNewPassTextField(t),
-                    const SizedBox(height: 10),
+                    SizedBox(
+                      height: heightSize * 0.01,
+                    ),
                     _buildConfirmPassTextField(t),
                   ],
                 ),
@@ -68,13 +75,13 @@ class ChangePasswordPage extends GetView<ChangePasswordController> {
             borderRadius: BorderRadius.circular(15),
           ),
           suffixIcon: IconButton(
-            onPressed: controller.onChangeCurrentPassVissibility,
-            icon: Icon(controller.isCurrentPassVissibility.value
+            onPressed: controller.onChangeCurrentPassVisibility,
+            icon: Icon(controller.isCurrentPassVisibility.value
                 ? Icons.visibility_off_sharp
                 : Icons.visibility_sharp),
           ),
           hintText: t.currentPassword),
-      obscureText: !controller.isCurrentPassVissibility.value,
+      obscureText: !controller.isCurrentPassVisibility.value,
     );
   }
 
@@ -96,13 +103,13 @@ class ChangePasswordPage extends GetView<ChangePasswordController> {
             borderRadius: BorderRadius.circular(15),
           ),
           suffixIcon: IconButton(
-            onPressed: controller.onChangeNewPassVissibility,
-            icon: Icon(controller.isNewPassVissibility.value
+            onPressed: controller.onChangeNewPassVisibility,
+            icon: Icon(controller.isNewPassVisibility.value
                 ? Icons.visibility_off_sharp
                 : Icons.visibility_sharp),
           ),
           hintText: t.newPassword),
-      obscureText: !controller.isNewPassVissibility.value,
+      obscureText: !controller.isNewPassVisibility.value,
     );
   }
 
@@ -124,13 +131,13 @@ class ChangePasswordPage extends GetView<ChangePasswordController> {
             borderRadius: BorderRadius.circular(15),
           ),
           suffixIcon: IconButton(
-            onPressed: controller.onChangeConfirmNewPassVissibility,
-            icon: Icon(controller.isConfirmNewPassVissibility.value
+            onPressed: controller.onChangeConfirmNewPassVisibility,
+            icon: Icon(controller.isConfirmNewPassVisibility.value
                 ? Icons.visibility_off_sharp
                 : Icons.visibility_sharp),
           ),
           hintText: t.confirmNewPass),
-      obscureText: !controller.isConfirmNewPassVissibility.value,
+      obscureText: !controller.isConfirmNewPassVisibility.value,
     );
   }
 
