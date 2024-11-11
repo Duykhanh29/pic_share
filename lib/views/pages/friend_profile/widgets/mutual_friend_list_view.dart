@@ -5,8 +5,8 @@ import 'package:pic_share/data/models/user/user_summary_model.dart';
 import 'package:pic_share/views/pages/friend_profile/widgets/mutual_friend_card.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class MuatualFriendListView extends StatelessWidget {
-  const MuatualFriendListView({
+class MutualFriendListView extends StatelessWidget {
+  const MutualFriendListView({
     super.key,
     required this.mutualFriends,
     required this.isLoading,

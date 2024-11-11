@@ -8,9 +8,9 @@ import 'package:pic_share/data/models/post/post.dart';
 
 class PageGridPostsView extends StatelessWidget {
   const PageGridPostsView(
-      {super.key, required this.pagingController, required this.ontap});
+      {super.key, required this.pagingController, required this.onTap});
   final PagingController<int, Post> pagingController;
-  final Function(int) ontap;
+  final Function(int) onTap;
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context)!;
@@ -22,7 +22,7 @@ class PageGridPostsView extends StatelessWidget {
           itemBuilder: (context, post, index) {
             return GestureDetector(
               onTap: () {
-                ontap.call(index);
+                onTap.call(index);
               },
               child: ImageCacheHelper.showImage(
                   url: post.urlImage ?? "",

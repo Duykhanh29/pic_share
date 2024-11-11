@@ -9,8 +9,8 @@ import 'package:pic_share/views/pages/settings/widgets/user_section_widget.dart'
 import 'package:pic_share/views/pages/settings/widgets/user_settings_section.dart';
 import 'package:pic_share/views/widgets/loading_widget.dart';
 
-class SettinngsPage extends GetView<SettingsController> {
-  const SettinngsPage({super.key});
+class SettingsPage extends GetView<SettingsController> {
+  const SettingsPage({super.key});
 
   @override
   Widget build(BuildContext context) {

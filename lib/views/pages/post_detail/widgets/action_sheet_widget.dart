@@ -16,75 +16,88 @@ class ActionSheetWidgetDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context)!;
-    return Container(
-      height: 200,
-      decoration: const BoxDecoration(
-          color: Color.fromARGB(255, 187, 196, 201),
-          borderRadius: BorderRadius.vertical(top: Radius.circular(30))),
-      padding: const EdgeInsets.all(2),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          InkWell(
-            onTap: () {},
-            child: Center(
-              child: Text(t.share),
-            ),
-          ),
-          const Divider(
-            height: 1,
-            color: Colors.blueGrey,
-          ),
-          InkWell(
-            onTap: () async {
-              Get.back();
-              await onDownloadImage.call();
-            },
-            child: Center(
-              child: Text(t.download),
-            ),
-          ),
-          const Divider(
-            height: 1,
-            color: Colors.blueGrey,
-          ),
-          InkWell(
-            onTap: () async {
-              DialogHelper.showConfirmDialog(
-                title: t.warning,
-                message: t.areYouSureToDeleteThisPost,
-                onConfirm: () async {
-                  await onDeletePost.call();
-                  Get.back(result: true);
-                },
-                onCancel: () {
-                  Get.back();
-                },
-                context: context,
-              );
-            },
-            child: Center(
-              child: Text(
-                t.delete,
-                style: const TextStyle(color: AppColors.warningColor),
+    return IntrinsicHeight(
+      child: Container(
+        decoration: const BoxDecoration(
+            color: Color.fromARGB(255, 187, 196, 201),
+            borderRadius: BorderRadius.vertical(top: Radius.circular(30))),
+        padding: const EdgeInsets.symmetric(vertical: 5),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            InkWell(
+              onTap: () {},
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Center(
+                  child: Text(t.share),
+                ),
               ),
             ),
-          ),
-          const Divider(
-            height: 1,
-            color: Colors.blueGrey,
-          ),
-          InkWell(
-            onTap: () {
-              Get.back();
-            },
-            child: Center(
-              child: Text(
-                t.cancel,
+            const Divider(
+              height: 1,
+              color: Colors.blueGrey,
+            ),
+            InkWell(
+              onTap: () async {
+                Get.back();
+                await onDownloadImage.call();
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Center(
+                  child: Text(t.download),
+                ),
               ),
             ),
-          ),
-        ],
+            const Divider(
+              height: 1,
+              color: Colors.blueGrey,
+            ),
+            InkWell(
+              onTap: () async {
+                DialogHelper.showConfirmDialog(
+                  title: t.warning,
+                  message: t.areYouSureToDeleteThisPost,
+                  onConfirm: () async {
+                    await onDeletePost.call();
+                    Get.back(result: true);
+                  },
+                  onCancel: () {
+                    Get.back();
+                  },
+                  context: context,
+                );
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Center(
+                  child: Text(
+                    t.delete,
+                    style: const TextStyle(color: AppColors.warningColor),
+                  ),
+                ),
+              ),
+            ),
+            Container(
+              height: 4,
+              color: AppColors.black,
+            ),
+            InkWell(
+              onTap: () {
+                Get.back();
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Center(
+                  child: Text(
+                    t.cancel,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

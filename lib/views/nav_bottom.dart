@@ -17,7 +17,7 @@ class NavBottomPage extends GetView<NavBottomController> {
     const FriendPage(),
     const NewPostPage(),
     const ConversationPage(),
-    const SettinngsPage(),
+    const SettingsPage(),
   ];
 
   List<PersistentBottomNavBarItem> get _navBarsItems {
@@ -64,7 +64,7 @@ class NavBottomPage extends GetView<NavBottomController> {
       controller: controller.pageController,
       backgroundColor: Colors.white,
       handleAndroidBackButtonPress: true,
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       stateManagement: true,
       hideNavigationBarWhenKeyboardAppears: false,
       animationSettings: const NavBarAnimationSettings(

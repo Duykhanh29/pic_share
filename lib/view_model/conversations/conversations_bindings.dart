@@ -3,7 +3,7 @@ import 'package:pic_share/data/repositories/conversations/conversation_repositor
 import 'package:pic_share/view_model/auth/auth_controller.dart';
 import 'package:pic_share/view_model/conversations/conversations_controller.dart';
 
-class ConversationsBidings extends Bindings {
+class ConversationsBindings extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut<ConversationsController>(

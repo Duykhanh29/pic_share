@@ -5,7 +5,7 @@ import 'package:pic_share/view_model/drawer/drawer_controller.dart';
 import 'package:pic_share/view_model/friend/friend_controller.dart';
 import 'package:pic_share/view_model/nav_bottom/nav_bottom_controller.dart';
 
-class NavBottomBindinngs extends Bindings {
+class NavBottomBindings extends Bindings {
   @override
   void dependencies() {
     if (!Get.isRegistered<FriendController>()) {

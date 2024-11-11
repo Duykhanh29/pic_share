@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pic_share/app/constants/app_text_styles.dart';
+import 'package:pic_share/app/constants/glocal_data.dart';
 import 'package:pic_share/app/custom/app_bar_custom.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pic_share/app/helper/image_cache_helper.dart';
@@ -30,7 +31,8 @@ class DeletedPostPage extends GetView<DeletedPostController> {
                         url: controller.deletedPost.value?.image ??
                             "https://picsum.photos/seed/picsum/200/300",
                         width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height * 0.55),
+                        height: MediaQuery.of(context).size.height *
+                            singlePostSize),
                     Align(
                       alignment: Alignment.centerRight,
                       child: _buildActionsWidget(),

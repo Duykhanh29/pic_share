@@ -39,7 +39,9 @@ class SecurityPage extends StatelessWidget {
               ),
             ),
             ListTile(
-              onTap: () {},
+              onTap: () {
+                Get.toNamed(Routes.notFound);
+              },
               title: Text(t.termConditions),
               trailing: IconButton(
                   onPressed: () {},

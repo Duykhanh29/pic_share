@@ -31,4 +31,5 @@ abstract class Routes {
   static const String friendProfile = '/friend_profile';
   static const String adminPage = '/admin_page';
   static const String deletedPost = '/deleted_post';
+  static const String notFound = '/not_found';
 }

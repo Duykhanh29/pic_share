@@ -139,5 +139,7 @@
     "downloadSuccessfully":"Downloaded successfully",
     "downloadFailed":"Download failed",
     "youHaveNoName":"You haven't set name",
-    "noName":"No name"
+    "noName":"No name",
+    "noConversation":"No Conversation",
+    "noFriendSuggestion":"No friend suggestion"
 }

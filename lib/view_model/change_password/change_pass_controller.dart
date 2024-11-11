@@ -9,9 +9,9 @@ class ChangePasswordController extends GetxController {
   late TextEditingController confirmNewPasswordController;
   final formKey = GlobalKey<FormState>();
 
-  RxBool isCurrentPassVissibility = false.obs;
-  RxBool isNewPassVissibility = false.obs;
-  RxBool isConfirmNewPassVissibility = false.obs;
+  RxBool isCurrentPassVisibility = false.obs;
+  RxBool isNewPassVisibility = false.obs;
+  RxBool isConfirmNewPassVisibility = false.obs;
   RxBool isLoading = false.obs;
 
   AuthController authController;
@@ -34,16 +34,16 @@ class ChangePasswordController extends GetxController {
     super.onClose();
   }
 
-  void onChangeCurrentPassVissibility() {
-    isCurrentPassVissibility.value = !isCurrentPassVissibility.value;
+  void onChangeCurrentPassVisibility() {
+    isCurrentPassVisibility.value = !isCurrentPassVisibility.value;
   }
 
-  void onChangeNewPassVissibility() {
-    isNewPassVissibility.value = !isNewPassVissibility.value;
+  void onChangeNewPassVisibility() {
+    isNewPassVisibility.value = !isNewPassVisibility.value;
   }
 
-  void onChangeConfirmNewPassVissibility() {
-    isConfirmNewPassVissibility.value = !isConfirmNewPassVissibility.value;
+  void onChangeConfirmNewPassVisibility() {
+    isConfirmNewPassVisibility.value = !isConfirmNewPassVisibility.value;
   }
 
   Future<void> onChangePassword() async {

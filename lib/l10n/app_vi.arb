@@ -139,5 +139,7 @@
     "downloadSuccessfully":"Tải về thành công",
     "downloadFailed":"Tải về thất bại",
     "youHaveNoName":"Bạn chưa thiết lập tên",
-    "noName":"Chưa đặt tên"
+    "noName":"Chưa đặt tên",
+    "noConversation":"Không có cuộc trò chuyện nào",
+    "noFriendSuggestion":"Không có gợi ý bạn bè nào"
 }
