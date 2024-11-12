@@ -67,6 +67,20 @@ class NewPostController extends GetxController {
     isEnableFlash.value = !isEnableFlash.value;
   }
 
+  Future<void> zoomIn(double value) async {
+    final max = await cameraController.getMaxZoomLevel();
+    if (value < max) {
+      cameraController.setZoomLevel(value);
+    }
+  }
+
+  Future<void> zoomOut(double value) async {
+    final min = await cameraController.getMinZoomLevel();
+    if (value > min) {
+      cameraController.setZoomLevel(value);
+    }
+  }
+
   Future<void> initCamera() async {
     isCameraInitialized.value = false;
     cameraController = CameraController(
@@ -102,7 +116,7 @@ class NewPostController extends GetxController {
       // Handle the camera exception
       debugPrint('Camera exception: $e');
     } catch (e) {
-      debugPrint('Error occured while taking picture: $e');
+      debugPrint('Error occurred while taking picture: $e');
     }
   }
 
@@ -137,7 +151,7 @@ class NewPostController extends GetxController {
             .saveImageFromFileToGallery(File(pictureFile.value!.path));
       }
     } catch (e) {
-      debugPrint('Error occured while downloading picture: $e');
+      debugPrint('Error occurred while downloading picture: $e');
     }
   }
 
@@ -178,7 +192,7 @@ class NewPostController extends GetxController {
         }
       }
     } catch (e) {
-      debugPrint('Error occured while downloading picture: $e');
+      debugPrint('Error occurred while downloading picture: $e');
       SnackbarHelper.errorSnackbar(e.toString());
     } finally {
       onSetToDefault();

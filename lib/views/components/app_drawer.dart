@@ -52,6 +52,7 @@ class AppDrawer extends GetView<AppDrawerController> {
             padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
             child: Obx(
               () => ListTile(
+                contentPadding: const EdgeInsets.symmetric(horizontal: 10),
                 selectedColor: controller.selectedUserId.value == null
                     ? AppColors.selectedColor
                     : null,
@@ -68,9 +69,11 @@ class AppDrawer extends GetView<AppDrawerController> {
               ),
             ),
           ),
+          const Divider(),
           Expanded(
             child: Obx(
               () => ListView.separated(
+                  padding: EdgeInsets.zero,
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
                     final friend = controller.friendList[index];
