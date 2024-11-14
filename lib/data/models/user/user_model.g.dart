@@ -33,6 +33,8 @@ abstract class _$UserModelCWProxy {
 
   UserModel accessToken(String? accessToken);
 
+  UserModel refreshToken(String? refreshToken);
+
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `UserModel(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
   /// Usage
@@ -53,6 +55,7 @@ abstract class _$UserModelCWProxy {
     String? urlAvatar,
     String? userCode,
     String? accessToken,
+    String? refreshToken,
   });
 }
 
@@ -103,6 +106,10 @@ class _$UserModelCWProxyImpl implements _$UserModelCWProxy {
   UserModel accessToken(String? accessToken) => this(accessToken: accessToken);
 
   @override
+  UserModel refreshToken(String? refreshToken) =>
+      this(refreshToken: refreshToken);
+
+  @override
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `UserModel(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -124,6 +131,7 @@ class _$UserModelCWProxyImpl implements _$UserModelCWProxy {
     Object? urlAvatar = const $CopyWithPlaceholder(),
     Object? userCode = const $CopyWithPlaceholder(),
     Object? accessToken = const $CopyWithPlaceholder(),
+    Object? refreshToken = const $CopyWithPlaceholder(),
   }) {
     return UserModel(
       roleType: roleType == const $CopyWithPlaceholder() || roleType == null
@@ -178,6 +186,10 @@ class _$UserModelCWProxyImpl implements _$UserModelCWProxy {
           ? _value.accessToken
           // ignore: cast_nullable_to_non_nullable
           : accessToken as String?,
+      refreshToken: refreshToken == const $CopyWithPlaceholder()
+          ? _value.refreshToken
+          // ignore: cast_nullable_to_non_nullable
+          : refreshToken as String?,
     );
   }
 }
@@ -206,6 +218,7 @@ extension $UserModelCopyWith on UserModel {
     bool urlAvatar = false,
     bool userCode = false,
     bool accessToken = false,
+    bool refreshToken = false,
   }) {
     return UserModel(
       roleType: roleType,
@@ -221,6 +234,7 @@ extension $UserModelCopyWith on UserModel {
       urlAvatar: urlAvatar == true ? null : this.urlAvatar,
       userCode: userCode == true ? null : this.userCode,
       accessToken: accessToken == true ? null : this.accessToken,
+      refreshToken: refreshToken == true ? null : this.refreshToken,
     );
   }
 }
@@ -383,6 +397,7 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
       urlAvatar: json['url_avatar'] as String?,
       userCode: json['user_code'] as String?,
       accessToken: json['access_token'] as String?,
+      refreshToken: json['refresh_token'] as String?,
     );
 
 Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
@@ -399,6 +414,7 @@ Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'geoInfo': instance.geoInfo?.toJson(),
       'config': instance.config?.toJson(),
       'access_token': instance.accessToken,
+      'refresh_token': instance.refreshToken,
     };
 
 const _$RoleTypeEnumMap = {

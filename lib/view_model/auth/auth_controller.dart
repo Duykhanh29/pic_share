@@ -71,19 +71,25 @@ class AuthController extends GetxController {
   }
 
   Future<void> logout() async {
-    await updateFCMToken(isNull: true);
-    final response = await authRepository.logout();
-    if (response.isSuccess) {
-      SnackbarHelper.successSnackbar(response.message ?? "Logout successfully");
-    } else {
-      SnackbarHelper.errorSnackbar(response.message ?? "");
+    try {
+      await updateFCMToken(isNull: true);
+      final response = await authRepository.logout();
+      if (response.isSuccess) {
+        SnackbarHelper.successSnackbar(
+            response.message ?? "Logout successfully");
+      } else {
+        SnackbarHelper.errorSnackbar(response.message ?? "");
+      }
+      localStorageService.removeAllSharedPreferencesValues();
+      await _tokenManager.deleteAll();
+      resetIndexes();
+      deleteControllerDependenciesInjection();
+      currentUser.value = null;
+    } catch (e) {
+      debugPrint("Something went wrong: ${e.toString()}");
+    } finally {
+      Get.offAllNamed(Routes.login);
     }
-    currentUser.value = null;
-    Get.offAllNamed(Routes.login);
-    localStorageService.removeAllSharedPreferencesValues();
-    _tokenManager.deleteAll();
-    resetIndexes();
-    deleteControllerDependenciesInjection();
   }
 
   Future<void> updateUserInfo(
