@@ -23,10 +23,10 @@ class RegisterController extends GetxController {
   });
 
   final formKey = GlobalKey<FormState>();
-  late TextEditingController emailController;
-  late TextEditingController passController;
-  late TextEditingController nameController;
-  late TextEditingController confirmPasswordController;
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
 
   Rx<UserModel?> user = Rx<UserModel?>(null);
   RxBool isPassVisibility = false.obs;
@@ -34,19 +34,19 @@ class RegisterController extends GetxController {
   RxBool isLoading = false.obs;
   @override
   void onInit() {
-    emailController = TextEditingController();
-    passController = TextEditingController();
-    nameController = TextEditingController();
-    confirmPasswordController = TextEditingController();
+    // emailController = TextEditingController();
+    // passController = TextEditingController();
+    // nameController = TextEditingController();
+    // confirmPasswordController = TextEditingController();
     super.onInit();
   }
 
   @override
   void onClose() {
-    emailController.dispose();
-    passController.dispose();
-    nameController.dispose();
-    confirmPasswordController.dispose();
+    // emailController.dispose();
+    // passController.dispose();
+    // nameController.dispose();
+    // confirmPasswordController.dispose();
     super.onClose();
   }
 
@@ -72,6 +72,7 @@ class RegisterController extends GetxController {
         if (response.isSuccess) {
           user.value = response.data;
           await _tokenManager.setAccessToken(user.value?.accessToken);
+          await _tokenManager.setRefreshToken(user.value?.refreshToken);
           String? token = await notificationsService.getToken();
           if (token != null) {
             await updateFcmToken(token);

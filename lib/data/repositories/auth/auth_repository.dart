@@ -14,6 +14,7 @@ abstract class AuthRepository {
       {required String email, required String password});
   Future<ApiResponse<UserModel?>> signInWithGoogle();
   Future<ApiResponse> logout();
+  Future<ApiResponse<String?>> refreshToken({required String refreshToken});
 
   /*
    OLD VERSION ( USING FIREBASE TO IMPLEMENT AUTHEN)
@@ -41,8 +42,6 @@ class AuthRepositoryImpl extends AuthRepository {
             password: password,
             passwordConfirmation: confirmPassword)
         .request();
-    // final userData = response.data;
-    // UserModel user = UserModel.fromJson(userData);
     return response;
   }
 
@@ -53,8 +52,6 @@ class AuthRepositoryImpl extends AuthRepository {
       email: email,
       password: password,
     ).request();
-    // final userData = response['user'];
-    // UserModel user = UserModel.fromJson(userData);
     return response;
   }
 
@@ -76,28 +73,23 @@ class AuthRepositoryImpl extends AuthRepository {
       final response =
           await LoginWithGoogleAPI(accessToken: googleAuth.accessToken!)
               .request();
-      // final userData = response['data'];
-      // UserModel user = UserModel.fromJson(userData);
       return response;
     }
     return ApiResponse(
       status: ApiStatus.failure,
     );
-    // } catch (e) {
-    //   debugPrint("Something went wrong: ${e.toString()}");
-    // }
-    // return null;
   }
 
   @override
   Future<ApiResponse> logout() async {
-    // try {
     final response = await LogoutAPI().request();
-    // debugPrint("Message: ${response['message']}");
     return response;
-    // } catch (e) {
-    //   debugPrint("Something went wrong: ${e.toString()}");
-    // }
+  }
+
+  @override
+  Future<ApiResponse<String?>> refreshToken({required String refreshToken}) {
+    final response = RefreshTokenApi(refreshToken: refreshToken).request();
+    return response;
   }
 
   /* OLD VERSION ( USING FIREBASE TO IMPLEMENT AUTHEN)

@@ -1,13 +1,21 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart' as g;
 import 'package:dio/dio.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:pic_share/app/services/local_storage_service.dart';
+import 'package:pic_share/app/services/pusher_service.dart';
 import 'package:pic_share/app/services/token_manager.dart';
 import 'package:pic_share/app/helper/snack_bar_helper.dart';
 import 'package:pic_share/data/providers/network/api_request_representable.dart';
 import 'package:pic_share/data/providers/network/api_response.dart';
+import 'package:pic_share/data/repositories/auth/auth_repository.dart';
 import 'package:pic_share/routes/app_pages.dart';
+import 'package:pic_share/view_model/friend/friend_controller.dart';
+import 'package:pic_share/view_model/friend_profile/friend_profile_controller.dart';
+import 'package:pic_share/view_model/home/home_controller.dart';
+import 'package:pic_share/view_model/nav_bottom/nav_bottom_controller.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 class APIProvider {
@@ -21,12 +29,14 @@ class APIProvider {
     _dio.interceptors.add(InterceptorsWrapper(
       onRequest:
           (RequestOptions options, RequestInterceptorHandler handler) async {
-        // Retrieve the access token from storage
-        String? accessToken = await TokenManager().getToken();
-        if (accessToken != null && accessToken.isNotEmpty) {
-          // Add the access token to the headers
-          options.headers[HttpHeaders.authorizationHeader] =
-              'Bearer $accessToken';
+        if (options.headers[HttpHeaders.authorizationHeader] == null) {
+          // Retrieve the access token from storage
+          String? accessToken = await TokenManager().getToken();
+          if (accessToken != null && accessToken.isNotEmpty) {
+            // Add the access token to the headers
+            options.headers[HttpHeaders.authorizationHeader] =
+                'Bearer $accessToken';
+          }
         }
         return handler.next(options);
       },
@@ -78,43 +88,137 @@ class APIProvider {
         status: ApiStatus.failure,
         message: "Request time out",
       );
-      // throw DioException.sendTimeout(
-      //     timeout: const Duration(seconds: 25),
-      //     requestOptions: RequestOptions());
     } on SocketException {
       return ApiResponse(
         status: ApiStatus.failure,
         message: "Network is not available",
       );
-      // throw DioException.connectionError(
-      //   requestOptions: RequestOptions(),
-      //   reason: 'Network is not available',
-      // );
-    } on DioException catch (e) {
+    } on DioException catch (e, h) {
       final message = e.response?.data['message'] ?? e.error.toString();
       // if (g.Get.isSnackbarOpen == false) {
       //   SnackbarHelper.errorSnackbar(message);
       // }
+      if (e.response?.statusCode == 403) {
+        SnackbarHelper.errorSnackbar(
+            e.response?.statusMessage ?? "This account has been banned");
+      } else if (e.response?.statusCode == 401) {
+        return _handleUnauthorized<T>(e, h);
+      }
       return ApiResponse(status: ApiStatus.failure, message: message);
-      // debugPrint("Something went wrong: ${e.toString()}");
     } catch (e) {
       return ApiResponse(status: ApiStatus.failure, message: e.toString());
-      // rethrow;
     }
+  }
+
+  Future<ApiResponse<T>> unsafeCall<T>(
+      APIRequestRepresentable<T> request) async {
+    final Response response = await _dio.request(
+      request.url,
+      options: Options(method: request.method.string, headers: request.headers),
+      queryParameters: request.query,
+      data: request.body,
+      onReceiveProgress: (val1, val2) {},
+      onSendProgress: (val1, val2) {},
+    );
+    return ApiResponse.fromJson(
+      response.data as Map<String, dynamic>,
+      request.fromJson,
+    );
   }
 
   Future<void> handleRedirect() async {
     try {
       await deleteSession();
       g.Get.offAllNamed(Routes.login);
+      resetIndexes();
     } catch (e) {
       rethrow;
     }
+  }
+
+  void setToken(String token) {
+    _dio.options.headers['Authorization'] = 'Bearer $token';
+  }
+
+  Future<ApiResponse<T>> _handleUnauthorized<T>(DioException e, handler) async {
+    try {
+      await TokenManager().deleteAccessToken();
+      String? refreshToken = await TokenManager().getRefreshToken();
+      if (refreshToken != null) {
+        final accessToken = await refreshAccessToken(refreshToken);
+        if (accessToken != null) {
+          await TokenManager().setAccessToken(accessToken);
+          final newRequest = e.requestOptions;
+          newRequest.headers["Authorization"] = "Bearer $accessToken";
+          return handler.resolve(await _dio.fetch<T>(newRequest));
+          /*
+        final response = await _dio.fetch<Map<String, dynamic>>(newRequest);
+        
+        final apiResponse = ApiResponse.fromJson(response.data, request.fromJson);
+        
+        return handler.resolve(apiResponse);
+          */
+        }
+      }
+      handleRedirect();
+    } catch (e) {
+      handleRedirect();
+    }
+    return _unauthorizedResponse(e);
+  }
+
+  ApiResponse<T> _unauthorizedResponse<T>(DioException e) {
+    return ApiResponse(
+      status: ApiStatus.failure,
+      message:
+          'Unauthorized: ${e.response?.data['message'] ?? 'Access denied'}',
+    );
+  }
+
+  Future<String?> refreshAccessToken(String refreshToken) async {
+    final authRepository = g.Get.find<AuthRepository>();
+    // setToken(refreshToken);
+    final response =
+        await authRepository.refreshToken(refreshToken: refreshToken);
+    return response.data;
   }
 
   Future<void> deleteSession() async {
     LocalStorageService localStorageService = g.Get.find<LocalStorageService>();
     localStorageService.removeAllSharedPreferencesValues();
     await TokenManager().deleteAll();
+    deleteControllerDependenciesInjection();
+  }
+
+  void resetIndexes() {
+    final isRegisteredNavBottom = Get.isRegistered<NavBottomController>();
+    final isRegisteredHome = Get.isRegistered<HomeController>();
+    final isRegisteredFriend = Get.isRegistered<FriendController>();
+    final isRegisteredFriendProfile =
+        Get.isRegistered<FriendProfileController>();
+    if (isRegisteredNavBottom) {
+      final navBottomController = Get.find<NavBottomController>();
+      navBottomController.resetIndexes();
+    }
+    if (isRegisteredHome) {
+      final homeController = Get.find<HomeController>();
+      homeController.resetIndexes();
+    }
+    if (isRegisteredFriend) {
+      final friendController = Get.find<FriendController>();
+      friendController.resetToDefault();
+    }
+    if (isRegisteredFriendProfile) {
+      final friendProfileController = Get.find<FriendProfileController>();
+      friendProfileController.onResetTabIndex();
+    }
+  }
+
+  Future<void> deleteControllerDependenciesInjection() async {
+    try {
+      await Get.delete<PusherService>();
+    } catch (e) {
+      debugPrint("Something went wrong: ${e.toString()}");
+    }
   }
 }

@@ -24,23 +24,16 @@ class SignInController extends GetxController {
     required this.notificationsService,
   });
   final formKey = GlobalKey<FormState>();
-  late TextEditingController emailController;
-  late TextEditingController passController;
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passController = TextEditingController();
   RxBool isPassVisibility = false.obs;
   RxBool isLoading = false.obs;
 
   @override
   void onInit() {
-    emailController = TextEditingController();
-    passController = TextEditingController();
+    // emailController = TextEditingController();
+    // passController = TextEditingController();
     super.onInit();
-  }
-
-  @override
-  void onClose() {
-    emailController.dispose();
-    passController.dispose();
-    super.onClose();
   }
 
   void onChangePassVisibility() {
@@ -61,6 +54,7 @@ class SignInController extends GetxController {
               Get.toNamed(Routes.adminPage);
             } else {
               await _tokenManager.setAccessToken(user.value?.accessToken);
+              await _tokenManager.setRefreshToken(user.value?.refreshToken);
               String? token = await notificationsService.getToken();
 
               if (token != null) {
@@ -95,6 +89,7 @@ class SignInController extends GetxController {
       if (response.isSuccess) {
         user.value = response.data;
         await _tokenManager.setAccessToken(user.value?.accessToken);
+        await _tokenManager.setRefreshToken(user.value?.refreshToken);
         String? token = await notificationsService.getToken();
         if (token != null) {
           await userRepository.updateFcmToken(fcmToken: token);

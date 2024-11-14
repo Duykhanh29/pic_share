@@ -39,6 +39,9 @@ class UserModel {
 
   @JsonKey(name: 'access_token')
   final String? accessToken;
+
+  @JsonKey(name: 'refresh_token')
+  final String? refreshToken;
   UserModel({
     this.roleType = RoleType.user,
     this.config,
@@ -53,6 +56,7 @@ class UserModel {
     this.urlAvatar,
     this.userCode,
     this.accessToken,
+    this.refreshToken,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) =>

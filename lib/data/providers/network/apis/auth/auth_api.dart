@@ -150,3 +150,30 @@ class LogoutAPI extends APIRequestRepresentable {
     return APIProvider().request(this);
   }
 }
+
+class RefreshTokenApi extends APIRequestRepresentable<String?> {
+  String refreshToken;
+  RefreshTokenApi({required this.refreshToken});
+  @override
+  String get endpoint => '/api/auth/refresh_token';
+
+  @override
+  Map<String, String>? get headers => {"Authorization": "Bearer $refreshToken"};
+
+  @override
+  HTTPMethod get method => HTTPMethod.get;
+
+  @override
+  String? Function(dynamic json) get fromJson => (json) {
+        if (json is Map<String, dynamic>) {
+          final data = json['access_token'];
+          return data;
+        }
+        return null;
+      };
+
+  @override
+  Future<ApiResponse<String?>> request() {
+    return APIProvider().unsafeCall(this);
+  }
+}
