@@ -141,5 +141,7 @@
     "youHaveNoName":"You haven't set name",
     "noName":"No name",
     "noConversation":"No Conversation",
-    "noFriendSuggestion":"No friend suggestion"
+    "noFriendSuggestion":"No friend suggestion",
+    "noPhotoSharing":"No history of picture sharing",
+    "noUserFound":"No user found"
 }

@@ -137,12 +137,15 @@ class AuthController extends GetxController {
     try {
       await userRepository.deleteUser();
       currentUser.value = null;
-      Get.offAllNamed(Routes.login);
       localStorageService.removeAllSharedPreferencesValues();
       _tokenManager.deleteAll();
+      deleteControllerDependenciesInjection();
+      resetIndexes();
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
       SnackbarHelper.errorSnackbar(e.toString());
+    } finally {
+      Get.offAllNamed(Routes.login);
     }
   }
 

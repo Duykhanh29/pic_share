@@ -141,5 +141,7 @@
     "youHaveNoName":"Bạn chưa thiết lập tên",
     "noName":"Chưa đặt tên",
     "noConversation":"Không có cuộc trò chuyện nào",
-    "noFriendSuggestion":"Không có gợi ý bạn bè nào"
+    "noFriendSuggestion":"Không có gợi ý bạn bè nào",
+    "noPhotoSharing":"Không có lịch sử chia sẻ hình ảnh",
+    "noUserFound":"Không tìm thấy người dùng nào"
 }

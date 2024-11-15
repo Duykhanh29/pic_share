@@ -137,8 +137,10 @@ class ProfilePage extends GetView<ProfileController> {
         : controller.latestPosts.isEmpty
             ? SliverToBoxAdapter(
                 child: SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.15,
-                  child: Center(
+                  height: MediaQuery.of(context).size.height * 0.1,
+                  child: Container(
+                    padding: const EdgeInsets.only(top: 15),
+                    alignment: Alignment.topCenter,
                     child: Text(
                       t.noPosts,
                       style: AppTextStyles.commonTextStyle(),

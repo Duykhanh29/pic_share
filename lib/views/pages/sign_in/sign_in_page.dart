@@ -29,7 +29,7 @@ class SignInPage extends GetView<SignInController> {
             onChangePassVisibility: controller.onChangePassVisibility,
             child: Column(
               children: [
-                SizedBox(height: size * 0.01),
+                SizedBox(height: size * 0.02),
                 Container(
                   alignment: Alignment.centerLeft,
                   child: TextButton(
