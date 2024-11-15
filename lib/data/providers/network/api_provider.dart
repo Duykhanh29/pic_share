@@ -102,7 +102,7 @@ class APIProvider {
         SnackbarHelper.errorSnackbar(
             e.response?.statusMessage ?? "This account has been banned");
       } else if (e.response?.statusCode == 401) {
-        return _handleUnauthorized<T>(e, h);
+        return _handleUnauthorized<T>(e, h, request);
       }
       return ApiResponse(status: ApiStatus.failure, message: message);
     } catch (e) {
@@ -140,7 +140,8 @@ class APIProvider {
     _dio.options.headers['Authorization'] = 'Bearer $token';
   }
 
-  Future<ApiResponse<T>> _handleUnauthorized<T>(DioException e, handler) async {
+  Future<ApiResponse<T>> _handleUnauthorized<T>(
+      DioException e, handler, APIRequestRepresentable<T> request) async {
     try {
       await TokenManager().deleteAccessToken();
       String? refreshToken = await TokenManager().getRefreshToken();
@@ -150,7 +151,7 @@ class APIProvider {
           await TokenManager().setAccessToken(accessToken);
           final newRequest = e.requestOptions;
           newRequest.headers["Authorization"] = "Bearer $accessToken";
-          return handler.resolve(await _dio.fetch<T>(newRequest));
+          return this.request<T>(request);
           /*
         final response = await _dio.fetch<Map<String, dynamic>>(newRequest);
         

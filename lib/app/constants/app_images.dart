@@ -8,4 +8,10 @@ class AppImage {
   static const String picShareLogo = '$basePath/pic_share_logo.png';
 
   static const String placeHolder = '$basePath/place_holder.jpg';
+  static const String emptyPhoto = '$basePath/empty_photo.png';
+  static const String notFound = '$basePath/not_found.png';
+  static const String friends = '$basePath/friends.png';
+  static const String communication = '$basePath/communication.png';
+  static const String friendRequest = '$basePath/friend-request.png';
+  static const String noNotification = "$basePath/no_notification.png";
 }

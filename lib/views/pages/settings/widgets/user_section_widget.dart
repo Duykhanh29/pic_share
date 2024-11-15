@@ -39,30 +39,36 @@ class UserSectionWidget extends GetView<SettingsController> {
                 ),
               ),
               const SizedBox(width: 16),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    controller.currentUser.value?.name ?? t.youHaveNoName,
-                    style: AppTextStyles.headingTextStyle(),
-                  ),
-                  Text(
-                    controller.currentUser.value?.email ?? "",
-                    style: AppTextStyles.commonTextStyle(),
-                    overflow: TextOverflow.clip,
-                  ),
-                  Text(
-                    controller.currentUser.value?.createdAt != null
-                        ? helper.DateUtils.stringToDate(
-                            controller.currentUser.value!.createdAt!)
-                        : "",
-                    style: AppTextStyles.commonTextStyle()
-                        .copyWith(color: AppColors.darkBorderColor),
-                  ),
-                ],
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      controller.currentUser.value?.name ?? t.youHaveNoName,
+                      style: AppTextStyles.headingTextStyle(),
+                    ),
+                    Text(
+                      controller.currentUser.value?.email ?? "",
+                      style: AppTextStyles.commonTextStyle().copyWith(
+                        fontSize: 12,
+                      ),
+                      overflow: TextOverflow.clip,
+                    ),
+                    Text(
+                      controller.currentUser.value?.createdAt != null
+                          ? helper.DateUtils.stringToDate(
+                              controller.currentUser.value!.createdAt!)
+                          : "",
+                      style: AppTextStyles.commonTextStyle().copyWith(
+                        color: AppColors.darkBorderColor,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              const Spacer(),
+              // const Spacer(),
               GestureDetector(
                 onTap: controller.onNavToEditProfile,
                 child: Container(

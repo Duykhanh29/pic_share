@@ -6,6 +6,8 @@ import 'package:pic_share/app/custom/app_bar_custom.dart';
 import 'package:pic_share/view_model/posts_location/posts_location_controller.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pic_share/views/widgets/loading_widget.dart';
+import 'package:pic_share/views/widgets/asset_image_widget.dart';
+import 'package:pic_share/app/constants/app_images.dart';
 
 class PostsLocationPage extends GetView<PostsLocationController> {
   const PostsLocationPage({super.key});
@@ -30,6 +32,7 @@ class PostsLocationPage extends GetView<PostsLocationController> {
   }
 
   Widget _buildMap(BuildContext context, AppLocalizations t) {
+    final size = MediaQuery.of(context).size.height;
     return Obx(() {
       final markers = controller.markers.toList();
       return controller.isLoading.value
@@ -60,9 +63,18 @@ class PostsLocationPage extends GetView<PostsLocationController> {
                   ],
                 )
               : SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.8,
-                  child: Center(
-                    child: Text(t.noPosts),
+                  height: size * 0.8,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const AssetImageWidget(asset: AppImage.emptyPhoto),
+                      SizedBox(
+                        height: size * 0.04,
+                      ),
+                      Center(
+                        child: Text(t.noPosts),
+                      ),
+                    ],
                   ),
                 );
     });
