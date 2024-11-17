@@ -6,6 +6,7 @@ import 'package:pic_share/app/helper/snack_bar_helper.dart';
 import 'package:pic_share/data/enums/user_relationship.dart';
 import 'package:pic_share/data/models/paging.dart';
 import 'package:pic_share/data/models/post/post.dart';
+import 'package:pic_share/data/models/post/post_detail.dart';
 import 'package:pic_share/data/models/user/friend.dart';
 import 'package:pic_share/data/models/user/user_friendship_model.dart';
 import 'package:pic_share/data/models/user/user_log.dart';
@@ -42,6 +43,7 @@ class FriendProfileController extends GetxController
   Rx<UserFriendShipModel?> currentFriend = Rx<UserFriendShipModel?>(null);
   Rx<UserLog?> userLog = Rx<UserLog?>(null);
   RxList<UserSummaryModel> mutualFriends = <UserSummaryModel>[].obs;
+  RxList<PostDetail> posts = <PostDetail>[].obs;
 
   RxList<UserFriendShipModel> listMutualFriend =
       RxList<UserFriendShipModel>([]);
@@ -52,6 +54,7 @@ class FriendProfileController extends GetxController
   RxBool isLoading = true.obs;
   RxBool isUserLogLoading = true.obs;
   RxBool isMutualFriendLoading = true.obs;
+  RxBool postsLoading = true.obs;
 
   // getter
   List<Friend> get friends => friendController.friends;
@@ -62,11 +65,8 @@ class FriendProfileController extends GetxController
     tabController = TabController(length: 2, vsync: this)..index = 0;
     getCurrentFriendRelationship();
     await getMutualFriend();
-    await fecthUserLog();
-    pagingController.addPageRequestListener((pageKey) async {
-      await fetchPosts(page: pageKey);
-    });
-    await fetchPosts();
+    await fetchUserLog();
+    await getPosts();
     super.onInit();
   }
 
@@ -109,6 +109,21 @@ class FriendProfileController extends GetxController
     }
   }
 
+  Future<void> getPosts() async {
+    try {
+      postsLoading.value = true;
+      final response =
+          await postRepository.getPostsForUser(userId: friend.value!.id);
+      if (response.isSuccess) {
+        posts.value = response.data ?? [];
+      }
+    } catch (e) {
+      debugPrint("Something went wrong: ${e.toString()}");
+    } finally {
+      postsLoading.value = false;
+    }
+  }
+
   UserFriendShipModel getUserSearchResult(UserSummaryModel user) {
     UserRelationship userRelationship = UserRelationship.notFriend;
     int id = 0;
@@ -140,7 +155,7 @@ class FriendProfileController extends GetxController
         relationship: userRelationship, user: user, id: id);
   }
 
-  Future<void> fecthUserLog() async {
+  Future<void> fetchUserLog() async {
     isUserLogLoading.value = true;
     try {
       if (friend.value?.id == null) return;
@@ -182,7 +197,9 @@ class FriendProfileController extends GetxController
   }
 
   void onClick(int index) async {
-    final postId = pagingController.itemList?[index].id;
+    // final postId = pagingController.itemList?[index].id;
+    if (posts.isEmpty || index < 0 || index > posts.length - 1) return;
+    final postId = posts[index].id;
     await Get.toNamed(Routes.postDetail, arguments: {
       Strings.postId: postId,
     });

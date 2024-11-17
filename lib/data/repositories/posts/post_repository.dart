@@ -49,12 +49,6 @@ class PostRepositoryImpl implements PostRepository {
     double? latitude,
     double? longitude,
   }) async {
-    Map<String, dynamic> sharedWithData = {};
-    if (shareWiths.isNotEmpty) {
-      for (int id in shareWiths) {
-        sharedWithData['shared_with[]'] = id.toString();
-      }
-    }
     FormData formData = FormData.fromMap({
       "url_image": await MultipartFile.fromFile(
         urlImage.path,
@@ -64,8 +58,14 @@ class PostRepositoryImpl implements PostRepository {
       "type": type.value,
       if (latitude != null && latitude != 0.0) "latitude": latitude,
       if (longitude != null && longitude != 0.0) "longitude": longitude,
-      ...sharedWithData,
+      // ...sharedWithData,
     });
+
+    if (shareWiths.isNotEmpty) {
+      for (int id in shareWiths) {
+        formData.fields.add(MapEntry('shared_with[]', id.toString()));
+      }
+    }
 
     final response = await CreatePostAPI(formData: formData).request();
     return response;

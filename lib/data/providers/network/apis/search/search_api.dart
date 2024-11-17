@@ -13,6 +13,7 @@ class SearchByNameAPI extends APIRequestRepresentable<List<UserSummaryModel>> {
   HTTPMethod get method => HTTPMethod.get;
   @override
   List<UserSummaryModel> Function(dynamic p1) get fromJson => (json) {
+        if (json is List) return [];
         final data = json as Map<String, dynamic>;
         final userData = data['users'] as List<dynamic>;
         final listUser =
@@ -37,6 +38,7 @@ class SearchUserCodeAPI extends APIRequestRepresentable<UserSummaryModel?> {
 
   @override
   UserSummaryModel? Function(dynamic p1) get fromJson => (json) {
+        if (json is List) return null;
         final data = json as Map<String, dynamic>;
         final userData = data['users'] as List<dynamic>;
         final user =
