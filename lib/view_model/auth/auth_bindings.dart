@@ -5,10 +5,12 @@ import 'package:pic_share/data/repositories/auth/auth_repository.dart';
 import 'package:pic_share/data/repositories/user/user_repository.dart';
 import 'package:pic_share/view_model/auth/auth_controller.dart';
 import 'package:pic_share/view_model/language/language_controller.dart';
+import 'package:pic_share/view_model/app/app_controller.dart';
 
 class AuthBindings extends Bindings {
   @override
   void dependencies() {
+    Get.put<AppController>(AppController(), permanent: true);
     if (!Get.isRegistered<AuthController>()) {
       Get.put<AuthController>(
         AuthController(

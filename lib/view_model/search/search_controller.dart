@@ -25,8 +25,8 @@ class SearchUserController extends GetxController {
     } else {}
   }
   RxBool isSearchWithCode = false.obs;
-  late TextEditingController nameController;
-  late TextEditingController codeController;
+  TextEditingController nameController = TextEditingController();
+  TextEditingController codeController = TextEditingController();
 
   RxList<UserFriendShipModel> listSearchUser = RxList<UserFriendShipModel>([]);
   Rx<UserFriendShipModel?> userSearchResult = Rx<UserFriendShipModel?>(null);
@@ -38,8 +38,6 @@ class SearchUserController extends GetxController {
   RxBool isReadyToSearchWithCode = RxBool(false);
   @override
   void onInit() async {
-    nameController = TextEditingController();
-    codeController = TextEditingController();
     if (isSearchWithCode.value) {
       await friendController.onRefresh();
     }
@@ -49,8 +47,8 @@ class SearchUserController extends GetxController {
   @override
   void onClose() {
     isSearch.value = false;
-    nameController.dispose();
-    codeController.dispose();
+    // nameController.dispose();
+    // codeController.dispose();
     super.onClose();
   }
 
