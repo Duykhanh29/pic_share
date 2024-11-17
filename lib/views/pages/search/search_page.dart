@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:pic_share/app/constants/app_color.dart';
+import 'package:pic_share/app/constants/app_images.dart';
 import 'package:pic_share/app/constants/app_text_styles.dart';
 import 'package:pic_share/app/custom/custom_back_button.dart';
 import 'package:pic_share/app/helper/divider_helper.dart';
 import 'package:pic_share/data/models/user/user_friendship_model.dart';
 import 'package:pic_share/view_model/search/search_controller.dart';
 import 'package:pic_share/views/pages/search/widgets/user_search_result_widget.dart';
+import 'package:pic_share/views/widgets/asset_image_widget.dart';
 import 'package:pic_share/views/widgets/keyboard_dismiss.dart';
 import 'package:pic_share/views/widgets/loading_widget.dart';
 
@@ -27,8 +29,8 @@ class SearchPage extends GetView<SearchUserController> {
                     Obx(() => _buildSliverAppBar(t)),
                     Obx(
                       () => controller.isSearchWithCode.value
-                          ? _buildCodeSearchResult()
-                          : _buildNameSearchResult(),
+                          ? _buildCodeSearchResult(context)
+                          : _buildNameSearchResult(context),
                     ),
                   ],
                 ),
@@ -175,33 +177,37 @@ class SearchPage extends GetView<SearchUserController> {
     );
   }
 
-  Widget _buildCodeSearchResult() {
+  Widget _buildCodeSearchResult(BuildContext context) {
     return Obx(
       () => SliverToBoxAdapter(
-        child: controller.userSearchResult.value == null
+        child: !controller.isSearch.value || controller.isLoading.value
             ? Container()
-            : Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 40, horizontal: 15),
-                child: UserSearchResultWidget(
-                  userSummaryModel: controller.userSearchResult.value!,
-                  onTap: controller.onItemCLick,
-                  key: UniqueKey(),
-                  onAcceptFriend: controller.onAcceptFriendRequest,
-                  onChatTap: controller.onChatClick,
-                  onRejectFriend: controller.onRejectFriendRequest,
-                  onTapAddFriend: controller.onMakeFriendRequest,
-                ),
-              ),
+            : controller.userSearchResult.value == null
+                ? _buildNoFoundUser(context)
+                : Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 40, horizontal: 15),
+                    child: UserSearchResultWidget(
+                      userSummaryModel: controller.userSearchResult.value!,
+                      onTap: controller.onItemCLick,
+                      key: UniqueKey(),
+                      onAcceptFriend: controller.onAcceptFriendRequest,
+                      onChatTap: controller.onChatClick,
+                      onRejectFriend: controller.onRejectFriendRequest,
+                      onTapAddFriend: controller.onMakeFriendRequest,
+                    ),
+                  ),
       ),
     );
   }
 
-  Widget _buildNameSearchResult() {
+  Widget _buildNameSearchResult(BuildContext context) {
     if (!controller.isSearch.value) {
       return SliverFillRemaining(child: Container());
     }
-
+    if (controller.listSearchUser.isEmpty && !controller.isLoading.value) {
+      return SliverFillRemaining(child: _buildNoFoundUser(context));
+    }
     // if (controller.isLoading.value) {
     //   return const SliverFillRemaining(
     //     child: Center(
@@ -233,6 +239,27 @@ class SearchPage extends GetView<SearchUserController> {
           separatorBuilder: (context, index) => DividerHelper.sizedBoxDivider(),
           itemCount: controller.listSearchUser.length,
         ),
+      ),
+    );
+  }
+
+  Widget _buildNoFoundUser(BuildContext context) {
+    final t = AppLocalizations.of(context)!;
+    final size = MediaQuery.of(context).size.height;
+    return SizedBox(
+      height: size * 0.5,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const AssetImageWidget(asset: AppImage.notFound),
+          SizedBox(
+            height: size * 0.04,
+          ),
+          Text(
+            t.noUserFound,
+            style: AppTextStyles.commonTextStyle().copyWith(fontSize: 16),
+          ),
+        ],
       ),
     );
   }

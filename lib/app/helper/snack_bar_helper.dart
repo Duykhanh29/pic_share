@@ -35,23 +35,25 @@ class SnackbarHelper {
     Duration duration = const Duration(seconds: 2),
     SnackPosition position = SnackPosition.TOP,
   }) {
-    final locale = Get.locale;
-    final context = Get.context;
-    if (locale != null && context != null) {
-      title = AppLocalizations.of(context)?.errorTitle ?? 'Error';
+    if (!Get.isSnackbarOpen) {
+      final locale = Get.locale;
+      final context = Get.context;
+      if (locale != null && context != null) {
+        title = AppLocalizations.of(context)?.errorTitle ?? 'Error';
+      }
+      Get.snackbar(
+        title,
+        message,
+        duration: duration,
+        snackPosition: position,
+        icon: const Icon(
+          Icons.cancel,
+          size: 32,
+          color: Colors.red,
+        ),
+        backgroundColor: Colors.white,
+      );
     }
-    Get.snackbar(
-      title,
-      message,
-      duration: duration,
-      snackPosition: position,
-      icon: const Icon(
-        Icons.cancel,
-        size: 32,
-        color: Colors.red,
-      ),
-      backgroundColor: Colors.white,
-    );
   }
 
   static void warningSnackbar(
@@ -60,22 +62,24 @@ class SnackbarHelper {
     Duration duration = const Duration(seconds: 2),
     SnackPosition position = SnackPosition.TOP,
   }) {
-    final locale = Get.locale;
-    final context = Get.context;
-    if (locale != null && context != null) {
-      title = AppLocalizations.of(context)?.warningTitle ?? 'Warning';
+    if (!Get.isSnackbarOpen) {
+      final locale = Get.locale;
+      final context = Get.context;
+      if (locale != null && context != null) {
+        title = AppLocalizations.of(context)?.warningTitle ?? 'Warning';
+      }
+      Get.snackbar(
+        title,
+        message,
+        duration: duration,
+        snackPosition: position,
+        icon: const Icon(
+          Icons.warning_rounded,
+          size: 32,
+          color: Colors.amber,
+        ),
+        backgroundColor: Colors.white,
+      );
     }
-    Get.snackbar(
-      title,
-      message,
-      duration: duration,
-      snackPosition: position,
-      icon: const Icon(
-        Icons.warning_rounded,
-        size: 32,
-        color: Colors.amber,
-      ),
-      backgroundColor: Colors.white,
-    );
   }
 }
