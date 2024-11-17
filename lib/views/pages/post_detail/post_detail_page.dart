@@ -6,6 +6,7 @@ import 'package:pic_share/app/custom/app_bar_custom.dart';
 import 'package:pic_share/app/helper/bottom_sheet_helper.dart';
 import 'package:pic_share/app/helper/image_cache_helper.dart';
 import 'package:pic_share/app/helper/shimmer_helper.dart';
+import 'package:pic_share/app/helper/single_post_shimmer.dart';
 import 'package:pic_share/data/models/post/post_data.dart';
 import 'package:pic_share/data/models/user/user_summary_model.dart';
 import 'package:pic_share/view_model/post_detail/post_detail_controller.dart';
@@ -26,7 +27,7 @@ class PostDetailPage extends GetView<PostDetailController> {
         appBar: CustomAppBar(title: t.postDetail).show(),
         body: Obx(() {
           if (controller.isLoading.value) {
-            return ShimmerHelper().buildBasicShimmer();
+            return const Center(child: SinglePostShimmer());
           } else {
             final postData = controller.postData.value;
             return Container(

@@ -26,7 +26,7 @@ class ActionColumnWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           _buildButton(
-            icon: Icons.comment,
+            icon: postData.isLike ? Icons.favorite : Icons.favorite_outline,
             onTap: () async {
               if (postData.isLike) {
                 await dislikePost(
