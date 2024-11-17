@@ -44,6 +44,6 @@ class FooterText extends GetView<AppController> {
   }
 
   String get appInfo {
-    return "${controller.appVersion.value} (${controller.buildNumber.value})";
+    return "  v${controller.appVersion.value} (${controller.buildNumber.value})";
   }
 }
