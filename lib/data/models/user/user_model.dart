@@ -42,6 +42,15 @@ class UserModel {
 
   @JsonKey(name: 'refresh_token')
   final String? refreshToken;
+
+  @JsonKey(
+      name: 'is_private_account', fromJson: _fromJsonBool, toJson: _toJsonBool)
+  final bool isPrivateAccount;
+
+  @JsonKey(
+      name: 'google2fa_enable', fromJson: _fromJsonBool, toJson: _toJsonBool)
+  final bool isEnable2FA;
+
   UserModel({
     this.roleType = RoleType.user,
     this.config,
@@ -57,12 +66,17 @@ class UserModel {
     this.userCode,
     this.accessToken,
     this.refreshToken,
+    this.isPrivateAccount = false,
+    this.isEnable2FA = false,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) =>
       _$UserModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserModelToJson(this);
+
+  static bool _fromJsonBool(int value) => value == 1;
+  static int _toJsonBool(bool value) => value ? 1 : 0;
 }
 
 @CopyWith(copyWithNull: true)

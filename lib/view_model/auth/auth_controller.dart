@@ -7,6 +7,7 @@ import 'package:pic_share/app/services/local_storage_service.dart';
 import 'package:pic_share/app/services/notification_service.dart';
 import 'package:pic_share/app/services/pusher_service.dart';
 import 'package:pic_share/app/services/token_manager.dart';
+import 'package:pic_share/data/models/auth/qrcode_response.dart';
 import 'package:pic_share/data/models/user/user_model.dart';
 import 'package:pic_share/data/repositories/auth/auth_repository.dart';
 import 'package:pic_share/data/repositories/user/user_repository.dart';
@@ -34,6 +35,8 @@ class AuthController extends GetxController {
   UserModel? get getCurrentUser => currentUser.value;
 
   String get language => currentUser.value?.config?.language ?? "en";
+
+  RxBool actionLoading = false.obs;
 
   @override
   void onInit() async {
@@ -68,6 +71,10 @@ class AuthController extends GetxController {
 
   void setUser(UserModel? user) {
     currentUser.value = user;
+  }
+
+  void setIsEnable2Fa(bool value) {
+    currentUser.value = currentUser.value?.copyWith(isEnable2FA: value);
   }
 
   Future<void> logout() async {
@@ -163,11 +170,93 @@ class AuthController extends GetxController {
     }
   }
 
+  Future<QRCodeResponse?> updateState2FA(
+      {required String password, required bool isEnable}) async {
+    try {
+      actionLoading.value = true;
+      final response = await authRepository.updateState2FA(password: password);
+      if (response.isSuccess && !isEnable) {
+        localStorageService.setIsEnable2Fa(isEnable);
+        setIsEnable2Fa(isEnable);
+        SnackbarHelper.successSnackbar(response.message ?? "");
+      }
+      if (!response.isSuccess) {
+        SnackbarHelper.errorSnackbar(
+            response.message ?? "Some thing went wrong");
+      }
+      return response.data;
+    } catch (e) {
+      debugPrint("Something went wrong: ${e.toString()}");
+    } finally {
+      actionLoading.value = false;
+    }
+    return null;
+  }
+
+  Future<void> confirmEnable2FA({required String code}) async {
+    try {
+      actionLoading.value = true;
+      final response = await authRepository.confirmEnable2FA(code: code);
+      if (response.isSuccess) {
+        localStorageService.setIsEnable2Fa(response.isSuccess);
+        setIsEnable2Fa(response.isSuccess);
+        SnackbarHelper.successSnackbar(response.message ?? "");
+      } else {
+        SnackbarHelper.errorSnackbar(response.message ?? "");
+      }
+    } catch (e) {
+      debugPrint("Something went wrong: ${e.toString()}");
+    } finally {
+      actionLoading.value = false;
+    }
+  }
+
+  Future<void> check2FA({required String code}) async {
+    try {
+      actionLoading.value = true;
+      final response = await authRepository.verify2FA(code: code);
+      if (response.isSuccess && response.data != null) {
+        final userResponse = await userRepository.getCurrentUser();
+        if (userResponse.isSuccess) {
+          final user = userResponse.data;
+          await setUserData(user);
+          Get.offAllNamed(Routes.navBar);
+          SnackbarHelper.successSnackbar(response.message ?? "");
+        }
+      } else {
+        SnackbarHelper.errorSnackbar(response.message ?? "");
+      }
+    } catch (e) {
+      debugPrint("Something went wrong: ${e.toString()}");
+    } finally {
+      actionLoading.value = false;
+    }
+  }
+
   Future<void> deleteControllerDependenciesInjection() async {
     try {
       await Get.delete<PusherService>();
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
+    }
+  }
+
+  Future<void> setUserData(UserModel? user) async {
+    if (user != null) {
+      String? token = await notificationsService.getToken();
+      UserModel? userData = user;
+      if (token != null) {
+        debugPrint("TOken of FCM is: $token");
+        await userRepository.updateFcmToken(fcmToken: token);
+        currentUser.value = currentUser.value?.copyWith(
+            config: currentUser.value?.config?.copyWith(fcmToken: token));
+        userData =
+            user.copyWith(config: user.config?.copyWith(fcmToken: token));
+      }
+      localStorageService.setUserModel(
+        value: userData,
+      );
+      // setUser(userData);
     }
   }
 

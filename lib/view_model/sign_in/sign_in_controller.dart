@@ -54,16 +54,20 @@ class SignInController extends GetxController {
               Get.toNamed(Routes.adminPage);
             } else {
               await _tokenManager.setAccessToken(user.value?.accessToken);
-              await _tokenManager.setRefreshToken(user.value?.refreshToken);
-              String? token = await notificationsService.getToken();
-
-              if (token != null) {
-                debugPrint("TOken of FCM is: $token");
-                await userRepository.updateFcmToken(fcmToken: token);
-                user.value = user.value?.copyWith(
-                    config: user.value?.config?.copyWith(fcmToken: token));
+              if (user.value?.refreshToken != null) {
+                await _tokenManager.setRefreshToken(user.value?.refreshToken);
+                String? token = await notificationsService.getToken();
+                if (token != null) {
+                  debugPrint("TOken of FCM is: $token");
+                  await userRepository.updateFcmToken(fcmToken: token);
+                  user.value = user.value?.copyWith(
+                      config: user.value?.config?.copyWith(fcmToken: token));
+                }
+                localStorageService.setUserModel(value: user.value);
+              } else {
+                Get.toNamed(Routes.check2Fa);
               }
-              localStorageService.setUserModel(value: user.value);
+
               SnackbarHelper.successSnackbar(
                   response.message ?? "Login successfully");
             }

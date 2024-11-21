@@ -26,6 +26,7 @@ import 'package:pic_share/view_model/sign_in/sign_in_bindings.dart';
 import 'package:pic_share/view_model/verify/verify_bindings.dart';
 import 'package:pic_share/views/nav_bottom.dart';
 import 'package:pic_share/views/pages/amdin_view/admin_page.dart';
+import 'package:pic_share/views/pages/auth/check_2fa_page.dart';
 import 'package:pic_share/views/pages/change_pass/change_pass_page.dart';
 import 'package:pic_share/views/pages/chat/chat_page.dart';
 import 'package:pic_share/views/pages/comments/comments_page.dart';
@@ -202,6 +203,10 @@ abstract class AppPages {
     GetPage(
       name: Routes.notFound,
       page: () => const NotFoundPage(),
+    ),
+    GetPage(
+      name: Routes.check2Fa,
+      page: () => const Check2FPage(),
     ),
   ];
 }

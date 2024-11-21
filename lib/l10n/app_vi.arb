@@ -143,5 +143,19 @@
     "noConversation":"Không có cuộc trò chuyện nào",
     "noFriendSuggestion":"Không có gợi ý bạn bè nào",
     "noPhotoSharing":"Không có lịch sử chia sẻ hình ảnh",
-    "noUserFound":"Không tìm thấy người dùng nào"
+    "noUserFound":"Không tìm thấy người dùng nào",
+    "account_security_enterSixDigit":"Nhập mã sáu chữ số của bạn bên dưới",
+    "account_security_cannotScan":"Không thể quét mã QR?",
+    "account_security_popularApps": "Các ứng dụng phổ biến bao gồm Authy, Google Authenticator hoặc Microsoft Authenticator",
+    "account_security_installAuthApp":"Cài đặt ứng dụng xác thực trên thiết bị di động của bạn",
+    "account_security_addAnAcc":"Tìm nút Thêm tài khoản",
+    "account_security_scanBarcode": "Khi được yêu cầu, hãy quét mã vạch bên dưới",
+    "account_security_authAppSetup": "Cài đặt ứng dụng xác thực",
+    "account_security_activate":"Kích hoạt",
+    "account_security_activate2FA":"Kích hoạt xác thực hai yếu tố",
+    "confirmPass": "Xác nhận mật khẩu",
+    "enterPasswordToConfirm":"Nhập mật khẩu để xác nhận",
+    "check2FA":"Kiểm tra xác thực 2 yếu tố",
+    "twoFactorAuthentication":"Xác thực hai yếu tố"
+
 }
