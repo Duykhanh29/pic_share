@@ -7,7 +7,12 @@ class LogoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size.height;
+    final radiusSize = size * 0.13;
+    final logoSize = size * 0.12;
     return Container(
+      height: radiusSize,
+      width: radiusSize,
       decoration: BoxDecoration(
           shape: BoxShape.circle,
           border: Border.all(color: AppColors.white, width: 2),
@@ -22,8 +27,8 @@ class LogoWidget extends StatelessWidget {
       alignment: Alignment.topCenter,
       child: Image.asset(
         AppImage.picShareLogo,
-        width: 90,
-        height: 90,
+        width: logoSize,
+        height: logoSize,
       ),
     );
   }

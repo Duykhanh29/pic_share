@@ -1,3 +1,4 @@
+import 'package:pic_share/data/models/auth/qrcode_response.dart';
 import 'package:pic_share/data/models/user/user_model.dart';
 import 'package:pic_share/data/providers/network/api_provider.dart';
 import 'package:pic_share/data/providers/network/api_request_representable.dart';
@@ -175,5 +176,84 @@ class RefreshTokenApi extends APIRequestRepresentable<String?> {
   @override
   Future<ApiResponse<String?>> request() {
     return APIProvider().unsafeCall(this);
+  }
+}
+
+class Check2FAApi extends APIRequestRepresentable<String?> {
+  final String code;
+  Check2FAApi({required this.code});
+  @override
+  String get endpoint => '/api/auth/verify_2fa';
+
+  @override
+  String? Function(dynamic json) get fromJson => (json) {
+        if (json is Map<String, dynamic>) return json['refresh_token'];
+        return null;
+      };
+
+  @override
+  HTTPMethod get method => HTTPMethod.post;
+
+  @override
+  get body => {
+        'code': code,
+      };
+
+  @override
+  Future<ApiResponse<String?>> request() {
+    return APIProvider().request(this);
+  }
+}
+
+class UpdateState2FAApi extends APIRequestRepresentable<QRCodeResponse?> {
+  final String password;
+  UpdateState2FAApi({required this.password});
+  @override
+  String get endpoint => '/api/auth/update_state_2fa';
+
+  @override
+  QRCodeResponse? Function(dynamic json) get fromJson => (json) {
+        if (json != null || json is Map<String, dynamic>) {
+          return QRCodeResponse.fromJson(json);
+        }
+        return null;
+      };
+
+  @override
+  HTTPMethod get method => HTTPMethod.post;
+
+  @override
+  get body => {
+        'password': password,
+      };
+
+  @override
+  Future<ApiResponse<QRCodeResponse?>> request() {
+    return APIProvider().request(this);
+  }
+}
+
+class ConfirmEnable2FAApi extends APIRequestRepresentable {
+  final String code;
+  ConfirmEnable2FAApi({required this.code});
+  @override
+  String get endpoint => '/api/auth/confirm_enable_2fa';
+
+  @override
+  Function(dynamic json) get fromJson => (json) {
+        return json;
+      };
+
+  @override
+  HTTPMethod get method => HTTPMethod.post;
+
+  @override
+  get body => {
+        'code': code,
+      };
+
+  @override
+  Future<ApiResponse> request() {
+    return APIProvider().request(this);
   }
 }

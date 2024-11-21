@@ -143,5 +143,18 @@
     "noConversation":"No Conversation",
     "noFriendSuggestion":"No friend suggestion",
     "noPhotoSharing":"No history of picture sharing",
-    "noUserFound":"No user found"
+    "noUserFound":"No user found",
+    "account_security_enterSixDigit": "Enter your six-digit code bellow",
+    "account_security_cannotScan": "Cannot scan QR it?",
+    "account_security_popularApps": "Popular one include Authy, Google Authenticator or the Microsoft Authenticator",
+    "account_security_installAuthApp": "Install an authenticator app on your mobile device",
+    "account_security_addAnAcc": "Look for an Add an account button",
+    "account_security_scanBarcode": "When requested to do so, scan the barcode below",
+    "account_security_authAppSetup": "Authenticator App Setup",
+    "account_security_activate": "Activate",
+    "account_security_activate2FA": "Authenticator App Setup",
+    "confirmPass": "Confirm password",
+    "enterPasswordToConfirm": "Enter password to confirm",
+    "check2FA":"Check 2FA",
+    "twoFactorAuthentication":"Two-factor authentication"
 }

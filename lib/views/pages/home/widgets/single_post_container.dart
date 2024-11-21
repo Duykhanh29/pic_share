@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pic_share/app/constants/app_color.dart';
 import 'package:pic_share/app/constants/app_text_styles.dart';
 import 'package:pic_share/app/constants/glocal_data.dart';
 import 'package:pic_share/app/helper/bottom_sheet_helper.dart';

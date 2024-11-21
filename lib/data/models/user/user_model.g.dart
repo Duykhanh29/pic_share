@@ -35,6 +35,10 @@ abstract class _$UserModelCWProxy {
 
   UserModel refreshToken(String? refreshToken);
 
+  UserModel isPrivateAccount(bool isPrivateAccount);
+
+  UserModel isEnable2FA(bool isEnable2FA);
+
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `UserModel(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
   /// Usage
@@ -56,6 +60,8 @@ abstract class _$UserModelCWProxy {
     String? userCode,
     String? accessToken,
     String? refreshToken,
+    bool? isPrivateAccount,
+    bool? isEnable2FA,
   });
 }
 
@@ -110,6 +116,13 @@ class _$UserModelCWProxyImpl implements _$UserModelCWProxy {
       this(refreshToken: refreshToken);
 
   @override
+  UserModel isPrivateAccount(bool isPrivateAccount) =>
+      this(isPrivateAccount: isPrivateAccount);
+
+  @override
+  UserModel isEnable2FA(bool isEnable2FA) => this(isEnable2FA: isEnable2FA);
+
+  @override
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `UserModel(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -132,6 +145,8 @@ class _$UserModelCWProxyImpl implements _$UserModelCWProxy {
     Object? userCode = const $CopyWithPlaceholder(),
     Object? accessToken = const $CopyWithPlaceholder(),
     Object? refreshToken = const $CopyWithPlaceholder(),
+    Object? isPrivateAccount = const $CopyWithPlaceholder(),
+    Object? isEnable2FA = const $CopyWithPlaceholder(),
   }) {
     return UserModel(
       roleType: roleType == const $CopyWithPlaceholder() || roleType == null
@@ -190,6 +205,16 @@ class _$UserModelCWProxyImpl implements _$UserModelCWProxy {
           ? _value.refreshToken
           // ignore: cast_nullable_to_non_nullable
           : refreshToken as String?,
+      isPrivateAccount: isPrivateAccount == const $CopyWithPlaceholder() ||
+              isPrivateAccount == null
+          ? _value.isPrivateAccount
+          // ignore: cast_nullable_to_non_nullable
+          : isPrivateAccount as bool,
+      isEnable2FA:
+          isEnable2FA == const $CopyWithPlaceholder() || isEnable2FA == null
+              ? _value.isEnable2FA
+              // ignore: cast_nullable_to_non_nullable
+              : isEnable2FA as bool,
     );
   }
 }
@@ -235,6 +260,8 @@ extension $UserModelCopyWith on UserModel {
       userCode: userCode == true ? null : this.userCode,
       accessToken: accessToken == true ? null : this.accessToken,
       refreshToken: refreshToken == true ? null : this.refreshToken,
+      isPrivateAccount: isPrivateAccount,
+      isEnable2FA: isEnable2FA,
     );
   }
 }
@@ -398,6 +425,13 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
       userCode: json['user_code'] as String?,
       accessToken: json['access_token'] as String?,
       refreshToken: json['refresh_token'] as String?,
+      isPrivateAccount: json['is_private_account'] == null
+          ? false
+          : UserModel._fromJsonBool(
+              (json['is_private_account'] as num).toInt()),
+      isEnable2FA: json['google2fa_enable'] == null
+          ? false
+          : UserModel._fromJsonBool((json['google2fa_enable'] as num).toInt()),
     );
 
 Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
@@ -415,6 +449,8 @@ Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'config': instance.config?.toJson(),
       'access_token': instance.accessToken,
       'refresh_token': instance.refreshToken,
+      'is_private_account': UserModel._toJsonBool(instance.isPrivateAccount),
+      'google2fa_enable': UserModel._toJsonBool(instance.isEnable2FA),
     };
 
 const _$RoleTypeEnumMap = {

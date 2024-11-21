@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:pic_share/data/models/auth/qrcode_response.dart';
 import 'package:pic_share/data/models/user/user_model.dart';
 import 'package:pic_share/data/providers/network/api_response.dart';
 import 'package:pic_share/data/providers/network/apis/auth/auth_api.dart';
@@ -15,6 +16,11 @@ abstract class AuthRepository {
   Future<ApiResponse<UserModel?>> signInWithGoogle();
   Future<ApiResponse> logout();
   Future<ApiResponse<String?>> refreshToken({required String refreshToken});
+
+  Future<ApiResponse<String?>> verify2FA({required String code});
+  Future<ApiResponse<QRCodeResponse?>> updateState2FA(
+      {required String password});
+  Future<ApiResponse> confirmEnable2FA({required String code});
 
   /*
    OLD VERSION ( USING FIREBASE TO IMPLEMENT AUTHEN)
@@ -87,8 +93,29 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
-  Future<ApiResponse<String?>> refreshToken({required String refreshToken}) {
-    final response = RefreshTokenApi(refreshToken: refreshToken).request();
+  Future<ApiResponse<String?>> refreshToken(
+      {required String refreshToken}) async {
+    final response =
+        await RefreshTokenApi(refreshToken: refreshToken).request();
+    return response;
+  }
+
+  @override
+  Future<ApiResponse> confirmEnable2FA({required String code}) async {
+    final response = await ConfirmEnable2FAApi(code: code).request();
+    return response;
+  }
+
+  @override
+  Future<ApiResponse<QRCodeResponse?>> updateState2FA(
+      {required String password}) async {
+    final response = await UpdateState2FAApi(password: password).request();
+    return response;
+  }
+
+  @override
+  Future<ApiResponse<String?>> verify2FA({required String code}) async {
+    final response = Check2FAApi(code: code).request();
     return response;
   }
 

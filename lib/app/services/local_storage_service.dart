@@ -56,6 +56,12 @@ class LocalStorageService extends GetxService {
     }
   }
 
+  void setIsEnable2Fa(bool value) {
+    setUserModel(
+      value: userModel?.copyWith(isEnable2FA: value),
+    );
+  }
+
   void setNotificationPermission(bool value) {
     _sharedPreferences?.setBool(_Key.notificationPermission.toString(), value);
   }
