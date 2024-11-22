@@ -156,6 +156,7 @@
     "confirmPass": "Xác nhận mật khẩu",
     "enterPasswordToConfirm":"Nhập mật khẩu để xác nhận",
     "check2FA":"Kiểm tra xác thực 2 yếu tố",
-    "twoFactorAuthentication":"Xác thực hai yếu tố"
+    "twoFactorAuthentication":"Xác thực hai yếu tố",
+    "sendEmailForLogin": "Gửi thông báo qua email khi đăng nhập"
 
 }

@@ -86,6 +86,26 @@ class SecurityPage extends GetView<AuthController> {
                 thickness: 0.3,
               ),
             ),
+            Obx(
+              () {
+                return SwitchListTile(
+                  title: Text(t.sendEmailForLogin),
+                  value: controller
+                          .currentUser.value?.config?.isEnableLoginEmail ??
+                      false,
+                  onChanged: (val) async {
+                    await controller.updateUserInfo(isEnableLoginEmail: val);
+                  },
+                );
+              },
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Divider(
+                color: AppColors.darkBorderColor,
+                thickness: 0.3,
+              ),
+            ),
             ListTile(
               onTap: () {
                 Get.toNamed(Routes.notFound);

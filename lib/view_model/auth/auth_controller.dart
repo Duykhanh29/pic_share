@@ -99,11 +99,20 @@ class AuthController extends GetxController {
     }
   }
 
-  Future<void> updateUserInfo(
-      {String? name, File? urlAvatar, String? language}) async {
+  Future<void> updateUserInfo({
+    String? name,
+    File? urlAvatar,
+    String? language,
+    bool? isEnableLoginEmail,
+  }) async {
     try {
+      actionLoading.value = true;
       final response = await userRepository.updateUserInfo(
-          name: name, urlAvatar: urlAvatar, language: language);
+        name: name,
+        urlAvatar: urlAvatar,
+        language: language,
+        isEnableLoginEmail: isEnableLoginEmail,
+      );
 
       if (response.isSuccess) {
         final userResponse = await userRepository.getCurrentUser();
@@ -122,6 +131,8 @@ class AuthController extends GetxController {
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");
       SnackbarHelper.errorSnackbar(e.toString());
+    } finally {
+      actionLoading.value = false;
     }
   }
 

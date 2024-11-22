@@ -1,5 +1,6 @@
 import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:pic_share/app/extensions/json_extension.dart';
 import 'package:pic_share/data/enums/role_type.dart';
 part 'user_model.g.dart';
 
@@ -44,11 +45,10 @@ class UserModel {
   final String? refreshToken;
 
   @JsonKey(
-      name: 'is_private_account', fromJson: _fromJsonBool, toJson: _toJsonBool)
+      name: 'is_private_account', fromJson: fromJsonBool, toJson: toJsonBool)
   final bool isPrivateAccount;
 
-  @JsonKey(
-      name: 'google2fa_enable', fromJson: _fromJsonBool, toJson: _toJsonBool)
+  @JsonKey(name: 'google2fa_enable', fromJson: fromJsonBool, toJson: toJsonBool)
   final bool isEnable2FA;
 
   UserModel({
@@ -74,9 +74,6 @@ class UserModel {
       _$UserModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserModelToJson(this);
-
-  static bool _fromJsonBool(int value) => value == 1;
-  static int _toJsonBool(bool value) => value ? 1 : 0;
 }
 
 @CopyWith(copyWithNull: true)
@@ -97,17 +94,29 @@ class Config {
   final String language;
   @JsonKey(name: 'fcm_token')
   final String? fcmToken;
-  Config({required this.language, this.fcmToken});
+
+  @JsonKey(
+      name: 'is_login_email_enabled',
+      fromJson: fromJsonBool,
+      toJson: toJsonBool)
+  final bool isEnableLoginEmail;
+  Config({
+    required this.language,
+    this.fcmToken,
+    this.isEnableLoginEmail = false,
+  });
   factory Config.fromJson(Map<String, dynamic> json) => _$ConfigFromJson(json);
 
   Map<String, dynamic> toJson() => _$ConfigToJson(this);
   Config customCopyWith({
     String? language,
     String? fcmToken,
+    bool? isEnableLoginEmail,
   }) {
     return Config(
       language: language ?? this.language,
       fcmToken: fcmToken,
+      isEnableLoginEmail: isEnableLoginEmail ?? this.isEnableLoginEmail,
     );
   }
 }

@@ -331,6 +331,8 @@ abstract class _$ConfigCWProxy {
 
   Config fcmToken(String? fcmToken);
 
+  Config isEnableLoginEmail(bool isEnableLoginEmail);
+
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `Config(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
   /// Usage
@@ -340,6 +342,7 @@ abstract class _$ConfigCWProxy {
   Config call({
     String? language,
     String? fcmToken,
+    bool? isEnableLoginEmail,
   });
 }
 
@@ -356,6 +359,10 @@ class _$ConfigCWProxyImpl implements _$ConfigCWProxy {
   Config fcmToken(String? fcmToken) => this(fcmToken: fcmToken);
 
   @override
+  Config isEnableLoginEmail(bool isEnableLoginEmail) =>
+      this(isEnableLoginEmail: isEnableLoginEmail);
+
+  @override
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `Config(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -366,6 +373,7 @@ class _$ConfigCWProxyImpl implements _$ConfigCWProxy {
   Config call({
     Object? language = const $CopyWithPlaceholder(),
     Object? fcmToken = const $CopyWithPlaceholder(),
+    Object? isEnableLoginEmail = const $CopyWithPlaceholder(),
   }) {
     return Config(
       language: language == const $CopyWithPlaceholder() || language == null
@@ -376,6 +384,11 @@ class _$ConfigCWProxyImpl implements _$ConfigCWProxy {
           ? _value.fcmToken
           // ignore: cast_nullable_to_non_nullable
           : fcmToken as String?,
+      isEnableLoginEmail: isEnableLoginEmail == const $CopyWithPlaceholder() ||
+              isEnableLoginEmail == null
+          ? _value.isEnableLoginEmail
+          // ignore: cast_nullable_to_non_nullable
+          : isEnableLoginEmail as bool,
     );
   }
 }
@@ -397,6 +410,7 @@ extension $ConfigCopyWith on Config {
     return Config(
       language: language,
       fcmToken: fcmToken == true ? null : this.fcmToken,
+      isEnableLoginEmail: isEnableLoginEmail,
     );
   }
 }
@@ -427,11 +441,10 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
       refreshToken: json['refresh_token'] as String?,
       isPrivateAccount: json['is_private_account'] == null
           ? false
-          : UserModel._fromJsonBool(
-              (json['is_private_account'] as num).toInt()),
+          : fromJsonBool((json['is_private_account'] as num).toInt()),
       isEnable2FA: json['google2fa_enable'] == null
           ? false
-          : UserModel._fromJsonBool((json['google2fa_enable'] as num).toInt()),
+          : fromJsonBool((json['google2fa_enable'] as num).toInt()),
     );
 
 Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
@@ -449,8 +462,8 @@ Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'config': instance.config?.toJson(),
       'access_token': instance.accessToken,
       'refresh_token': instance.refreshToken,
-      'is_private_account': UserModel._toJsonBool(instance.isPrivateAccount),
-      'google2fa_enable': UserModel._toJsonBool(instance.isEnable2FA),
+      'is_private_account': toJsonBool(instance.isPrivateAccount),
+      'google2fa_enable': toJsonBool(instance.isEnable2FA),
     };
 
 const _$RoleTypeEnumMap = {
@@ -471,9 +484,13 @@ Map<String, dynamic> _$GeoInfoToJson(GeoInfo instance) => <String, dynamic>{
 Config _$ConfigFromJson(Map<String, dynamic> json) => Config(
       language: json['language'] as String,
       fcmToken: json['fcm_token'] as String?,
+      isEnableLoginEmail: json['is_login_email_enabled'] == null
+          ? false
+          : fromJsonBool((json['is_login_email_enabled'] as num).toInt()),
     );
 
 Map<String, dynamic> _$ConfigToJson(Config instance) => <String, dynamic>{
       'language': instance.language,
       'fcm_token': instance.fcmToken,
+      'is_login_email_enabled': toJsonBool(instance.isEnableLoginEmail),
     };

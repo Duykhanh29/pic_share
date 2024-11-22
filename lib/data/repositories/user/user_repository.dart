@@ -19,8 +19,12 @@ abstract class UserRepository {
   Future<void> checkUserExists({String? uid, String? email, String? phone});
   */
 
-  Future<ApiResponse> updateUserInfo(
-      {String? name, File? urlAvatar, String? language});
+  Future<ApiResponse> updateUserInfo({
+    String? name,
+    File? urlAvatar,
+    String? language,
+    bool? isEnableLoginEmail,
+  });
   Future<ApiResponse> changePassword(
       {required String currentPassword,
       required String newPassword,
@@ -52,8 +56,12 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<ApiResponse> updateUserInfo(
-      {String? name, File? urlAvatar, String? language}) async {
+  Future<ApiResponse> updateUserInfo({
+    String? name,
+    File? urlAvatar,
+    String? language,
+    bool? isEnableLoginEmail,
+  }) async {
     FormData formData = FormData.fromMap({
       if (name != null) "name": name,
       if (urlAvatar != null)
@@ -61,7 +69,9 @@ class UserRepositoryImpl implements UserRepository {
           urlAvatar.path,
           filename: basename(urlAvatar.path),
         ),
-      if (language != null) "language": language
+      if (language != null) "language": language,
+      if (isEnableLoginEmail != null)
+        "is_login_email_enabled": isEnableLoginEmail ? 1 : 0,
     });
     debugPrint(formData.fields.toString());
     debugPrint(formData.files.toString());
