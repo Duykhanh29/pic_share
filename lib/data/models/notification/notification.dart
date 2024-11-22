@@ -3,6 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:pic_share/data/enums/notification_type.dart';
 import 'package:pic_share/data/models/notification/link_to_model.dart';
 import 'package:pic_share/data/models/user/user_summary_model.dart';
+import 'package:pic_share/app/extensions/json_extension.dart';
 part 'notification.g.dart';
 
 @JsonSerializable()
@@ -13,7 +14,7 @@ class Notification {
   final UserSummaryModel? sender;
   final String? content;
   final String? title;
-  @JsonKey(name: 'is_seen', fromJson: _fromJsonBool, toJson: _toJsonBool)
+  @JsonKey(name: 'is_seen', fromJson: fromJsonBool, toJson: toJsonBool)
   bool isSeen;
   @JsonKey(name: 'created_at')
   final String? createdAt;
@@ -27,7 +28,7 @@ class Notification {
   final NotificationType notificationType;
   @JsonKey(name: 'link_to')
   final LinkToModel? linkTo;
-  @JsonKey(name: 'is_read', fromJson: _fromJsonBool, toJson: _toJsonBool)
+  @JsonKey(name: 'is_read', fromJson: fromJsonBool, toJson: toJsonBool)
   bool isRead;
   Notification({
     this.content,
@@ -47,7 +48,4 @@ class Notification {
       _$NotificationFromJson(json);
 
   Map<String, dynamic> toJson() => _$NotificationToJson(this);
-
-  static bool _fromJsonBool(int value) => value == 1;
-  static int _toJsonBool(bool value) => value ? 1 : 0;
 }

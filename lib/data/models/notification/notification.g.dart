@@ -208,7 +208,7 @@ Notification _$NotificationFromJson(Map<String, dynamic> json) => Notification(
       id: (json['id'] as num?)?.toInt(),
       isSeen: json['is_seen'] == null
           ? false
-          : Notification._fromJsonBool((json['is_seen'] as num).toInt()),
+          : fromJsonBool((json['is_seen'] as num).toInt()),
       notificationType: $enumDecodeNullable(
               _$NotificationTypeEnumMap, json['notification_type']) ??
           NotificationType.user,
@@ -225,7 +225,7 @@ Notification _$NotificationFromJson(Map<String, dynamic> json) => Notification(
       updatedAt: json['updated_at'] as String?,
       isRead: json['is_read'] == null
           ? false
-          : Notification._fromJsonBool((json['is_read'] as num).toInt()),
+          : fromJsonBool((json['is_read'] as num).toInt()),
     );
 
 Map<String, dynamic> _$NotificationToJson(Notification instance) =>
@@ -235,13 +235,13 @@ Map<String, dynamic> _$NotificationToJson(Notification instance) =>
       'sender': instance.sender,
       'content': instance.content,
       'title': instance.title,
-      'is_seen': Notification._toJsonBool(instance.isSeen),
+      'is_seen': toJsonBool(instance.isSeen),
       'created_at': instance.createdAt,
       'updated_at': instance.updatedAt,
       'notification_type':
           _$NotificationTypeEnumMap[instance.notificationType]!,
       'link_to': instance.linkTo,
-      'is_read': Notification._toJsonBool(instance.isRead),
+      'is_read': toJsonBool(instance.isRead),
     };
 
 const _$NotificationTypeEnumMap = {

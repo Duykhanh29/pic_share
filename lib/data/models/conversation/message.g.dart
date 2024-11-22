@@ -205,7 +205,7 @@ Message _$MessageFromJson(Map<String, dynamic> json) => Message(
           : messageTypeFromJson(json['message_type'] as String?),
       isRead: json['is_read'] == null
           ? false
-          : Message._fromJsonBool((json['is_read'] as num).toInt()),
+          : fromJsonBool((json['is_read'] as num).toInt()),
       text: json['text'] as String?,
     );
 
@@ -219,5 +219,5 @@ Map<String, dynamic> _$MessageToJson(Message instance) => <String, dynamic>{
       'width': instance.width,
       'created_at': instance.createdAt,
       'updated_at': instance.updatedAt,
-      'is_read': Message._toJsonBool(instance.isRead),
+      'is_read': toJsonBool(instance.isRead),
     };

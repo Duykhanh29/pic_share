@@ -156,5 +156,6 @@
     "confirmPass": "Confirm password",
     "enterPasswordToConfirm": "Enter password to confirm",
     "check2FA":"Check 2FA",
-    "twoFactorAuthentication":"Two-factor authentication"
+    "twoFactorAuthentication":"Two-factor authentication",
+    "sendEmailForLogin": "Send an email notification on login event"
 }

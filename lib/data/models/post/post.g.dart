@@ -219,7 +219,7 @@ Post _$PostFromJson(Map<String, dynamic> json) => Post(
       id: (json['id'] as num?)?.toInt(),
       isDeleted: json['is_deleted'] == null
           ? false
-          : Post._fromJsonBool((json['is_deleted'] as num).toInt()),
+          : fromJsonBool((json['is_deleted'] as num).toInt()),
       likeCount: (json['like_count'] as num?)?.toInt() ?? 0,
       userID: (json['user_id'] as num?)?.toInt(),
       urlImage: json['url_image'] as String?,
@@ -236,7 +236,7 @@ Map<String, dynamic> _$PostToJson(Post instance) => <String, dynamic>{
       'url_image': instance.urlImage,
       'caption': instance.caption,
       'like_count': instance.likeCount,
-      'is_deleted': Post._toJsonBool(instance.isDeleted),
+      'is_deleted': toJsonBool(instance.isDeleted),
       'cmt_count': instance.cmtCount,
       'created_at': instance.createdAt,
       'updated_at': instance.updatedAt,

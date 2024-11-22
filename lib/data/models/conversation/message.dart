@@ -1,4 +1,5 @@
 import 'package:copy_with_extension/copy_with_extension.dart';
+import 'package:pic_share/app/extensions/json_extension.dart';
 import 'package:pic_share/data/enums/message_type.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:pic_share/data/models/user/user_summary_model.dart';
@@ -24,7 +25,7 @@ class Message {
 
   @JsonKey(name: 'updated_at')
   final String? updatedAt;
-  @JsonKey(name: 'is_read', fromJson: _fromJsonBool, toJson: _toJsonBool)
+  @JsonKey(name: 'is_read', fromJson: fromJsonBool, toJson: toJsonBool)
   bool isRead;
   Message({
     this.createdAt,
@@ -42,7 +43,4 @@ class Message {
       _$MessageFromJson(json);
 
   Map<String, dynamic> toJson() => _$MessageToJson(this);
-
-  static bool _fromJsonBool(int value) => value == 1;
-  static int _toJsonBool(bool value) => value ? 1 : 0;
 }

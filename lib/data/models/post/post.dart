@@ -1,7 +1,7 @@
 import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:pic_share/data/enums/shared_post_type.dart';
-
+import 'package:pic_share/app/extensions/json_extension.dart';
 part 'post.g.dart';
 
 @JsonSerializable(explicitToJson: true)
@@ -15,7 +15,7 @@ class Post {
   final String? caption;
   @JsonKey(name: 'like_count')
   final int likeCount;
-  @JsonKey(name: 'is_deleted', fromJson: _fromJsonBool, toJson: _toJsonBool)
+  @JsonKey(name: 'is_deleted', fromJson: fromJsonBool, toJson: toJsonBool)
   final bool isDeleted;
   @JsonKey(name: 'cmt_count')
   final int cmtCount;
@@ -47,6 +47,4 @@ class Post {
   factory Post.fromJson(Map<String, dynamic> json) => _$PostFromJson(json);
 
   Map<String, dynamic> toJson() => _$PostToJson(this);
-  static bool _fromJsonBool(int value) => value == 1;
-  static int _toJsonBool(bool value) => value ? 1 : 0;
 }
