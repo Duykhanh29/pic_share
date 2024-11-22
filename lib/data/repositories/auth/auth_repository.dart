@@ -11,8 +11,12 @@ abstract class AuthRepository {
       required String password,
       required String name,
       required String confirmPassword});
-  Future<ApiResponse<UserModel?>> signInWithEmailPass(
-      {required String email, required String password});
+  Future<ApiResponse<UserModel?>> signInWithEmailPass({
+    required String email,
+    required String password,
+    String? deviceId,
+    String? deviceName,
+  });
   Future<ApiResponse<UserModel?>> signInWithGoogle();
   Future<ApiResponse> logout();
   Future<ApiResponse<String?>> refreshToken({required String refreshToken});
@@ -52,11 +56,17 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
-  Future<ApiResponse<UserModel?>> signInWithEmailPass(
-      {required String email, required String password}) async {
+  Future<ApiResponse<UserModel?>> signInWithEmailPass({
+    required String email,
+    required String password,
+    String? deviceId,
+    String? deviceName,
+  }) async {
     final response = await LoginAPI(
       email: email,
       password: password,
+      deviceId: deviceId,
+      deviceName: deviceName,
     ).request();
     return response;
   }

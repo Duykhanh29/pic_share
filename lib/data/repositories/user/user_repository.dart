@@ -71,7 +71,7 @@ class UserRepositoryImpl implements UserRepository {
         ),
       if (language != null) "language": language,
       if (isEnableLoginEmail != null)
-        "is_login_email_enabled": isEnableLoginEmail,
+        "is_login_email_enabled": isEnableLoginEmail ? 1 : 0,
     });
     debugPrint(formData.fields.toString());
     debugPrint(formData.files.toString());

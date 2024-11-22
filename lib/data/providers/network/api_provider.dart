@@ -25,7 +25,7 @@ class APIProvider {
   factory APIProvider() => _instance;
   APIProvider._internal() {
     _dio = Dio();
-    _dio.options.receiveTimeout = const Duration(minutes: 2);
+    _dio.options.receiveTimeout = const Duration(minutes: 1);
     _dio.options.headers[HttpHeaders.contentTypeHeader] = 'application/json';
     _dio.interceptors.add(InterceptorsWrapper(
       onRequest:

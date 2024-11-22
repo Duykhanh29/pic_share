@@ -79,9 +79,13 @@ class LoginAPI extends APIRequestRepresentable<UserModel?> {
   LoginAPI({
     required this.email,
     required this.password,
+    this.deviceId,
+    this.deviceName,
   });
   String email;
   String password;
+  String? deviceId;
+  String? deviceName;
   @override
   String get endpoint => '/api/login';
 
@@ -92,6 +96,8 @@ class LoginAPI extends APIRequestRepresentable<UserModel?> {
   get body => {
         'email': email,
         'password': password,
+        if (deviceId != null) 'device_id': deviceId,
+        if (deviceName != null) 'device_name': deviceName,
       };
   @override
   UserModel? Function(dynamic p1) get fromJson => (json) {

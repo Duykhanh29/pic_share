@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pic_share/app/helper/device_info_helper.dart';
 import 'package:pic_share/app/helper/snack_bar_helper.dart';
 import 'package:pic_share/app/services/local_storage_service.dart';
 import 'package:pic_share/app/services/notification_service.dart';
 import 'package:pic_share/app/services/token_manager.dart';
 import 'package:pic_share/data/enums/role_type.dart';
 import 'package:pic_share/data/models/user/user_model.dart';
+import 'package:pic_share/data/providers/network/api_response.dart';
 import 'package:pic_share/data/repositories/auth/auth_repository.dart';
 import 'package:pic_share/data/repositories/user/user_repository.dart';
 import 'package:pic_share/routes/app_pages.dart';
@@ -41,13 +43,20 @@ class SignInController extends GetxController {
   }
 
   Future<void> signInWithEmailPass() async {
-    isLoading.value = true;
-    try {
-      var isValid = formKey.currentState!.validate();
-      if (isValid) {
-        final response = await authRepository.signInWithEmailPass(
-            email: emailController.text.trim(), password: passController.text);
-        if (response.isSuccess) {
+    var isValid = formKey.currentState!.validate();
+    if (isValid) {
+      await handleApiCall(
+        apiCall: () async {
+          final deviceId = await DeviceInfoHelper.getDeviceId();
+          final deviceName = await DeviceInfoHelper.getDeviceName();
+          return await authRepository.signInWithEmailPass(
+            email: emailController.text.trim(),
+            password: passController.text,
+            deviceId: deviceId,
+            deviceName: deviceName,
+          );
+        },
+        onSuccess: (response) async {
           user.value = response.data;
           if (user.value != null) {
             if (user.value!.roleType == RoleType.admin) {
@@ -67,30 +76,21 @@ class SignInController extends GetxController {
               } else {
                 Get.toNamed(Routes.check2Fa);
               }
-
-              SnackbarHelper.successSnackbar(
-                  response.message ?? "Login successfully");
             }
           }
-        } else {
-          SnackbarHelper.errorSnackbar(response.message ?? "");
-        }
-      } else {
-        debugPrint('form is not valid');
-      }
-    } catch (e) {
-      debugPrint("Something went wrong: ${e.toString()}");
-      SnackbarHelper.errorSnackbar(e.toString());
-    } finally {
-      isLoading.value = false;
+        },
+      );
+    } else {
+      debugPrint('form is not valid');
     }
   }
 
   Future<void> signInWithGoogle() async {
-    isLoading.value = true;
-    try {
-      final response = await authRepository.signInWithGoogle();
-      if (response.isSuccess) {
+    await handleApiCall(
+      apiCall: () async {
+        return await authRepository.signInWithGoogle();
+      },
+      onSuccess: (response) async {
         user.value = response.data;
         await _tokenManager.setAccessToken(user.value?.accessToken);
         await _tokenManager.setRefreshToken(user.value?.refreshToken);
@@ -101,6 +101,19 @@ class SignInController extends GetxController {
               ?.copyWith(config: user.value?.config?.copyWith(fcmToken: token));
         }
         localStorageService.setUserModel(value: user.value);
+      },
+    );
+  }
+
+  Future<void> handleApiCall({
+    required Future<ApiResponse> Function() apiCall,
+    required Future<void> Function(ApiResponse response) onSuccess,
+  }) async {
+    isLoading.value = true;
+    try {
+      final response = await apiCall();
+      if (response.isSuccess) {
+        await onSuccess(response);
         SnackbarHelper.successSnackbar(
             response.message ?? "Login successfully");
       } else {
