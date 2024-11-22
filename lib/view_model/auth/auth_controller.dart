@@ -218,6 +218,7 @@ class AuthController extends GetxController {
       if (response.isSuccess && response.data != null) {
         final userResponse = await userRepository.getCurrentUser();
         if (userResponse.isSuccess) {
+          await _tokenManager.setRefreshToken(response.data!);
           final user = userResponse.data;
           await setUserData(user);
           Get.offAllNamed(Routes.navBar);

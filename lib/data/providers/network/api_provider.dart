@@ -12,6 +12,7 @@ import 'package:pic_share/data/providers/network/api_request_representable.dart'
 import 'package:pic_share/data/providers/network/api_response.dart';
 import 'package:pic_share/data/repositories/auth/auth_repository.dart';
 import 'package:pic_share/routes/app_pages.dart';
+import 'package:pic_share/view_model/app/session_controller.dart';
 import 'package:pic_share/view_model/friend/friend_controller.dart';
 import 'package:pic_share/view_model/friend_profile/friend_profile_controller.dart';
 import 'package:pic_share/view_model/home/home_controller.dart';
@@ -128,9 +129,11 @@ class APIProvider {
 
   Future<void> handleRedirect() async {
     try {
-      await deleteSession();
-      g.Get.offAllNamed(Routes.login);
-      resetIndexes();
+      if (g.Get.currentRoute != Routes.login) {
+        await deleteSession();
+        g.Get.offAllNamed(Routes.login);
+        resetIndexes();
+      }
     } catch (e) {
       rethrow;
     }
@@ -148,7 +151,7 @@ class APIProvider {
       if (refreshToken != null) {
         final accessToken = await refreshAccessToken(refreshToken);
         if (accessToken != null) {
-          await TokenManager().setAccessToken(accessToken);
+          await setNewAccessToken(accessToken);
           final newRequest = e.requestOptions;
           newRequest.headers["Authorization"] = "Bearer $accessToken";
           return this.request<T>(request);
@@ -182,6 +185,14 @@ class APIProvider {
     final response =
         await authRepository.refreshToken(refreshToken: refreshToken);
     return response.data;
+  }
+
+  Future<void> setNewAccessToken(String accessToken) async {
+    await TokenManager().setAccessToken(accessToken);
+    if (g.Get.isRegistered<SessionController>()) {
+      final sessionController = g.Get.find<SessionController>();
+      sessionController.fetchToken();
+    }
   }
 
   Future<void> deleteSession() async {

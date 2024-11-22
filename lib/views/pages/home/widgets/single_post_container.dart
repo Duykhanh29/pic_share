@@ -65,7 +65,7 @@ class SinglePostContainer extends GetView<HomeController> {
     return Padding(
       padding: const EdgeInsets.only(left: 5, top: 10, bottom: 10),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           GestureDetector(
               onTap: () {
@@ -91,13 +91,14 @@ class SinglePostContainer extends GetView<HomeController> {
                 child: Text(
                   isMe ? t.you : postData.post.user?.name ?? "",
                   style: AppTextStyles.headingTextStyle(),
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ),
           ),
-          SizedBox(width: size * 0.025),
+          SizedBox(width: size * 0.02),
           Container(
-            constraints: BoxConstraints(maxWidth: size * 0.25),
+            constraints: BoxConstraints(maxWidth: size * 0.26),
             padding: const EdgeInsets.all(4),
             decoration: BoxDecoration(
                 color: const Color.fromARGB(255, 223, 219, 219),
@@ -111,6 +112,7 @@ class SinglePostContainer extends GetView<HomeController> {
               maxLines: 3,
               textAlign: TextAlign.center,
               style: AppTextStyles.smallTextStyle(),
+              overflow: TextOverflow.ellipsis,
             ),
           ),
           const Spacer(),

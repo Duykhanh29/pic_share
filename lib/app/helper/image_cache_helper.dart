@@ -1,47 +1,49 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pic_share/app/config/app_config.dart';
 import 'package:pic_share/app/constants/app_color.dart';
+import 'package:pic_share/view_model/app/session_controller.dart';
 
 class ImageCacheHelper {
   static Widget avatarImage(
       {required String url, double height = 30, double width = 30}) {
-    return CachedNetworkImage(
-      imageUrl: AppConfig.baseUrl + url,
-      height: height,
-      width: width,
-      imageBuilder: (context, imageProvider) {
-        return CircleAvatar(radius: width / 2, backgroundImage: imageProvider);
+    return GetBuilder<SessionController>(
+      builder: (controller) {
+        String? token = controller.token.value;
+        return CachedNetworkImage(
+          imageUrl: AppConfig.baseUrl + url,
+          height: height,
+          width: width,
+          imageBuilder: (context, imageProvider) {
+            return CircleAvatar(
+                radius: width / 2, backgroundImage: imageProvider);
+          },
+          errorWidget: (context, url, error) {
+            return CircleAvatar(
+                radius: width / 2, child: const Icon(Icons.error));
+          },
+          placeholder: (context, url) {
+            return const CircleAvatar(radius: 15, child: SizedBox());
+          },
+          fit: BoxFit.contain,
+          httpHeaders: {
+            "Connection": "keep-alive",
+            "Keep-Alive": "timeout=20, max=200",
+            if (token != null) "Authorization": "Bearer $token"
+          },
+        );
       },
-      errorWidget: (context, url, error) {
-        return CircleAvatar(radius: width / 2, child: const Icon(Icons.error));
-      },
-      placeholder: (context, url) {
-        return const CircleAvatar(radius: 15, child: SizedBox());
-      },
-      fit: BoxFit.contain,
     );
   }
 
   static Widget showImage(
       {required String url, required double height, required double width}) {
-    return StatefulBuilder(
-      builder: (context, setState) {
-        String imageUrl = AppConfig.baseUrl + url;
-        int retryCount = 0;
-
-        void retryLoading() {
-          if (retryCount < 3) {
-            Future.delayed(const Duration(seconds: 2), () {
-              retryCount++;
-              CachedNetworkImage.evictFromCache(imageUrl);
-              setState(() {});
-            });
-          }
-        }
-
+    return GetBuilder<SessionController>(
+      builder: (controller) {
+        final token = controller.token.value;
         return CachedNetworkImage(
-          imageUrl: imageUrl,
+          imageUrl: AppConfig.baseUrl + url,
           fit: BoxFit.contain,
           height: height,
           width: width,
@@ -59,7 +61,8 @@ class ImageCacheHelper {
             );
           },
           errorWidget: (context, url, error) {
-            retryLoading();
+            debugPrint(
+                "SOMETHING WENT WRONG TO FETCH IMAGE: ${error.toString()}");
             return const SizedBox(child: Center(child: Icon(Icons.error)));
           },
           placeholder: (context, url) {
@@ -68,7 +71,11 @@ class ImageCacheHelper {
               height: height,
             );
           },
-          httpHeaders: const {"Connection": "keep-alive"},
+          httpHeaders: {
+            "Connection": "keep-alive",
+            "Keep-Alive": "timeout=20, max=200",
+            if (token != null) "Authorization": "Bearer $token"
+          },
         );
       },
     );
