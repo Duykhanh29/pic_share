@@ -3,6 +3,7 @@ import 'package:pic_share/app/services/local_storage_service.dart';
 import 'package:pic_share/app/services/notification_service.dart';
 import 'package:pic_share/data/repositories/auth/auth_repository.dart';
 import 'package:pic_share/data/repositories/user/user_repository.dart';
+import 'package:pic_share/view_model/app/session_controller.dart';
 import 'package:pic_share/view_model/auth/auth_controller.dart';
 import 'package:pic_share/view_model/language/language_controller.dart';
 import 'package:pic_share/view_model/app/app_controller.dart';
@@ -22,6 +23,7 @@ class AuthBindings extends Bindings {
       );
     }
 
+    Get.put<SessionController>(SessionController());
     Get.put(
       LanguageController(
         localStorageService: Get.find<LocalStorageService>(),

@@ -129,7 +129,10 @@ class APIProvider {
   Future<void> handleRedirect() async {
     try {
       await deleteSession();
-      g.Get.offAllNamed(Routes.login);
+      if (g.Get.currentRoute != Routes.login) {
+        g.Get.offAllNamed(Routes.login);
+      }
+
       resetIndexes();
     } catch (e) {
       rethrow;

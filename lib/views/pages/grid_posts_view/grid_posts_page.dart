@@ -9,6 +9,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:pic_share/view_model/home/home_controller.dart';
 import 'package:pic_share/views/widgets/asset_image_widget.dart';
+import 'package:pic_share/app/constants/strings.dart';
 
 class GridPostPage extends GetView<HomeController> {
   const GridPostPage({super.key});
@@ -38,12 +39,16 @@ class GridPostPage extends GetView<HomeController> {
                           onTap: () {
                             controller.onNavigateToHomeWithIndex(index);
                           },
-                          child: ImageCacheHelper.showImage(
-                              url: controller.actualDisplayPosts[index].post
-                                      .urlImage ??
-                                  "",
-                              height: MediaQuery.of(context).size.height * 0.15,
-                              width: MediaQuery.of(context).size.width * 0.3),
+                          child: Hero(
+                            tag: Strings.postHero,
+                            child: ImageCacheHelper.showImage(
+                                url: controller.actualDisplayPosts[index].post
+                                        .urlImage ??
+                                    "",
+                                height:
+                                    MediaQuery.of(context).size.height * 0.15,
+                                width: MediaQuery.of(context).size.width * 0.3),
+                          ),
                         );
                       },
                       itemCount: controller.actualDisplayPosts.length,

@@ -27,34 +27,37 @@ class SinglePostContainer extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context)!;
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _buildTopInfo(context, t),
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                ImageCacheHelper.showImage(
-                    url: postData.post.urlImage ??
-                        "https://picsum.photos/seed/picsum/200/300",
-                    width: MediaQuery.of(context).size.width,
-                    height:
-                        MediaQuery.of(context).size.height * singlePostSize),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: _buildActionsWidget(),
-                ),
-                _buildCaption(),
-              ],
-            ),
-            postData.post.userViews != null &&
-                    postData.post.userViews!.isNotEmpty
-                ? _buildUsersView(context, postData.post.userViews!)
-                : const SizedBox.shrink(),
-          ],
+    return Hero(
+      tag: Strings.postHero,
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _buildTopInfo(context, t),
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  ImageCacheHelper.showImage(
+                      url: postData.post.urlImage ??
+                          "https://picsum.photos/seed/picsum/200/300",
+                      width: MediaQuery.of(context).size.width,
+                      height:
+                          MediaQuery.of(context).size.height * singlePostSize),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: _buildActionsWidget(),
+                  ),
+                  _buildCaption(),
+                ],
+              ),
+              postData.post.userViews != null &&
+                      postData.post.userViews!.isNotEmpty
+                  ? _buildUsersView(context, postData.post.userViews!)
+                  : const SizedBox.shrink(),
+            ],
+          ),
         ),
       ),
     );

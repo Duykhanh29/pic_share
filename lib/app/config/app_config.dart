@@ -1,7 +1,7 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class AppConfig {
-  static String baseUrl = 'http://192.168.54.105:8000';
+  static String baseUrl = 'http://192.168.5.238:8000';
 
   static String pusherAppID = dotenv.env['pusherAppID'] ?? '';
   static String pusherApiKey = dotenv.env['pusherApiKey'] ?? '';
