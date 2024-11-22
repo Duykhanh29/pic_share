@@ -27,37 +27,34 @@ class SinglePostContainer extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context)!;
-    return Hero(
-      tag: Strings.postHero,
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _buildTopInfo(context, t),
-              Stack(
-                alignment: Alignment.center,
-                children: [
-                  ImageCacheHelper.showImage(
-                      url: postData.post.urlImage ??
-                          "https://picsum.photos/seed/picsum/200/300",
-                      width: MediaQuery.of(context).size.width,
-                      height:
-                          MediaQuery.of(context).size.height * singlePostSize),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: _buildActionsWidget(),
-                  ),
-                  _buildCaption(),
-                ],
-              ),
-              postData.post.userViews != null &&
-                      postData.post.userViews!.isNotEmpty
-                  ? _buildUsersView(context, postData.post.userViews!)
-                  : const SizedBox.shrink(),
-            ],
-          ),
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _buildTopInfo(context, t),
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                ImageCacheHelper.showImage(
+                    url: postData.post.urlImage ??
+                        "https://picsum.photos/seed/picsum/200/300",
+                    width: MediaQuery.of(context).size.width,
+                    height:
+                        MediaQuery.of(context).size.height * singlePostSize),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: _buildActionsWidget(),
+                ),
+                _buildCaption(),
+              ],
+            ),
+            postData.post.userViews != null &&
+                    postData.post.userViews!.isNotEmpty
+                ? _buildUsersView(context, postData.post.userViews!)
+                : const SizedBox.shrink(),
+          ],
         ),
       ),
     );
@@ -68,7 +65,7 @@ class SinglePostContainer extends GetView<HomeController> {
     return Padding(
       padding: const EdgeInsets.only(left: 5, top: 10, bottom: 10),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           GestureDetector(
               onTap: () {
@@ -94,13 +91,14 @@ class SinglePostContainer extends GetView<HomeController> {
                 child: Text(
                   isMe ? t.you : postData.post.user?.name ?? "",
                   style: AppTextStyles.headingTextStyle(),
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ),
           ),
-          SizedBox(width: size * 0.025),
+          SizedBox(width: size * 0.02),
           Container(
-            constraints: BoxConstraints(maxWidth: size * 0.25),
+            constraints: BoxConstraints(maxWidth: size * 0.26),
             padding: const EdgeInsets.all(4),
             decoration: BoxDecoration(
                 color: const Color.fromARGB(255, 223, 219, 219),
@@ -114,6 +112,7 @@ class SinglePostContainer extends GetView<HomeController> {
               maxLines: 3,
               textAlign: TextAlign.center,
               style: AppTextStyles.smallTextStyle(),
+              overflow: TextOverflow.ellipsis,
             ),
           ),
           const Spacer(),

@@ -6,12 +6,12 @@ class SessionController extends GetxController {
   TokenManager tokenManager = TokenManager();
 
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
-    _loadToken();
+    await fetchToken();
   }
 
-  Future<void> _loadToken() async {
+  Future<void> fetchToken() async {
     token.value = await tokenManager.getToken();
   }
 }

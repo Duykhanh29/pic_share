@@ -79,6 +79,7 @@ class HomeController extends GetxController {
   Future<void> onRefresh() async {
     posts.clear();
     actualDisplayPosts.clear();
+    await getUnseenNotificationCount();
     await fetchPosts(userId: appDrawerController.selectedUserId.value);
   }
 

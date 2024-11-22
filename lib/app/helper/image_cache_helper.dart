@@ -29,6 +29,7 @@ class ImageCacheHelper {
           fit: BoxFit.contain,
           httpHeaders: {
             "Connection": "keep-alive",
+            "Keep-Alive": "timeout=20, max=200",
             if (token != null) "Authorization": "Bearer $token"
           },
         );
@@ -38,57 +39,42 @@ class ImageCacheHelper {
 
   static Widget showImage(
       {required String url, required double height, required double width}) {
-    return StatefulBuilder(
-      builder: (context, setState) {
-        String imageUrl = AppConfig.baseUrl + url;
-        int retryCount = 0;
-
-        void retryLoading() {
-          if (retryCount < 3) {
-            Future.delayed(const Duration(seconds: 2), () {
-              retryCount++;
-              CachedNetworkImage.evictFromCache(imageUrl);
-              setState(() {});
-            });
-          }
-        }
-
-        return GetBuilder<SessionController>(
-          builder: (controller) {
-            final token = controller.token.value;
-            return CachedNetworkImage(
-              imageUrl: imageUrl,
-              fit: BoxFit.contain,
+    return GetBuilder<SessionController>(
+      builder: (controller) {
+        final token = controller.token.value;
+        return CachedNetworkImage(
+          imageUrl: AppConfig.baseUrl + url,
+          fit: BoxFit.contain,
+          height: height,
+          width: width,
+          imageBuilder: (context, imageProvider) {
+            return Container(
               height: height,
               width: width,
-              imageBuilder: (context, imageProvider) {
-                return Container(
-                  height: height,
-                  width: width,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                        color: AppColors.backgroundColor, width: 0.4),
-                    // borderRadius: BorderRadius.circular(80),
-                    image: DecorationImage(
-                        image: imageProvider, fit: BoxFit.contain),
-                  ),
-                );
-              },
-              errorWidget: (context, url, error) {
-                retryLoading();
-                return const SizedBox(child: Center(child: Icon(Icons.error)));
-              },
-              placeholder: (context, url) {
-                return SizedBox(
-                  width: width,
-                  height: height,
-                );
-              },
-              httpHeaders: {
-                "Connection": "keep-alive",
-                if (token != null) "Authorization": "Bearer $token"
-              },
+              decoration: BoxDecoration(
+                border:
+                    Border.all(color: AppColors.backgroundColor, width: 0.4),
+                // borderRadius: BorderRadius.circular(80),
+                image:
+                    DecorationImage(image: imageProvider, fit: BoxFit.contain),
+              ),
             );
+          },
+          errorWidget: (context, url, error) {
+            debugPrint(
+                "SOMETHING WENT WRONG TO FETCH IMAGE: ${error.toString()}");
+            return const SizedBox(child: Center(child: Icon(Icons.error)));
+          },
+          placeholder: (context, url) {
+            return SizedBox(
+              width: width,
+              height: height,
+            );
+          },
+          httpHeaders: {
+            "Connection": "keep-alive",
+            "Keep-Alive": "timeout=20, max=200",
+            if (token != null) "Authorization": "Bearer $token"
           },
         );
       },

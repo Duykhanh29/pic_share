@@ -35,12 +35,15 @@ class GridPostPage extends GetView<HomeController> {
                               crossAxisSpacing: 10,
                               mainAxisSpacing: 10),
                       itemBuilder: (context, index) {
+                        final id =
+                            controller.actualDisplayPosts[index].post.id ??
+                                hashCode;
                         return GestureDetector(
                           onTap: () {
                             controller.onNavigateToHomeWithIndex(index);
                           },
                           child: Hero(
-                            tag: Strings.postHero,
+                            tag: "${Strings.postHero}_$id",
                             child: ImageCacheHelper.showImage(
                                 url: controller.actualDisplayPosts[index].post
                                         .urlImage ??
