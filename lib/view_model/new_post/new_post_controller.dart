@@ -120,12 +120,12 @@ class NewPostController extends GetxController {
     }
   }
 
-  void onChangeSelectedUser(int index) {
+  void onChangeSelectedUser({required int index}) {
     listSelectedUser[index] = !listSelectedUser[index];
     bool allTrue = listSelectedUser.every((element) => element == true);
     if (allTrue) {
-      isSelectAllUser.value = true;
-      listSelectedUser.value = List.generate(friends.length, (index) => false);
+      // isSelectAllUser.value = true;
+      // listSelectedUser.value = List.generate(friends.length, (index) => false);
     } else {
       isSelectAllUser.value = false;
     }

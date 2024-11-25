@@ -127,19 +127,19 @@ class SignInPage extends GetView<SignInController> {
                 ),
                 child: Image.asset(AppImage.googleLogo)),
           ),
-          const SizedBox(width: 50),
-          GestureDetector(
-            onTap: () {},
-            child: Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  border:
-                      Border.all(color: AppColors.secondaryColor, width: 0.8),
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: Image.asset(AppImage.facebookLogo)),
-          ),
-          const SizedBox(width: 10),
+          // const SizedBox(width: 50),
+          // GestureDetector(
+          //   onTap: () {},
+          //   child: Container(
+          //       padding: const EdgeInsets.all(8),
+          //       decoration: BoxDecoration(
+          //         border:
+          //             Border.all(color: AppColors.secondaryColor, width: 0.8),
+          //         borderRadius: BorderRadius.circular(5),
+          //       ),
+          //       child: Image.asset(AppImage.facebookLogo)),
+          // ),
+          // const SizedBox(width: 10),
         ],
       ),
     );

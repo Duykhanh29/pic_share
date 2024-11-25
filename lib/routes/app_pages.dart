@@ -54,6 +54,7 @@ import 'package:pic_share/views/pages/settings/notification_settings_page.dart';
 import 'package:pic_share/views/pages/settings/settings_page.dart';
 import 'package:pic_share/views/pages/sign_in/sign_in_page.dart';
 import 'package:pic_share/views/pages/verify/verify_page.dart';
+import 'package:pic_share/views/widgets/no_connection_view.dart';
 
 part './app_routes.dart';
 
@@ -207,6 +208,10 @@ abstract class AppPages {
     GetPage(
       name: Routes.check2Fa,
       page: () => const Check2FPage(),
+    ),
+    GetPage(
+      name: Routes.noConnection,
+      page: () => const NoConnectionView(),
     ),
   ];
 }

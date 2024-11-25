@@ -11,12 +11,14 @@ import 'package:pic_share/data/providers/network/api_response.dart';
 import 'package:pic_share/data/repositories/auth/auth_repository.dart';
 import 'package:pic_share/data/repositories/user/user_repository.dart';
 import 'package:pic_share/routes/app_pages.dart';
+import 'package:pic_share/view_model/app/session_controller.dart';
 
 class SignInController extends GetxController {
   final AuthRepository authRepository;
   final UserRepository userRepository;
   final LocalStorageService localStorageService;
   NotificationsService notificationsService;
+  final SessionController sessionController;
   final _tokenManager = TokenManager();
   Rx<UserModel?> user = Rx<UserModel?>(null);
   SignInController({
@@ -24,6 +26,7 @@ class SignInController extends GetxController {
     required this.userRepository,
     required this.localStorageService,
     required this.notificationsService,
+    required this.sessionController,
   });
   final formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
@@ -63,6 +66,7 @@ class SignInController extends GetxController {
               Get.toNamed(Routes.adminPage);
             } else {
               await _tokenManager.setAccessToken(user.value?.accessToken);
+              await sessionController.fetchToken();
               if (user.value?.refreshToken != null) {
                 await _tokenManager.setRefreshToken(user.value?.refreshToken);
                 String? token = await notificationsService.getToken();
@@ -94,6 +98,7 @@ class SignInController extends GetxController {
         user.value = response.data;
         await _tokenManager.setAccessToken(user.value?.accessToken);
         await _tokenManager.setRefreshToken(user.value?.refreshToken);
+        await sessionController.fetchToken();
         String? token = await notificationsService.getToken();
         if (token != null) {
           await userRepository.updateFcmToken(fcmToken: token);

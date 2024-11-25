@@ -157,5 +157,8 @@
     "enterPasswordToConfirm": "Enter password to confirm",
     "check2FA":"Check 2FA",
     "twoFactorAuthentication":"Two-factor authentication",
-    "sendEmailForLogin": "Send an email notification on login event"
+    "sendEmailForLogin": "Send an email notification on login event",
+    "warningToShareWithFriend": "Share with all friends (including future friends). If you do not select this button but still select all friends in your current list, this post will not exist for future friends.",
+    "noConnection": "No Internet connection. Check your connection or try again",
+    "tryAgain": "Retry"
 }

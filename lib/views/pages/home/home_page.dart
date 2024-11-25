@@ -56,6 +56,7 @@ class HomePage extends GetView<HomeController> {
   }
 
   Widget _buildBody(BuildContext context) {
+    final availableHeight = getAvailableHeight(context);
     return RefreshIndicator(
       onRefresh: controller.onRefresh,
       child: Container(
@@ -67,8 +68,19 @@ class HomePage extends GetView<HomeController> {
               ? const LoadingWidget()
               : controller.isLoading.value
                   ? ShimmerHelper().buildListPostShimmer(context)
-                  : controller.actualDisplayPosts.isEmpty
-                      ? _buildNoPost(context)
+                  : controller.actualDisplayPosts.length < 2
+                      ? (SingleChildScrollView(
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          child: controller.actualDisplayPosts.isEmpty
+                              ? SizedBox(
+                                  height: availableHeight,
+                                  child: _buildNoPost(context),
+                                )
+                              : SizedBox(
+                                  height: availableHeight,
+                                  child: _buildListPost(context),
+                                ),
+                        ))
                       : _buildListPost(context),
         ),
       ),
@@ -78,19 +90,22 @@ class HomePage extends GetView<HomeController> {
   Widget _buildNoPost(BuildContext context) {
     final t = AppLocalizations.of(context)!;
     final size = MediaQuery.of(context).size.height;
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const AssetImageWidget(asset: AppImage.emptyPhoto),
-          SizedBox(
-            height: size * 0.04,
-          ),
-          Text(
-            t.noPhotoSharing,
-            style: AppTextStyles.commonTextStyle().copyWith(fontSize: 16),
-          ),
-        ],
+    return SizedBox(
+      height: size,
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const AssetImageWidget(asset: AppImage.emptyPhoto),
+            SizedBox(
+              height: size * 0.04,
+            ),
+            Text(
+              t.noPhotoSharing,
+              style: AppTextStyles.commonTextStyle().copyWith(fontSize: 16),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -130,5 +145,12 @@ class HomePage extends GetView<HomeController> {
         },
       ),
     );
+  }
+
+  double getAvailableHeight(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+    const appBarHeight = kToolbarHeight;
+    const bottomNavBarHeight = kBottomNavigationBarHeight;
+    return mediaQuery.size.height - appBarHeight - bottomNavBarHeight;
   }
 }

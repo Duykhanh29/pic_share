@@ -89,16 +89,22 @@ class APIProvider {
         status: ApiStatus.failure,
         message: "Request time out",
       );
-    } on SocketException {
+    } on SocketException catch (e) {
       return ApiResponse(
         status: ApiStatus.failure,
-        message: "Network is not available",
+        message: "Network is not available: ${e.message}",
       );
     } on DioException catch (e, h) {
       final message = e.response?.data['message'] ?? e.error.toString();
       // if (g.Get.isSnackbarOpen == false) {
       //   SnackbarHelper.errorSnackbar(message);
       // }
+      if (e.type == DioExceptionType.connectionError) {
+        return ApiResponse(
+          status: ApiStatus.failure,
+          message: "Network is not available",
+        );
+      }
       if (e.response?.statusCode == 403) {
         SnackbarHelper.errorSnackbar(
             e.response?.statusMessage ?? "This account has been banned");
