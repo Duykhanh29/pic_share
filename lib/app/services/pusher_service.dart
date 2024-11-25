@@ -175,9 +175,11 @@ class PusherService extends GetxService {
       final decodedData = jsonDecode(data);
       final Conversation conversation = Conversation.fromJson(decodedData);
       if (conversation.id != null) {
-        final currentList = conversations.toList();
+        final List<Conversation> currentList = List.from(conversations);
 
-        currentList.removeWhere((c) => c.id == 0);
+        if (currentList.isNotEmpty) {
+          currentList.removeWhere((c) => c.id == 0);
+        }
         currentList.add(conversation);
 
         // Cập nhật conversations với danh sách mới

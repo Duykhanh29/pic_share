@@ -33,4 +33,5 @@ abstract class Routes {
   static const String deletedPost = '/deleted_post';
   static const String notFound = '/not_found';
   static const String check2Fa = '/check_2fa';
+  static const String noConnection = '/no_connection';
 }

@@ -102,11 +102,11 @@ class FriendController extends GetxController
   }
 
   Future<void> onRefresh() async {
-    if (isFriendShipView.value) {
-      await fetchFriends();
-    } else {
-      await fetchFriendRequests();
-    }
+    // if (isFriendShipView.value) {
+    await fetchFriends();
+    // } else {
+    await fetchFriendRequests();
+    // }
   }
 
   Future<void> fetchFriends() async {
@@ -277,7 +277,7 @@ class FriendController extends GetxController
     try {
       final response = await friendRepository.sendFriendRequest(id);
       if (response.isSuccess) {
-        SnackbarHelper.successSnackbar(response.message ?? '');
+        // SnackbarHelper.successSnackbar(response.message ?? '');
         return response.data;
       } else {
         SnackbarHelper.errorSnackbar(response.message ?? '');
@@ -299,7 +299,7 @@ class FriendController extends GetxController
           sentFriends.add(friend);
           suggestedFriends.removeWhere((element) => element.user.id == id);
         }
-        SnackbarHelper.successSnackbar(response.message ?? '');
+        // SnackbarHelper.successSnackbar(response.message ?? '');
       } else {
         SnackbarHelper.errorSnackbar(response.message ?? '');
       }

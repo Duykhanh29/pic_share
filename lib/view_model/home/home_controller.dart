@@ -77,6 +77,7 @@ class HomeController extends GetxController {
   }
 
   Future<void> onRefresh() async {
+    isLoading.value = true;
     posts.clear();
     actualDisplayPosts.clear();
     await getUnseenNotificationCount();

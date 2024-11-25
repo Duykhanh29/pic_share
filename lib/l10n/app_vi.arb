@@ -157,6 +157,9 @@
     "enterPasswordToConfirm":"Nhập mật khẩu để xác nhận",
     "check2FA":"Kiểm tra xác thực 2 yếu tố",
     "twoFactorAuthentication":"Xác thực hai yếu tố",
-    "sendEmailForLogin": "Gửi thông báo qua email khi đăng nhập"
+    "sendEmailForLogin": "Gửi thông báo qua email khi đăng nhập",
+    "warningToShareWithFriend": "Chia sẻ tới tất cả bạn bè( có thể gồm bạn bè trong tương lai). Nếu không chọn nút này nhưng mà vẫn chọn hết các bạn bè trong danh sách hiện tại thì bài viết này sẽ không tồn tại với bạn bè trong tương lai",
+    "noConnection": "Không có kết nối Internet. Kiểm tra kết nối của bạn hoặc thử lại",
+    "tryAgain": "Thử lại"
 
 }

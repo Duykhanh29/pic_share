@@ -282,20 +282,23 @@ class NewPostPage extends GetView<NewPostController> {
         itemBuilder: (context, index) {
           return index == 0
               ? Obx(
-                  () => GestureDetector(
-                    onTap: controller.onChangeSelectAllUser,
-                    child: SharedUserWidget(
-                      name: t.all,
-                      url: null,
-                      isSelected: controller.isSelectAllUser.value,
-                      isAll: true,
+                  () => Tooltip(
+                    message: t.warningToShareWithFriend,
+                    child: GestureDetector(
+                      onTap: controller.onChangeSelectAllUser,
+                      child: SharedUserWidget(
+                        name: t.all,
+                        url: null,
+                        isSelected: controller.isSelectAllUser.value,
+                        isAll: true,
+                      ),
                     ),
                   ),
                 )
               : Obx(
                   () => GestureDetector(
                     onTap: () {
-                      controller.onChangeSelectedUser(index - 1);
+                      controller.onChangeSelectedUser(index: index - 1);
                     },
                     child: SharedUserWidget(
                       isSelected: controller.listSelectedUser[index - 1],

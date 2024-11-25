@@ -7,6 +7,7 @@ import 'package:pic_share/app/services/token_manager.dart';
 import 'package:pic_share/data/models/user/user_model.dart';
 import 'package:pic_share/data/repositories/auth/auth_repository.dart';
 import 'package:pic_share/data/repositories/user/user_repository.dart';
+import 'package:pic_share/view_model/app/session_controller.dart';
 
 class RegisterController extends GetxController {
   final AuthRepository authRepository;
@@ -14,12 +15,14 @@ class RegisterController extends GetxController {
   final LocalStorageService localStorageService;
   final _tokenManager = TokenManager();
   NotificationsService notificationsService;
+  final SessionController sessionController;
 
   RegisterController({
     required this.authRepository,
     required this.userRepository,
     required this.localStorageService,
     required this.notificationsService,
+    required this.sessionController,
   });
 
   final formKey = GlobalKey<FormState>();
@@ -71,13 +74,7 @@ class RegisterController extends GetxController {
 
         if (response.isSuccess) {
           user.value = response.data;
-          await _tokenManager.setAccessToken(user.value?.accessToken);
-          await _tokenManager.setRefreshToken(user.value?.refreshToken);
-          String? token = await notificationsService.getToken();
-          if (token != null) {
-            await updateFcmToken(token);
-          }
-          localStorageService.setUserModel(value: user.value);
+          await setToken();
           SnackbarHelper.successSnackbar(
               response.message ?? "Register successfully");
         } else {
@@ -92,6 +89,17 @@ class RegisterController extends GetxController {
     } finally {
       isLoading.value = false;
     }
+  }
+
+  Future<void> setToken() async {
+    await _tokenManager.setAccessToken(user.value?.accessToken);
+    await _tokenManager.setRefreshToken(user.value?.refreshToken);
+    await sessionController.fetchToken();
+    String? token = await notificationsService.getToken();
+    if (token != null) {
+      await updateFcmToken(token);
+    }
+    localStorageService.setUserModel(value: user.value);
   }
 
   Future<void> updateFcmToken(String token) async {

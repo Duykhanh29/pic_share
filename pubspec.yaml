@@ -119,6 +119,9 @@ dependencies:
 
   # qr code
   qr_flutter: ^4.1.0
+
+  # connectivity
+  connectivity_plus: ^6.0.3
   
 
   # The following adds the Cupertino Icons font to your application.

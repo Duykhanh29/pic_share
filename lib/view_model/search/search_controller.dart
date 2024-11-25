@@ -166,7 +166,7 @@ class SearchUserController extends GetxController {
       Friend? friend = await friendController.makeFriendRequest(id);
       if (friend != null) {
         onUpdateClick(UserRelationship.sent, id, friend.id);
-        friendController.onRefresh();
+        await friendController.onRefresh();
       }
     } catch (e) {
       debugPrint("Something went wrong: ${e.toString()}");

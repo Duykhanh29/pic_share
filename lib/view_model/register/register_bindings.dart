@@ -4,6 +4,7 @@ import 'package:pic_share/app/services/notification_service.dart';
 import 'package:pic_share/data/repositories/auth/auth_repository.dart';
 import 'package:pic_share/data/repositories/user/user_repository.dart';
 import 'package:pic_share/view_model/register/register_controller.dart';
+import 'package:pic_share/view_model/app/session_controller.dart';
 
 class RegisterBindings extends Bindings {
   @override
@@ -14,6 +15,7 @@ class RegisterBindings extends Bindings {
         authRepository: Get.find<AuthRepository>(),
         userRepository: Get.find<UserRepository>(),
         notificationsService: Get.find<NotificationsService>(),
+        sessionController: Get.find<SessionController>(),
       ),
     );
   }
