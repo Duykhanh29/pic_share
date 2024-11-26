@@ -9,6 +9,7 @@ import 'package:pic_share/app/services/pusher_service.dart';
 import 'package:pic_share/app/services/token_manager.dart';
 import 'package:pic_share/data/models/auth/qrcode_response.dart';
 import 'package:pic_share/data/models/user/user_model.dart';
+import 'package:pic_share/data/providers/network/api_response.dart';
 import 'package:pic_share/data/repositories/auth/auth_repository.dart';
 import 'package:pic_share/data/repositories/user/user_repository.dart';
 import 'package:pic_share/routes/app_pages.dart';
@@ -136,19 +137,15 @@ class AuthController extends GetxController {
     }
   }
 
-  Future<void> changePassword(
+  Future<ApiResponse> changePassword(
       {required String currentPassword,
       required String newPassword,
       required String passwordConfirmation}) async {
-    try {
-      await userRepository.changePassword(
-          currentPassword: currentPassword,
-          newPassword: newPassword,
-          passwordConfirmation: passwordConfirmation);
-    } catch (e) {
-      debugPrint("Something went wrong: ${e.toString()}");
-      SnackbarHelper.errorSnackbar(e.toString());
-    }
+    final response = await userRepository.changePassword(
+        currentPassword: currentPassword,
+        newPassword: newPassword,
+        passwordConfirmation: passwordConfirmation);
+    return response;
   }
 
   Future<void> deleteUser() async {

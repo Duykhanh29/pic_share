@@ -53,7 +53,7 @@ class PusherService extends GetxService {
           await onEvent(event);
         });
       } else {
-        await unsubscribleUserChannel(currentUser.value?.id ?? 0);
+        await unsubscribeUserChannel(currentUser.value?.id ?? 0);
       }
       currentUser.value = user;
     });
@@ -119,7 +119,7 @@ class PusherService extends GetxService {
     }
   }
 
-  Future<void> unsubscribleUserChannel(int userId) async {
+  Future<void> unsubscribeUserChannel(int userId) async {
     await _pusher.unsubscribe(
       channelName: "chat.user.$userId",
     );
@@ -165,7 +165,7 @@ class PusherService extends GetxService {
     } else if (event.eventName.contains("post.created")) {
       onNewPostEvent(event);
     } else {
-      debugPrint("Aontoher event: $event");
+      debugPrint("Another event: $event");
     }
   }
 
@@ -182,7 +182,7 @@ class PusherService extends GetxService {
         }
         currentList.add(conversation);
 
-        // Cập nhật conversations với danh sách mới
+        // Update conversation with new list
         conversations.assignAll(currentList);
         await subscribeToRooms();
         conversationsController.addNewConversation(conversation);

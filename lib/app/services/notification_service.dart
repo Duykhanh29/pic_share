@@ -88,7 +88,7 @@ class NotificationsService extends GetxService {
     );
     final androidDetails = AndroidNotificationDetails(
       'com.example.pic_share',
-      'mychannelid',
+      'myChannelId',
       importance: Importance.max,
       styleInformation: styleInformation,
       priority: Priority.max,
@@ -121,13 +121,13 @@ class NotificationsService extends GetxService {
     });
   }
 
-  Future<void> requestPermission() async {
+  Future<bool> requestPermission() async {
     final messaging = FirebaseMessaging.instance;
 
     NotificationSettings currentSettings =
         await messaging.getNotificationSettings();
     if (currentSettings.authorizationStatus == AuthorizationStatus.authorized) {
-      return;
+      return true;
     }
     final settings = await messaging.requestPermission(
       alert: true,
@@ -142,6 +142,7 @@ class NotificationsService extends GetxService {
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
       debugPrint('User granted permission');
       localStorageService.setNotificationPermission(true);
+      return true;
     } else if (settings.authorizationStatus ==
         AuthorizationStatus.provisional) {
       debugPrint('User granted provisional permission');
@@ -151,6 +152,13 @@ class NotificationsService extends GetxService {
       debugPrint('User declined or has not accepted permission');
       localStorageService.setNotificationPermission(false);
     }
+    return false;
+  }
+
+  Future<bool> getNotificationSettings() async {
+    final messaging = FirebaseMessaging.instance;
+    final settings = await messaging.getNotificationSettings();
+    return settings.authorizationStatus == AuthorizationStatus.authorized;
   }
 
   Future<String?> getToken() async {

@@ -24,6 +24,9 @@ class AppColors {
   static const Color transparentColor = Colors.transparent;
 
   static const Color selectedColor = Color.fromARGB(255, 247, 183, 99);
+
+  static const Color readColor = Color.fromARGB(136, 173, 197, 205);
+  static const Color unReadColor = Color.fromARGB(255, 131, 182, 177);
   // dark
   static Color darkTabBarColor = const Color.fromARGB(255, 25, 99, 28);
   static Color darkBorderColor = const Color.fromARGB(255, 60, 60, 60);

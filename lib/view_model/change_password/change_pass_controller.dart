@@ -46,17 +46,24 @@ class ChangePasswordController extends GetxController {
     isConfirmNewPassVisibility.value = !isConfirmNewPassVisibility.value;
   }
 
-  Future<void> onChangePassword() async {
+  Future<bool> onChangePassword() async {
     isLoading.value = true;
+    bool isSuccess = false;
     try {
       var isValid = formKey.currentState!.validate();
       if (isValid) {
-        await authController.changePassword(
+        final result = await authController.changePassword(
           currentPassword: currentPassController.text.trim(),
           newPassword: newPassController.text.trim(),
           passwordConfirmation: confirmNewPasswordController.text.trim(),
         );
-        Get.back();
+        if (result.isSuccess) {
+          SnackbarHelper.successSnackbar(result.message ?? "Success");
+        } else {
+          SnackbarHelper.errorSnackbar(result.message ?? "Fail");
+        }
+        isSuccess = result.isSuccess;
+        return result.isSuccess;
       } else {
         debugPrint('form is not valid');
       }
@@ -65,6 +72,11 @@ class ChangePasswordController extends GetxController {
       SnackbarHelper.errorSnackbar(e.toString());
     } finally {
       isLoading.value = false;
+      if (isSuccess) {
+        await Future.delayed(const Duration(seconds: 2));
+        Get.back();
+      }
     }
+    return false;
   }
 }

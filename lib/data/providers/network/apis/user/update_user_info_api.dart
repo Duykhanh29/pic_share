@@ -68,7 +68,7 @@ class ChangePasswordAPI extends APIRequestRepresentable {
   final String newPassword;
   final String passwordConfirmation;
   @override
-  String get endpoint => '/api/user/update';
+  String get endpoint => '/api/user/password';
 
   @override
   HTTPMethod get method => HTTPMethod.patch;

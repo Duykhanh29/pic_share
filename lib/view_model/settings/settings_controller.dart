@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:pic_share/app/constants/strings.dart';
 import 'package:pic_share/app/helper/snack_bar_helper.dart';
 import 'package:pic_share/app/services/local_storage_service.dart';
+import 'package:pic_share/app/services/notification_service.dart';
 import 'package:pic_share/data/models/user/user_model.dart';
 import 'package:pic_share/routes/app_pages.dart';
 import 'package:pic_share/view_model/auth/auth_controller.dart';
@@ -13,10 +14,12 @@ class SettingsController extends GetxController {
   AuthController authController;
   FriendController friendController;
   LocalStorageService localStorageService;
+  NotificationsService notificationsService;
   SettingsController({
     required this.authController,
     required this.friendController,
     required this.localStorageService,
+    required this.notificationsService,
   });
 
   Rx<UserModel?> get currentUser => authController.currentUser;
@@ -38,14 +41,9 @@ class SettingsController extends GetxController {
     super.onInit();
   }
 
-  void _initializeNotificationSettings() {
-    bool hasPermission = localStorageService.notificationPermission;
-
-    if (hasPermission) {
-      isShowNotification.value = true;
-    } else {
-      isShowNotification.value = false;
-    }
+  Future<void> _initializeNotificationSettings() async {
+    isShowNotification.value =
+        await notificationsService.getNotificationSettings();
   }
 
   Future<void> logout() async {
@@ -134,19 +132,13 @@ class SettingsController extends GetxController {
       }
       await authController.updateFCMToken(isNull: true);
     } else {
-      bool hasPermission = localStorageService.notificationPermission;
+      bool hasPermission = await notificationsService.getNotificationSettings();
 
       if (!hasPermission) {
-        NotificationSettings settings =
-            await FirebaseMessaging.instance.requestPermission();
-
-        if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-          debugPrint('User granted notification permission');
-          localStorageService.setNotificationPermission(true);
+        final result = await notificationsService.requestPermission();
+        localStorageService.setNotificationPermission(result);
+        if (result) {
           await authController.updateFCMToken();
-        } else {
-          debugPrint('User denied or did not grant permission');
-          localStorageService.setNotificationPermission(false);
         }
       } else {
         await authController.updateFCMToken();

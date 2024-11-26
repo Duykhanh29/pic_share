@@ -21,7 +21,9 @@ class NotificationPage extends GetView<NotificationController> {
     return Scaffold(
       appBar: CustomAppBar(
         title: t.notification,
-        onBack: controller.refreshUnseenCount,
+        onBack: () {
+          controller.onBack();
+        },
       ).show(),
       body: RefreshIndicator(
         onRefresh: controller.onRefresh,

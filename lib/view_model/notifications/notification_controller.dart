@@ -100,6 +100,11 @@ class NotificationController extends GetxController {
     }
   }
 
+  Future<void> onBack() async {
+    await refreshUnseenCount();
+    await onRefresh();
+  }
+
   Future<void> onClick(int id) async {
     final notification =
         pagingController.itemList?.firstWhere((element) => element.id == id);
@@ -107,6 +112,7 @@ class NotificationController extends GetxController {
       await onNavigate(notification.linkTo);
       await updateNotification(id);
     }
+    onBack();
   }
 
   Future<void> onNavigate(LinkToModel? linkTo) async {
