@@ -16,11 +16,11 @@ class FooterText extends GetView<AppController> {
         RichText(
           text: TextSpan(
             text: "© ${DateTime.now().year}. ",
-            style: AppTextStyles.headingTextStyle(),
+            style: AppTextStyles.commonTextStyle(),
             children: [
               TextSpan(
                 text: t.appName,
-                style: AppTextStyles.headingTextStyle().copyWith(
+                style: AppTextStyles.commonTextStyle().copyWith(
                     color: Colors.red[400], fontWeight: FontWeight.w600),
                 recognizer: TapGestureRecognizer()
                   ..onTap = () {
@@ -29,14 +29,14 @@ class FooterText extends GetView<AppController> {
               ),
               TextSpan(
                 text: appInfo,
-                style: AppTextStyles.commonTextStyle(),
+                style: AppTextStyles.smallTextStyle(),
               ),
             ],
           ),
         ),
         Text(
           t.allRightReserved,
-          style: AppTextStyles.smallTextStyle(),
+          style: AppTextStyles.smallTextStyle().copyWith(fontSize: 10),
           textAlign: TextAlign.center,
         ),
       ],

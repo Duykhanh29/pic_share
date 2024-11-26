@@ -58,110 +58,119 @@ class ChangePasswordPage extends GetView<ChangePasswordController> {
             bottomNavigationBar: _buildButton(context, t),
           ),
         ),
-        if (controller.isLoading.value) const LoadingWidget(),
+        Obx(
+          () => controller.isLoading.value
+              ? const LoadingWidget()
+              : const SizedBox.shrink(),
+        )
       ],
     );
   }
 
   Widget _buildCurrentPassTextField(AppLocalizations t, double heightSize) {
-    return SizedBox(
-      height: heightSize,
-      child: TextFormField(
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return t.passCannotBeEmpty;
-          }
-          if (value.length < 6) {
-            return t.minPasswordLength;
-          }
-          return null;
-        },
-        controller: controller.currentPassController,
-        decoration: InputDecoration(
-            contentPadding: const EdgeInsets.all(15),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(15),
-            ),
-            suffixIcon: IconButton(
-              onPressed: controller.onChangeCurrentPassVisibility,
-              icon: Icon(controller.isCurrentPassVisibility.value
-                  ? Icons.visibility_off_sharp
-                  : Icons.visibility_sharp),
-            ),
-            hintText: t.currentPassword),
-        obscureText: !controller.isCurrentPassVisibility.value,
-        textAlignVertical: TextAlignVertical.center,
+    return IntrinsicHeight(
+      child: Obx(
+        () => TextFormField(
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return t.passCannotBeEmpty;
+            }
+            if (value.length < 6) {
+              return t.minPasswordLength;
+            }
+            return null;
+          },
+          controller: controller.currentPassController,
+          decoration: InputDecoration(
+              contentPadding: const EdgeInsets.all(15),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+              suffixIcon: IconButton(
+                onPressed: controller.onChangeCurrentPassVisibility,
+                icon: Icon(controller.isCurrentPassVisibility.value
+                    ? Icons.visibility_off_sharp
+                    : Icons.visibility_sharp),
+              ),
+              hintText: t.currentPassword),
+          obscureText: !controller.isCurrentPassVisibility.value,
+          textAlignVertical: TextAlignVertical.center,
+        ),
       ),
     );
   }
 
   Widget _buildNewPassTextField(AppLocalizations t, double heightSize) {
-    return SizedBox(
-      height: heightSize,
-      child: TextFormField(
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return t.passCannotBeEmpty;
-          }
-          if (value.length < 6) {
-            return t.minPasswordLength;
-          }
-          return null;
-        },
-        controller: controller.newPassController,
-        decoration: InputDecoration(
-            contentPadding: const EdgeInsets.all(15),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(15),
-            ),
-            suffixIcon: IconButton(
-              onPressed: controller.onChangeNewPassVisibility,
-              icon: Icon(controller.isNewPassVisibility.value
-                  ? Icons.visibility_off_sharp
-                  : Icons.visibility_sharp),
-            ),
-            hintText: t.newPassword),
-        obscureText: !controller.isNewPassVisibility.value,
-        textAlignVertical: TextAlignVertical.center,
+    return IntrinsicHeight(
+      child: Obx(
+        () => TextFormField(
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return t.passCannotBeEmpty;
+            }
+            if (value.length < 6) {
+              return t.minPasswordLength;
+            }
+            return null;
+          },
+          controller: controller.newPassController,
+          decoration: InputDecoration(
+              contentPadding: const EdgeInsets.all(15),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+              suffixIcon: IconButton(
+                onPressed: controller.onChangeNewPassVisibility,
+                icon: Icon(controller.isNewPassVisibility.value
+                    ? Icons.visibility_off_sharp
+                    : Icons.visibility_sharp),
+              ),
+              hintText: t.newPassword),
+          obscureText: !controller.isNewPassVisibility.value,
+          textAlignVertical: TextAlignVertical.center,
+        ),
       ),
     );
   }
 
   Widget _buildConfirmPassTextField(AppLocalizations t, double heightSize) {
-    return SizedBox(
-      height: heightSize,
-      child: TextFormField(
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return t.passCannotBeEmpty;
-          }
-          if (value != controller.newPassController.text) {
-            return t.passwordDoesNotMmatch;
-          }
-          return null;
-        },
-        controller: controller.confirmNewPasswordController,
-        decoration: InputDecoration(
-            contentPadding: const EdgeInsets.all(15),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(15),
-            ),
-            suffixIcon: IconButton(
-              onPressed: controller.onChangeConfirmNewPassVisibility,
-              icon: Icon(controller.isConfirmNewPassVisibility.value
-                  ? Icons.visibility_off_sharp
-                  : Icons.visibility_sharp),
-            ),
-            hintText: t.confirmNewPass),
-        obscureText: !controller.isConfirmNewPassVisibility.value,
-        textAlignVertical: TextAlignVertical.center,
+    return IntrinsicHeight(
+      child: Obx(
+        () => TextFormField(
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return t.passCannotBeEmpty;
+            }
+            if (value != controller.newPassController.text) {
+              return t.passwordDoesNotMmatch;
+            }
+            return null;
+          },
+          controller: controller.confirmNewPasswordController,
+          decoration: InputDecoration(
+              contentPadding: const EdgeInsets.all(15),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+              suffixIcon: IconButton(
+                onPressed: controller.onChangeConfirmNewPassVisibility,
+                icon: Icon(controller.isConfirmNewPassVisibility.value
+                    ? Icons.visibility_off_sharp
+                    : Icons.visibility_sharp),
+              ),
+              hintText: t.confirmNewPass),
+          obscureText: !controller.isConfirmNewPassVisibility.value,
+          textAlignVertical: TextAlignVertical.center,
+        ),
       ),
     );
   }
 
   Widget _buildButton(BuildContext context, AppLocalizations t) {
     return InkWell(
-      onTap: controller.onChangePassword,
+      onTap: () async {
+        await controller.onChangePassword();
+      },
       child: Container(
         height: 50,
         width: MediaQuery.of(context).size.width,

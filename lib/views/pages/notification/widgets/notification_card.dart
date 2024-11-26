@@ -23,6 +23,7 @@ class NotificationItemCard extends StatelessWidget {
     final widthSize = size.width;
     final heightSize = size.height;
     final avatarSize = widthSize * 0.12;
+    final dotSize = heightSize * 0.01;
     return GestureDetector(
       onTap: () {
         onCLick?.call(notification.id ?? 0);
@@ -35,10 +36,8 @@ class NotificationItemCard extends StatelessWidget {
           ),
           decoration: BoxDecoration(
             color: notification.isSeen
-                ? (notification.isRead
-                    ? const Color.fromARGB(137, 193, 193, 193)
-                    : AppColors.thirdColor)
-                : Colors.blueAccent,
+                ? AppColors.readColor
+                : AppColors.unReadColor,
             borderRadius: BorderRadius.circular(10),
           ),
           child: Row(
@@ -90,10 +89,23 @@ class NotificationItemCard extends StatelessWidget {
                 },
                 icon: const Icon(Icons.more_vert),
               ),
+              isReadPoint(notification.isRead, dotSize),
+              SizedBox(
+                width: widthSize * 0.005,
+              ),
             ],
           )),
     );
   }
+
+  Widget isReadPoint(bool isRead, double size) => Container(
+        width: size,
+        height: size,
+        decoration: BoxDecoration(
+          color: isRead ? Colors.transparent : AppColors.selectedColor,
+          shape: BoxShape.circle,
+        ),
+      );
 }
 
 Future<void> showActionSheet(
