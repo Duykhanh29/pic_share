@@ -30,26 +30,7 @@ class SignInPage extends GetView<SignInController> {
             child: Column(
               children: [
                 SizedBox(height: size * 0.02),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  child: TextButton(
-                    style: ButtonStyle(
-                      shape: MaterialStateProperty.all(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                      ),
-                    ),
-                    onPressed: () {
-                      Get.toNamed(Routes.register);
-                    },
-                    child: Text(
-                      t.register,
-                      style: AppTextStyles.commonTextStyle()
-                          .copyWith(decoration: TextDecoration.underline),
-                    ),
-                  ),
-                ),
+                _buildRowAction(t),
                 SizedBox(height: size * 0.02),
                 _buildOrLine(t),
                 SizedBox(height: size * 0.02),
@@ -61,6 +42,50 @@ class SignInPage extends GetView<SignInController> {
           if (controller.isLoading.value) const LoadingWidget(),
         ],
       ),
+    );
+  }
+
+  Widget _buildRowAction(AppLocalizations t) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisSize: MainAxisSize.max,
+      children: [
+        TextButton(
+          style: ButtonStyle(
+            shape: MaterialStateProperty.all(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5),
+              ),
+            ),
+          ),
+          onPressed: () {
+            Get.toNamed(Routes.register);
+          },
+          child: Text(
+            t.register,
+            style: AppTextStyles.commonTextStyle()
+                .copyWith(decoration: TextDecoration.underline),
+          ),
+        ),
+        const Spacer(),
+        TextButton(
+          style: ButtonStyle(
+            shape: MaterialStateProperty.all(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5),
+              ),
+            ),
+          ),
+          onPressed: () {
+            Get.toNamed(Routes.forgotPassword);
+          },
+          child: Text(
+            t.forgotPassword,
+            style: AppTextStyles.commonTextStyle()
+                .copyWith(decoration: TextDecoration.underline),
+          ),
+        ),
+      ],
     );
   }
 

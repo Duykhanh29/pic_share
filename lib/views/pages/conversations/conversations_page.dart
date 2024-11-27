@@ -18,7 +18,7 @@ class ConversationPage extends GetView<ConversationsController> {
     return Scaffold(
       appBar: CustomAppBar(title: t.messages, isLeadingShow: false).show(),
       body: RefreshIndicator(
-        onRefresh: () async {},
+        onRefresh: controller.refreshConversation,
         child: Padding(
           padding: const EdgeInsets.all(10),
           child: Obx(

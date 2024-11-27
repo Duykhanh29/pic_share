@@ -34,4 +34,5 @@ abstract class Routes {
   static const String notFound = '/not_found';
   static const String check2Fa = '/check_2fa';
   static const String noConnection = '/no_connection';
+  static const String resetPassword = '/reset_password';
 }

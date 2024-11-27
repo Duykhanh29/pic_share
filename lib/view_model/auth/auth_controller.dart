@@ -39,6 +39,9 @@ class AuthController extends GetxController {
 
   RxBool actionLoading = false.obs;
 
+  RxString resetEmail = "".obs;
+  RxInt otpValidity = 0.obs;
+
   @override
   void onInit() async {
     currentUser.value = localStorageService.userModel;
@@ -232,6 +235,52 @@ class AuthController extends GetxController {
           Get.offAllNamed(Routes.navBar);
           SnackbarHelper.successSnackbar(response.message ?? "");
         }
+      } else {
+        SnackbarHelper.errorSnackbar(response.message ?? "");
+      }
+    } catch (e) {
+      debugPrint("Something went wrong: ${e.toString()}");
+    } finally {
+      actionLoading.value = false;
+    }
+  }
+
+  Future<void> forgotPassword({required String email}) async {
+    try {
+      actionLoading.value = true;
+      final response = await authRepository.forgotPassword(email: email);
+      if (response.isSuccess) {
+        resetEmail.value = email;
+        otpValidity.value = response.data ?? 0;
+        Get.toNamed(Routes.resetPassword);
+        SnackbarHelper.successSnackbar(response.message ?? "");
+      } else {
+        SnackbarHelper.errorSnackbar(response.message ?? "");
+      }
+    } catch (e) {
+      debugPrint("Something went wrong: ${e.toString()}");
+    } finally {
+      actionLoading.value = false;
+    }
+  }
+
+  Future<void> resetPassword({
+    required String password,
+    required String otp,
+    required String email,
+    required String passwordConfirmation,
+  }) async {
+    try {
+      actionLoading.value = true;
+      final response = await authRepository.resetPassword(
+        email: email,
+        otp: otp,
+        password: password,
+        passwordConfirmation: passwordConfirmation,
+      );
+      if (response.isSuccess) {
+        Get.offAllNamed(Routes.login);
+        SnackbarHelper.successSnackbar(response.message ?? "");
       } else {
         SnackbarHelper.errorSnackbar(response.message ?? "");
       }

@@ -24,7 +24,8 @@ class CustomMaterialView extends StatelessWidget {
       shape: shape,
       color: color ?? Colors.white,
       child: Container(
-        padding: EdgeInsets.all(size * 0.04),
+        padding: EdgeInsets.symmetric(
+            horizontal: size * 0.03, vertical: size * 0.04),
         decoration: BoxDecoration(
           borderRadius: borderRadius ?? BorderRadius.circular(size * 0.02),
           color: AppColors.white,
