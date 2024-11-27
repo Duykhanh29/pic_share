@@ -65,6 +65,11 @@ class ConversationsController extends GetxController {
     }
   }
 
+  Future<void> refreshConversation() async {
+    conversationData.value = ConversationData();
+    await fetchConversation();
+  }
+
   Future<void> onClickConversationItem(
       int conversationId, UserSummaryModel? user,
       {bool isTempChat = false}) async {

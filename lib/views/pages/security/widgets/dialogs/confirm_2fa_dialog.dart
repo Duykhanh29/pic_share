@@ -201,7 +201,7 @@ class _Confirm2faDialogState extends State<Confirm2faDialog> {
       title: t.account_security_enterSixDigit,
       validator: (p0) {
         if (p0!.isEmpty) {
-          return t.account_security_enterSixDigit;
+          return t.invalidOTPFormat;
         }
         return null;
       },

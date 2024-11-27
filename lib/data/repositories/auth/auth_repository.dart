@@ -25,6 +25,13 @@ abstract class AuthRepository {
   Future<ApiResponse<QRCodeResponse?>> updateState2FA(
       {required String password});
   Future<ApiResponse> confirmEnable2FA({required String code});
+  Future<ApiResponse<int>> forgotPassword({required String email});
+  Future<ApiResponse> resetPassword({
+    required String email,
+    required String password,
+    required String passwordConfirmation,
+    required String otp,
+  });
 
   /*
    OLD VERSION ( USING FIREBASE TO IMPLEMENT AUTHEN)
@@ -126,6 +133,27 @@ class AuthRepositoryImpl extends AuthRepository {
   @override
   Future<ApiResponse<String?>> verify2FA({required String code}) async {
     final response = Check2FAApi(code: code).request();
+    return response;
+  }
+
+  @override
+  Future<ApiResponse<int>> forgotPassword({required String email}) async {
+    final response = await ForgotPasswordApi(email: email).request();
+    return response;
+  }
+
+  @override
+  Future<ApiResponse> resetPassword(
+      {required String email,
+      required String password,
+      required String passwordConfirmation,
+      required String otp}) async {
+    final response = await ResetPasswordApi(
+      confirmPassword: passwordConfirmation,
+      email: email,
+      otp: otp,
+      password: password,
+    ).request();
     return response;
   }
 

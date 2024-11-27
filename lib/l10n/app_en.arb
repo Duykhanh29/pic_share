@@ -160,5 +160,11 @@
     "sendEmailForLogin": "Send an email notification on login event",
     "warningToShareWithFriend": "Share with all friends (including future friends). If you do not select this button but still select all friends in your current list, this post will not exist for future friends.",
     "noConnection": "No Internet connection. Check your connection or try again",
-    "tryAgain": "Retry"
+    "tryAgain": "Retry",
+    "back": "Quay lại",
+    "invalidOTPFormat": "The verification code is not in the correct format.",
+    "verificationCode": "Verification code",
+    "otpValidity": "This code is valid for {validity} minutes",
+    "forgotPassword": "Forgot password",
+    "resetPassword": "Reset password"
 }

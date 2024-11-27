@@ -263,3 +263,68 @@ class ConfirmEnable2FAApi extends APIRequestRepresentable {
     return APIProvider().request(this);
   }
 }
+
+class ForgotPasswordApi extends APIRequestRepresentable<int> {
+  final String email;
+  ForgotPasswordApi({required this.email});
+  @override
+  String get endpoint => '/api/auth/forgot-password';
+
+  @override
+  HTTPMethod get method => HTTPMethod.post;
+
+  @override
+  get body => {
+        'email': email,
+      };
+
+  @override
+  Future<ApiResponse<int>> request() {
+    return APIProvider().request(this);
+  }
+
+  @override
+  int Function(dynamic json) get fromJson => (json) {
+        if (json is Map<String, dynamic>) {
+          final data = json['validity'];
+          return data;
+        }
+        return 0;
+      };
+}
+
+class ResetPasswordApi extends APIRequestRepresentable {
+  final String otp;
+  final String email;
+  final String password;
+  final String confirmPassword;
+  ResetPasswordApi({
+    required this.otp,
+    required this.email,
+    required this.password,
+    required this.confirmPassword,
+  });
+  @override
+  String get endpoint => '/api/auth/reset-password';
+
+  @override
+  Function(dynamic json) get fromJson => (json) {
+        return json;
+      };
+
+  @override
+  HTTPMethod get method => HTTPMethod.post;
+
+  @override
+  get body => {
+        'otp': otp,
+        'password': password,
+        'email': email,
+        'password_confirmation': confirmPassword,
+      };
+
+  @override
+  Future<ApiResponse> request() {
+    return APIProvider().request(this);
+  }
+}

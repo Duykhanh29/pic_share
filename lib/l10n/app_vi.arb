@@ -160,6 +160,11 @@
     "sendEmailForLogin": "Gửi thông báo qua email khi đăng nhập",
     "warningToShareWithFriend": "Chia sẻ tới tất cả bạn bè( có thể gồm bạn bè trong tương lai). Nếu không chọn nút này nhưng mà vẫn chọn hết các bạn bè trong danh sách hiện tại thì bài viết này sẽ không tồn tại với bạn bè trong tương lai",
     "noConnection": "Không có kết nối Internet. Kiểm tra kết nối của bạn hoặc thử lại",
-    "tryAgain": "Thử lại"
-
+    "tryAgain": "Thử lại",
+    "back": "Quay lại",
+    "invalidOTPFormat": "Mã xác thực không đúng định dạng",
+    "verificationCode": "Mã xác thực",
+    "otpValidity": "Mã này có hiệu lực trong {validity} phút",
+    "forgotPassword": "Quên mật khẩu",
+    "resetPassword": "Reset password"
 }
