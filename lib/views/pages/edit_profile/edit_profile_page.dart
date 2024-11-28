@@ -60,7 +60,11 @@ class EditProfilePage extends GetView<EditProfileController> {
   }
 
   Widget _buildAvatar(BuildContext context) {
-    final size = MediaQuery.of(context).size.height;
+    final isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
+    final widthSize = MediaQuery.of(context).size.width;
+    final heightSize = MediaQuery.of(context).size.height;
+    final size = isPortrait ? heightSize : widthSize;
     return Obx(
       () => controller.isNewAvatar.value && controller.avatarFile.value != null
           ? CircleAvatar(
@@ -79,6 +83,11 @@ class EditProfilePage extends GetView<EditProfileController> {
   }
 
   Widget _buildEditAvatarButton(BuildContext context) {
+    final isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
+    final widthSize = MediaQuery.of(context).size.width;
+    final heightSize = MediaQuery.of(context).size.height;
+    final size = isPortrait ? heightSize : widthSize;
     return Positioned(
       bottom: 0,
       right: 0,
@@ -90,9 +99,9 @@ class EditProfilePage extends GetView<EditProfileController> {
             color: Colors.blue,
             shape: BoxShape.circle,
           ),
-          child: const Icon(
+          child: Icon(
             Icons.edit,
-            size: 18,
+            size: size * 0.025,
             color: Colors.white,
           ),
         ),

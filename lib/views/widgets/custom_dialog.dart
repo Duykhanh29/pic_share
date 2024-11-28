@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pic_share/app/constants/app_color.dart';
 
 class CustomDialog extends StatelessWidget {
@@ -30,7 +31,8 @@ class CustomDialog extends StatelessWidget {
         title: Center(
           child: Text(
             title,
-            // style: context.textTheme.titleLarge,
+            style: context.textTheme.titleLarge,
+            textAlign: TextAlign.center,
           ),
         ),
         actions: _buildActions(),

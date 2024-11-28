@@ -15,6 +15,9 @@ class AppDrawer extends GetView<AppDrawerController> {
     final t = AppLocalizations.of(context)!;
     final size = MediaQuery.of(context).size;
     final sizeWidth = size.width;
+    final heightSize = size.height;
+    final isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
     return Drawer(
       width: sizeWidth * 0.7,
       surfaceTintColor: Colors.white,
@@ -32,9 +35,9 @@ class AppDrawer extends GetView<AppDrawerController> {
                   Center(
                     child: AvatarWidget(
                       urlAvatar: controller.currentUser?.urlAvatar,
-                      width: sizeWidth * 0.15,
-                      height: sizeWidth * 0.15,
-                      radius: sizeWidth * 0.075,
+                      width: (isPortrait ? sizeWidth : heightSize) * 0.15,
+                      height: (isPortrait ? sizeWidth : heightSize) * 0.15,
+                      radius: (isPortrait ? sizeWidth : heightSize) * 0.075,
                     ),
                   ),
                   Center(
@@ -49,10 +52,12 @@ class AppDrawer extends GetView<AppDrawerController> {
             ),
           ),
           Container(
-            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+            padding: EdgeInsets.symmetric(
+                vertical: heightSize * 0.005, horizontal: sizeWidth * 0.01),
             child: Obx(
               () => ListTile(
-                contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: sizeWidth * 0.01),
                 selectedColor: controller.selectedUserId.value == null
                     ? AppColors.selectedColor
                     : null,
@@ -70,42 +75,31 @@ class AppDrawer extends GetView<AppDrawerController> {
             ),
           ),
           const Divider(),
-          Expanded(
-            child: Obx(
-              () => ListView.separated(
-                  padding: EdgeInsets.zero,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    final friend = controller.friendList[index];
-                    return Obx(
-                      () => Container(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 5, horizontal: 10),
-                        child: ListTile(
-                          onTap: () {
-                            controller.onChangeSelectedUserId(
-                              friend.userId != controller.currentUser?.id
-                                  ? friend.userId
-                                  : friend.friendId,
-                            );
-                            controller.closeDrawer(context);
-                          },
-                          title: Text(
-                            friend.name ?? "",
-                            style: AppTextStyles.commonTextStyle().copyWith(
-                              color:
-                                  (friend.userId != controller.currentUser?.id
-                                          ? controller.selectedUserId.value ==
-                                              friend.userId
-                                          : controller.selectedUserId.value ==
-                                              friend.friendId)
-                                      ? AppColors.selectedColor
-                                      : null,
-                            ),
-                          ),
-                          leading: Container(
-                              padding: const EdgeInsets.all(4),
-                              decoration: BoxDecoration(
+          Visibility(
+            visible: isPortrait,
+            child: Expanded(
+              child: Obx(
+                () => ListView.separated(
+                    padding: EdgeInsets.zero,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      final friend = controller.friendList[index];
+                      return Obx(
+                        () => Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 5, horizontal: 10),
+                          child: ListTile(
+                            onTap: () {
+                              controller.onChangeSelectedUserId(
+                                friend.userId != controller.currentUser?.id
+                                    ? friend.userId
+                                    : friend.friendId,
+                              );
+                              controller.closeDrawer(context);
+                            },
+                            title: Text(
+                              friend.name ?? "",
+                              style: AppTextStyles.commonTextStyle().copyWith(
                                 color:
                                     (friend.userId != controller.currentUser?.id
                                             ? controller.selectedUserId.value ==
@@ -114,39 +108,60 @@ class AppDrawer extends GetView<AppDrawerController> {
                                                 friend.friendId)
                                         ? AppColors.selectedColor
                                         : null,
-                                shape: BoxShape.circle,
                               ),
-                              child: AvatarWidget(
-                                urlAvatar: friend.avatar,
-                                height: sizeWidth * 0.075,
-                                width: sizeWidth * 0.075,
-                                radius: sizeWidth * 0.075 / 2,
-                              )),
+                            ),
+                            leading: Container(
+                                padding: const EdgeInsets.all(4),
+                                decoration: BoxDecoration(
+                                  color: (friend.userId !=
+                                              controller.currentUser?.id
+                                          ? controller.selectedUserId.value ==
+                                              friend.userId
+                                          : controller.selectedUserId.value ==
+                                              friend.friendId)
+                                      ? AppColors.selectedColor
+                                      : null,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: AvatarWidget(
+                                  urlAvatar: friend.avatar,
+                                  height: sizeWidth * 0.075,
+                                  width: sizeWidth * 0.075,
+                                  radius: sizeWidth * 0.075 / 2,
+                                )),
+                          ),
                         ),
-                      ),
-                    );
-                  },
-                  separatorBuilder: (context, index) =>
-                      DividerHelper.sizedBoxDivider(),
-                  itemCount: controller.friendList.length),
+                      );
+                    },
+                    separatorBuilder: (context, index) =>
+                        DividerHelper.sizedBoxDivider(),
+                    itemCount: controller.friendList.length),
+              ),
             ),
           ),
-          const Divider(),
-          GestureDetector(
-            onTap: controller.logout,
-            child: Container(
-              decoration:
-                  BoxDecoration(color: Colors.transparent.withOpacity(0)),
-              child: ListTile(
-                title: Text(
-                  t.logout,
-                  style: AppTextStyles.logOutTextStyle(),
+          Visibility(
+            visible: isPortrait,
+            child: Column(
+              children: [
+                const Divider(),
+                GestureDetector(
+                  onTap: controller.logout,
+                  child: Container(
+                    decoration:
+                        BoxDecoration(color: Colors.transparent.withOpacity(0)),
+                    child: ListTile(
+                      title: Text(
+                        t.logout,
+                        style: AppTextStyles.logOutTextStyle(),
+                      ),
+                      leading: const Icon(
+                        Icons.logout_sharp,
+                        color: AppColors.warningColor,
+                      ),
+                    ),
+                  ),
                 ),
-                leading: const Icon(
-                  Icons.logout_sharp,
-                  color: AppColors.warningColor,
-                ),
-              ),
+              ],
             ),
           ),
         ],

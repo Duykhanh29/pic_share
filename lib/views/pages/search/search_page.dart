@@ -26,7 +26,7 @@ class SearchPage extends GetView<SearchUserController> {
                 CustomScrollView(
                   shrinkWrap: true,
                   slivers: [
-                    Obx(() => _buildSliverAppBar(t)),
+                    Obx(() => _buildSliverAppBar(t, context)),
                     Obx(
                       () => controller.isSearchWithCode.value
                           ? _buildCodeSearchResult(context)
@@ -41,7 +41,9 @@ class SearchPage extends GetView<SearchUserController> {
     );
   }
 
-  Widget _buildSliverAppBar(AppLocalizations t) {
+  Widget _buildSliverAppBar(AppLocalizations t, BuildContext context) {
+    final isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
     return SliverAppBar(
       // shape: const ContinuousRectangleBorder(
       //   borderRadius: BorderRadius.vertical(
@@ -53,9 +55,13 @@ class SearchPage extends GetView<SearchUserController> {
               bottomLeft: Radius.circular(25),
               bottomRight: Radius.circular(25))),
       pinned: true,
-      expandedHeight: controller.isSearchWithCode.value
-          ? MediaQuery.of(Get.context!).size.height * 0.3
-          : MediaQuery.of(Get.context!).size.height * 0.2,
+      expandedHeight: isPortrait
+          ? (controller.isSearchWithCode.value
+              ? MediaQuery.of(Get.context!).size.height * 0.3
+              : MediaQuery.of(Get.context!).size.height * 0.2)
+          : (controller.isSearchWithCode.value
+              ? MediaQuery.of(Get.context!).size.height * 0.48
+              : MediaQuery.of(Get.context!).size.height * 0.38),
       backgroundColor: AppColors.secondaryColor,
       title: Text(
         controller.isSearchWithCode.value ? t.searchWithCode : t.search,
@@ -65,9 +71,13 @@ class SearchPage extends GetView<SearchUserController> {
       leading: const CustomBackButton(),
       bottom: PreferredSize(
         preferredSize: Size.fromHeight(
-          controller.isSearchWithCode.value
-              ? MediaQuery.of(Get.context!).size.height * 0.18
-              : MediaQuery.of(Get.context!).size.height * 0.08,
+          isPortrait
+              ? (controller.isSearchWithCode.value
+                  ? MediaQuery.of(Get.context!).size.height * 0.18
+                  : MediaQuery.of(Get.context!).size.height * 0.08)
+              : (controller.isSearchWithCode.value
+                  ? MediaQuery.of(Get.context!).size.height * 0.3
+                  : MediaQuery.of(Get.context!).size.height * 0.2),
         ),
         child: controller.isSearchWithCode.value
             ? _buildCodeSearchField(t)

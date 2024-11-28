@@ -15,12 +15,14 @@ class UserLogWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context)!;
+    final heightSize = MediaQuery.of(context).size.height;
+    final verticalPadding = heightSize * 0.02;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         _buildItem(t.posts, postCount),
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10),
+          padding: EdgeInsets.symmetric(vertical: verticalPadding),
           child: VerticalDivider(
             width: 1,
             thickness: 0.5,
@@ -29,7 +31,7 @@ class UserLogWidget extends StatelessWidget {
         ),
         _buildItem(t.views, viewCount),
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10),
+          padding: EdgeInsets.symmetric(vertical: verticalPadding),
           child: VerticalDivider(
             width: 1,
             thickness: 0.5,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pic_share/app/constants/app_text_styles.dart';
-import 'package:pic_share/app/constants/glocal_data.dart';
+import 'package:pic_share/app/constants/global_data.dart';
 import 'package:pic_share/app/helper/bottom_sheet_helper.dart';
 import 'package:pic_share/app/helper/image_cache_helper.dart';
 import 'package:pic_share/app/helper/shimmer_helper.dart';
@@ -27,41 +27,48 @@ class SinglePostContainer extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context)!;
+    final isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
+    final widthSize = MediaQuery.of(context).size.width;
+    final heightSize = MediaQuery.of(context).size.height;
+    final size = isPortrait ? widthSize : heightSize;
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _buildTopInfo(context, t),
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                ImageCacheHelper.showImage(
-                    url: postData.post.urlImage ??
-                        "https://picsum.photos/seed/picsum/200/300",
-                    width: MediaQuery.of(context).size.width,
-                    height:
-                        MediaQuery.of(context).size.height * singlePostSize),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: _buildActionsWidget(),
-                ),
-                _buildCaption(),
-              ],
-            ),
-            postData.post.userViews != null &&
-                    postData.post.userViews!.isNotEmpty
-                ? _buildUsersView(context, postData.post.userViews!)
-                : const SizedBox.shrink(),
-          ],
-        ),
+      padding: EdgeInsets.symmetric(vertical: size * 0.01),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          _buildTopInfo(context, t),
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              ImageCacheHelper.showImage(
+                  url: postData.post.urlImage ??
+                      "https://picsum.photos/seed/picsum/200/300",
+                  width: MediaQuery.of(context).size.width,
+                  height:
+                      (isPortrait ? heightSize : heightSize * singlePostSize) *
+                          singlePostSize),
+              Align(
+                alignment: Alignment.centerRight,
+                child: _buildActionsWidget(context),
+              ),
+              _buildCaption(context),
+            ],
+          ),
+          postData.post.userViews != null && postData.post.userViews!.isNotEmpty
+              ? _buildUsersView(context, postData.post.userViews!)
+              : const SizedBox.shrink(),
+        ],
       ),
     );
   }
 
   Widget _buildTopInfo(BuildContext context, AppLocalizations t) {
-    final size = MediaQuery.of(context).size.width;
+    final isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
+    final widthSize = MediaQuery.of(context).size.width;
+    final heightSize = MediaQuery.of(context).size.height;
+    final size = isPortrait ? widthSize : heightSize;
     return Padding(
       padding: const EdgeInsets.only(left: 5, top: 10, bottom: 10),
       child: Row(
@@ -127,10 +134,11 @@ class SinglePostContainer extends GetView<HomeController> {
     );
   }
 
-  Widget _buildCaption() {
+  Widget _buildCaption(BuildContext context) {
+    final heightSize = MediaQuery.of(context).size.height;
     return postData.post.caption != null
         ? Positioned(
-            bottom: 20,
+            bottom: heightSize * 0.01,
             child: Center(
               child: Container(
                 decoration: BoxDecoration(
@@ -145,15 +153,20 @@ class SinglePostContainer extends GetView<HomeController> {
               ),
             ),
           )
-        : const Positioned(
-            bottom: 20,
-            child: SizedBox.shrink(),
+        : Positioned(
+            bottom: heightSize * 0.01,
+            child: const SizedBox.shrink(),
           );
   }
 
-  Widget _buildActionsWidget() {
-    return Padding(
-      padding: const EdgeInsets.all(10),
+  Widget _buildActionsWidget(BuildContext context) {
+    final heightSize = MediaQuery.of(context).size.height;
+    final isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
+    final widthSize = MediaQuery.of(context).size.width;
+    return Container(
+      margin: isPortrait ? null : EdgeInsets.only(right: widthSize * 0.03),
+      padding: EdgeInsets.all(heightSize * 0.01),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -172,8 +185,8 @@ class SinglePostContainer extends GetView<HomeController> {
             postData.post.likeCount.toString(),
             style: AppTextStyles.commonTextStyle(),
           ),
-          const SizedBox(
-            height: 8,
+          SizedBox(
+            height: heightSize * 0.01,
           ),
           _buildButton(Icons.comment, () {
             Get.toNamed(Routes.comments, arguments: {
@@ -184,8 +197,8 @@ class SinglePostContainer extends GetView<HomeController> {
             postData.post.cmtCount.toString(),
             style: AppTextStyles.commonTextStyle(),
           ),
-          const SizedBox(
-            height: 8,
+          SizedBox(
+            height: heightSize * 0.01,
           ),
           isMe
               ? const SizedBox.shrink()
@@ -194,8 +207,8 @@ class SinglePostContainer extends GetView<HomeController> {
                 }),
           if (postData.post.latitude != null &&
               postData.post.longitude != null) ...[
-            const SizedBox(
-              height: 16,
+            SizedBox(
+              height: heightSize * 0.02,
             ),
             _buildButton(Icons.location_on, () {
               controller.onNavToLocationView(postData.post.id);

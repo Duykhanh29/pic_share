@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:pic_share/app/constants/app_color.dart';
+import 'package:pic_share/app/constants/app_text_styles.dart';
 import 'package:pic_share/data/models/auth/qrcode_response.dart';
 import 'package:pic_share/views/pages/security/widgets/bottom_sheet_button.dart';
 import 'package:pic_share/views/widgets/custom_dialog.dart';
@@ -113,18 +114,28 @@ class _Confirm2faDialogState extends State<Confirm2faDialog> {
     final size = MediaQuery.of(context).size.width * 0.02;
     return Row(
       children: [
-        Icon(Icons.circle, size: size / 8, color: AppColors.black),
+        Icon(Icons.circle, size: size / 2, color: AppColors.black),
         horizontalSpace(size),
-        Text(title, style: context.textTheme.labelSmall),
+        Expanded(
+          child: Container(
+            padding: const EdgeInsets.all(2),
+            child: Text(
+              title,
+              style: AppTextStyles.smallTextStyle().copyWith(fontSize: 10),
+              overflow: TextOverflow.clip,
+              maxLines: 2,
+            ),
+          ),
+        )
       ],
     );
   }
 
   Widget _buildRecommendedApps(AppLocalizations t) => Text(
         "(${t.account_security_popularApps})",
-        style: context.textTheme.labelSmall
-            ?.copyWith(color: AppColors.darkBackgroundColor),
+        style: AppTextStyles.smallTextStyle().copyWith(fontSize: 8),
         overflow: TextOverflow.clip,
+        maxLines: 3,
       );
 
   Widget _buildQRCodeImage(BuildContext context) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:pic_share/app/constants/app_color.dart';
 import 'package:pic_share/views/pages/logo_widget.dart';
 import 'package:pic_share/views/widgets/keyboard_dismiss.dart';
@@ -14,6 +15,9 @@ class AuthLayoutView extends StatelessWidget {
   final Widget child;
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     return Stack(
       children: [
         mainView(context),

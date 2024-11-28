@@ -186,6 +186,10 @@ class AuthController extends GetxController {
     try {
       actionLoading.value = true;
       final response = await authRepository.updateState2FA(password: password);
+
+      // check isEnable is false and handle in if block because.
+      // When it comes to false, it means user want to disable 2FA
+      // but, if isEnable is true, it just first step in 2 step verification
       if (response.isSuccess && !isEnable) {
         localStorageService.setIsEnable2Fa(isEnable);
         setIsEnable2Fa(isEnable);

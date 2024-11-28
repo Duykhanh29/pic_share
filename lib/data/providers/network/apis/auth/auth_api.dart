@@ -219,7 +219,7 @@ class UpdateState2FAApi extends APIRequestRepresentable<QRCodeResponse?> {
 
   @override
   QRCodeResponse? Function(dynamic json) get fromJson => (json) {
-        if (json != null || json is Map<String, dynamic>) {
+        if (json != null && json is Map<String, dynamic>) {
           return QRCodeResponse.fromJson(json);
         }
         return null;

@@ -11,8 +11,10 @@ class UserCodeSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context)!;
+    final heightSize = MediaQuery.of(context).size.height;
+    final verticalPadding = heightSize * 0.02;
     return Container(
-      padding: const EdgeInsets.all(10),
+      padding: EdgeInsets.all(verticalPadding),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -21,18 +23,18 @@ class UserCodeSection extends StatelessWidget {
             style: AppTextStyles.commonTextStyle()
                 .copyWith(fontWeight: FontWeight.w600),
           ),
-          const SizedBox(height: 10),
+          SizedBox(height: verticalPadding),
           Container(
-            padding: const EdgeInsets.all(5),
+            padding: EdgeInsets.all(verticalPadding / 2),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(verticalPadding),
               color: AppColors.selectedColor,
               border: Border.all(color: AppColors.greyBorder),
             ),
             child: Column(
               children: [
                 Container(
-                  margin: const EdgeInsets.symmetric(vertical: 5),
+                  margin: EdgeInsets.symmetric(vertical: verticalPadding / 2),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [

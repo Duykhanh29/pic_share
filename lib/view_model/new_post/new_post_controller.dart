@@ -4,7 +4,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:pic_share/app/constants/glocal_data.dart';
+import 'package:pic_share/app/constants/global_data.dart';
 import 'package:pic_share/app/helper/snack_bar_helper.dart';
 import 'package:pic_share/app/services/location_service.dart';
 import 'package:pic_share/app/utils/date_utils.dart' as date;

@@ -166,5 +166,6 @@
     "verificationCode": "Mã xác thực",
     "otpValidity": "Mã này có hiệu lực trong {validity} phút",
     "forgotPassword": "Quên mật khẩu",
-    "resetPassword": "Reset password"
+    "resetPassword": "Đặt lại mật khẩu",
+    "switchToPortraitToTakePicture": "Bạn cần xoay sang màn hình dọc để có thể thực hiện đăng ảnh được!"
 }
