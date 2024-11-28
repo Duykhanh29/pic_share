@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pic_share/app/config/app_config.dart';
 import 'package:pic_share/app/constants/app_color.dart';
+import 'package:pic_share/app/constants/global_data.dart';
 import 'package:pic_share/view_model/app/session_controller.dart';
 
 class ImageCacheHelper {
@@ -48,13 +49,18 @@ class ImageCacheHelper {
           height: height,
           width: width,
           imageBuilder: (context, imageProvider) {
+            final isPortrait =
+                MediaQuery.of(context).orientation == Orientation.portrait;
+            final heightSize = MediaQuery.of(context).size.height;
+            final size = isPortrait ? heightSize : heightSize * 0.45;
+            final postRadius = size * radioNewPostView;
             return Container(
               height: height,
               width: width,
               decoration: BoxDecoration(
                 border:
                     Border.all(color: AppColors.backgroundColor, width: 0.4),
-                // borderRadius: BorderRadius.circular(80),
+                borderRadius: BorderRadius.circular(postRadius),
                 image:
                     DecorationImage(image: imageProvider, fit: BoxFit.contain),
               ),

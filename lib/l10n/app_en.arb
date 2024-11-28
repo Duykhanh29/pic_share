@@ -166,5 +166,6 @@
     "verificationCode": "Verification code",
     "otpValidity": "This code is valid for {validity} minutes",
     "forgotPassword": "Forgot password",
-    "resetPassword": "Reset password"
+    "resetPassword": "Reset password",
+    "switchToPortraitToTakePicture": "You need to rotate the screen to portrait to be able to take a photo!"
 }

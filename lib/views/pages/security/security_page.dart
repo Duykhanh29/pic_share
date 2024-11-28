@@ -32,93 +32,95 @@ class SecurityPage extends GetView<AuthController> {
       appBar: CustomAppBar(title: t.security).show(),
       body: Padding(
         padding: const EdgeInsets.all(15),
-        child: Column(
-          children: [
-            ListTile(
-              onTap: () {
-                Get.toNamed(Routes.changePassword);
-              },
-              title: Text(t.changePass),
-              trailing: IconButton(
-                  onPressed: () {
-                    Get.toNamed(Routes.changePassword);
-                  },
-                  icon: const Icon(
-                    Icons.arrow_forward_ios_outlined,
-                    size: 18,
-                  )),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Divider(
-                color: AppColors.darkBorderColor,
-                thickness: 0.3,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              ListTile(
+                onTap: () {
+                  Get.toNamed(Routes.changePassword);
+                },
+                title: Text(t.changePass),
+                trailing: IconButton(
+                    onPressed: () {
+                      Get.toNamed(Routes.changePassword);
+                    },
+                    icon: const Icon(
+                      Icons.arrow_forward_ios_outlined,
+                      size: 18,
+                    )),
               ),
-            ),
-            Obx(
-              () {
-                return SwitchListTile(
-                  title: Text(t.twoFactorAuthentication),
-                  value: controller.currentUser.value?.isEnable2FA ?? false,
-                  onChanged: (val) {
-                    Get.dialog(PasswordDialog(
-                      onUpdate2FA: (p0) async {
-                        return await controller.updateState2FA(
-                            password: p0, isEnable: val);
-                      },
-                      onShowConfirm2FA: (qrCodeData) async {
-                        await Get.dialog(Confirm2faDialog(
-                          qrCodeData: qrCodeData,
-                          onConfirm: (code) async {
-                            await controller.confirmEnable2FA(code: code);
-                          },
-                        ));
-                      },
-                    ));
-                  },
-                );
-              },
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Divider(
-                color: AppColors.darkBorderColor,
-                thickness: 0.3,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Divider(
+                  color: AppColors.darkBorderColor,
+                  thickness: 0.3,
+                ),
               ),
-            ),
-            Obx(
-              () {
-                return SwitchListTile(
-                  title: Text(t.sendEmailForLogin),
-                  value: controller
-                          .currentUser.value?.config?.isEnableLoginEmail ??
-                      false,
-                  onChanged: (val) async {
-                    await controller.updateUserInfo(isEnableLoginEmail: val);
-                  },
-                );
-              },
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Divider(
-                color: AppColors.darkBorderColor,
-                thickness: 0.3,
+              Obx(
+                () {
+                  return SwitchListTile(
+                    title: Text(t.twoFactorAuthentication),
+                    value: controller.currentUser.value?.isEnable2FA ?? false,
+                    onChanged: (val) {
+                      Get.dialog(PasswordDialog(
+                        onUpdate2FA: (p0) async {
+                          return await controller.updateState2FA(
+                              password: p0, isEnable: val);
+                        },
+                        onShowConfirm2FA: (qrCodeData) async {
+                          await Get.dialog(Confirm2faDialog(
+                            qrCodeData: qrCodeData,
+                            onConfirm: (code) async {
+                              await controller.confirmEnable2FA(code: code);
+                            },
+                          ));
+                        },
+                      ));
+                    },
+                  );
+                },
               ),
-            ),
-            ListTile(
-              onTap: () {
-                Get.toNamed(Routes.notFound);
-              },
-              title: Text(t.termConditions),
-              trailing: IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.arrow_forward_ios_outlined,
-                    size: 18,
-                  )),
-            ),
-          ],
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Divider(
+                  color: AppColors.darkBorderColor,
+                  thickness: 0.3,
+                ),
+              ),
+              Obx(
+                () {
+                  return SwitchListTile(
+                    title: Text(t.sendEmailForLogin),
+                    value: controller
+                            .currentUser.value?.config?.isEnableLoginEmail ??
+                        false,
+                    onChanged: (val) async {
+                      await controller.updateUserInfo(isEnableLoginEmail: val);
+                    },
+                  );
+                },
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Divider(
+                  color: AppColors.darkBorderColor,
+                  thickness: 0.3,
+                ),
+              ),
+              ListTile(
+                onTap: () {
+                  Get.toNamed(Routes.notFound);
+                },
+                title: Text(t.termConditions),
+                trailing: IconButton(
+                    onPressed: () {},
+                    icon: const Icon(
+                      Icons.arrow_forward_ios_outlined,
+                      size: 18,
+                    )),
+              ),
+            ],
+          ),
         ),
       ),
     );

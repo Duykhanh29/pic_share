@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pic_share/app/constants/glocal_data.dart';
+import 'package:pic_share/app/constants/global_data.dart';
 import 'package:pic_share/routes/app_pages.dart';
 import 'package:pic_share/view_model/auth/auth_bindings.dart';
 import 'package:responsive_framework/responsive_framework.dart';

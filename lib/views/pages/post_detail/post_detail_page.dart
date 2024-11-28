@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pic_share/app/constants/app_text_styles.dart';
-import 'package:pic_share/app/constants/glocal_data.dart';
+import 'package:pic_share/app/constants/global_data.dart';
 import 'package:pic_share/app/custom/app_bar_custom.dart';
 import 'package:pic_share/app/helper/bottom_sheet_helper.dart';
 import 'package:pic_share/app/helper/image_cache_helper.dart';
@@ -33,17 +33,19 @@ class PostDetailPage extends GetView<PostDetailController> {
             return Container(
               padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
               margin: const EdgeInsets.all(10),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  _buildTopPostDetail(context, postData),
-                  _buildPostImageView(context, postData),
-                  postData?.post.userViews != null &&
-                          postData!.post.userViews!.isNotEmpty
-                      ? _buildUsersView(
-                          context, postData, postData.post.userViews!)
-                      : const SizedBox.shrink(),
-                ],
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _buildTopPostDetail(context, postData),
+                    _buildPostImageView(context, postData),
+                    postData?.post.userViews != null &&
+                            postData!.post.userViews!.isNotEmpty
+                        ? _buildUsersView(
+                            context, postData, postData.post.userViews!)
+                        : const SizedBox.shrink(),
+                  ],
+                ),
               ),
             );
           }
@@ -91,7 +93,11 @@ class PostDetailPage extends GetView<PostDetailController> {
   }
 
   Widget _buildTopPostDetail(BuildContext context, PostData? postData) {
-    final size = MediaQuery.of(context).size.width;
+    final isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
+    final widthSize = MediaQuery.of(context).size.width;
+    final heightSize = MediaQuery.of(context).size.height;
+    final size = isPortrait ? widthSize : heightSize;
     return Padding(
       padding: const EdgeInsets.only(left: 5, top: 10, bottom: 10),
       child: Row(

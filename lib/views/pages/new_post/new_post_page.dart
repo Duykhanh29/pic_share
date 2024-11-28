@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pic_share/app/constants/app_color.dart';
 import 'package:pic_share/app/constants/app_text_styles.dart';
+import 'package:pic_share/app/constants/global_data.dart';
 import 'package:pic_share/app/custom/app_bar_custom.dart';
 import 'package:pic_share/view_model/new_post/new_post_controller.dart';
 import 'package:pic_share/views/pages/new_post/widgets/shared_user_widget.dart';
@@ -16,79 +17,113 @@ class NewPostPage extends GetView<NewPostController> {
 
   @override
   Widget build(BuildContext context) {
-    final t = AppLocalizations.of(context)!;
     return KeyboardDismiss(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: CustomAppBar(
-          textStyle: AppTextStyles.appBarLightTexStyle(),
-          title: t.newPost,
-          centerTitle: true,
-          isLeadingShow: false,
-          background: AppColors.postViewColor,
-          actions: [
-            IconButton(
-              onPressed: controller.onDownloadImageToGallery,
-              icon: const Icon(
-                Icons.download_for_offline_outlined,
-                color: Colors.white,
-              ),
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            IconButton(
-              onPressed: controller.checkIn,
-              icon: const Icon(
-                Icons.location_on_outlined,
-                color: Colors.white,
-              ),
-            ),
-          ],
-        ).show(),
-        body: Obx(
-          () => Stack(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: AppColors.postViewColor,
-                ),
-                padding: const EdgeInsets.symmetric(vertical: 15),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    _buildCameraView(context),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    _buildRowActions(),
-                    Obx(
-                      () => controller.pictureFile.value != null
-                          ? Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 15),
-                              child: Divider(
-                                color: AppColors.lightBorderColor,
-                                thickness: 0.2,
-                              ),
-                            )
-                          : const SizedBox.shrink(),
-                    ),
-                    Obx(() => controller.pictureFile.value != null
-                        ? _buildFriendShareOption(t)
-                        : const SizedBox.shrink()),
-                  ],
-                ),
-              ),
-              if (controller.isLoading.value) const LoadingWidget(),
-            ],
+        appBar: _buildAppBar(context),
+        body: _buildBody(context),
+      ),
+    );
+  }
+
+  AppBar _buildAppBar(BuildContext context) {
+    final t = AppLocalizations.of(context)!;
+    return CustomAppBar(
+      textStyle: AppTextStyles.appBarLightTexStyle(),
+      title: t.newPost,
+      centerTitle: true,
+      isLeadingShow: false,
+      background: AppColors.postViewColor,
+      actions: [
+        IconButton(
+          onPressed: controller.onDownloadImageToGallery,
+          icon: const Icon(
+            Icons.download_for_offline_outlined,
+            color: Colors.white,
           ),
+        ),
+        const SizedBox(
+          width: 10,
+        ),
+        IconButton(
+          onPressed: controller.checkIn,
+          icon: const Icon(
+            Icons.location_on_outlined,
+            color: Colors.white,
+          ),
+        ),
+      ],
+    ).show();
+  }
+
+  Widget _buildBody(BuildContext context) {
+    final isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
+    return isPortrait ? _buildView(context) : _buildLandscapeView(context);
+  }
+
+  Widget _buildLandscapeView(BuildContext context) {
+    final t = AppLocalizations.of(context)!;
+    final size = MediaQuery.of(context).size.height;
+    return Container(
+      height: size * singlePostSize,
+      decoration: BoxDecoration(
+        color: AppColors.postViewColor,
+        border: Border.all(color: AppColors.backgroundColor),
+      ),
+      child: Center(
+        child: Text(
+          t.switchToPortraitToTakePicture,
+          style: AppTextStyles.headingLightTextStyle(),
         ),
       ),
     );
   }
 
+  Widget _buildView(BuildContext context) {
+    final t = AppLocalizations.of(context)!;
+    return Obx(
+      () => Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              color: AppColors.postViewColor,
+            ),
+            padding: const EdgeInsets.symmetric(vertical: 15),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                _buildCameraView(context),
+                const SizedBox(
+                  height: 10,
+                ),
+                _buildRowActions(),
+                Obx(
+                  () => controller.pictureFile.value != null
+                      ? Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          child: Divider(
+                            color: AppColors.lightBorderColor,
+                            thickness: 0.2,
+                          ),
+                        )
+                      : const SizedBox.shrink(),
+                ),
+                Obx(() => controller.pictureFile.value != null
+                    ? _buildFriendShareOption(t)
+                    : const SizedBox.shrink()),
+              ],
+            ),
+          ),
+          if (controller.isLoading.value) const LoadingWidget(),
+        ],
+      ),
+    );
+  }
+
   Widget _buildCameraView(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final postRadius = size.height * radioNewPostView;
     final t = AppLocalizations.of(context)!;
     return Obx(() {
       return SingleChildScrollView(
@@ -96,14 +131,14 @@ class NewPostPage extends GetView<NewPostController> {
           height: MediaQuery.of(context).size.height * 0.5,
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(80),
+              borderRadius: BorderRadius.circular(postRadius),
               border: Border.all(color: AppColors.backgroundColor)),
           child: controller.isCameraInitialized.value
               ? controller.pictureFile.value != null
                   ? Stack(
                       children: [
                         ClipRRect(
-                          borderRadius: BorderRadius.circular(80),
+                          borderRadius: BorderRadius.circular(postRadius),
                           child: Image.file(
                               height: MediaQuery.of(context).size.height * 0.5,
                               width: MediaQuery.of(context).size.width,
@@ -154,10 +189,9 @@ class NewPostPage extends GetView<NewPostController> {
                       ],
                     )
                   : ClipRRect(
-                      borderRadius: BorderRadius.circular(80),
+                      borderRadius: BorderRadius.circular(postRadius),
                       child: AspectRatio(
-                        aspectRatio:
-                            controller.cameraController.value.aspectRatio,
+                        aspectRatio: 1.25,
                         child: CameraPreview(
                           controller.cameraController,
                         ),

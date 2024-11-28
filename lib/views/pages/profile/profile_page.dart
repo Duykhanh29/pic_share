@@ -49,6 +49,9 @@ class ProfilePage extends GetView<ProfileController> {
   AppBar _buildAppBar(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final width = size.width * 0.2;
+    final height = size.height;
+    final isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
     return AppBar(
       leading: const CustomBackButton(),
       actions: [
@@ -61,32 +64,32 @@ class ProfilePage extends GetView<ProfileController> {
         ),
       ],
       bottom: PreferredSize(
-        preferredSize: const Size.fromHeight(250),
+        preferredSize: Size.fromHeight(height * 0.4),
         child: Padding(
-          padding: const EdgeInsets.only(bottom: 20),
+          padding: EdgeInsets.only(bottom: height * 0.02),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               AvatarWidget(
                 urlAvatar: controller.currentUser?.urlAvatar,
-                height: width,
-                width: width,
-                radius: width / 2,
+                height: isPortrait ? width : width * 0.5,
+                width: isPortrait ? width : width * 0.5,
+                radius: isPortrait ? width / 2 : width / 4,
               ),
               SizedBox(
-                height: size.height * 0.02,
+                height: isPortrait ? height * 0.02 : height * 0.01,
               ),
               Text(
                 controller.currentUser?.name ?? "",
                 style: AppTextStyles.headingTextStyle(),
               ),
               SizedBox(
-                height: size.height * 0.02,
+                height: isPortrait ? height * 0.02 : height * 0.01,
               ),
               Obx(
                 () => controller.isUserLogLoading.value
                     ? ShimmerHelper().buildBasicShimmer(
-                        height: 80,
+                        height: isPortrait ? height * 0.08 : height * 0.04,
                         width: MediaQuery.of(context).size.width * 0.85)
                     : UserLogWidget(
                         likeCount: controller.userLog.value?.totalLikes ?? 0,

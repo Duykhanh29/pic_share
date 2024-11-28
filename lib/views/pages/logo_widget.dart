@@ -15,16 +15,17 @@ class LogoWidget extends StatelessWidget {
       width: radiusSize,
       decoration: BoxDecoration(
           shape: BoxShape.circle,
-          border: Border.all(color: AppColors.white, width: 2),
+          border: Border.all(color: AppColors.white, width: 1.5),
           boxShadow: [
             BoxShadow(
               color: AppColors.backgroundAuthScreenColor,
-              blurRadius: 4,
+              blurRadius: 0,
+              spreadRadius: 2,
               offset: const Offset(0, 1),
             )
           ]),
-      margin: const EdgeInsets.symmetric(vertical: 50),
-      alignment: Alignment.topCenter,
+      margin: EdgeInsets.symmetric(vertical: size * 0.05),
+      alignment: Alignment.center,
       child: Image.asset(
         AppImage.picShareLogo,
         width: logoSize,

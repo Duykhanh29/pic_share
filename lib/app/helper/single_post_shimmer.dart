@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pic_share/app/constants/glocal_data.dart';
+import 'package:pic_share/app/constants/global_data.dart';
 import 'package:pic_share/app/helper/skeleton.dart';
 
 class SinglePostShimmer extends StatelessWidget {

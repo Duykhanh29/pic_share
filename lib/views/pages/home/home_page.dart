@@ -115,6 +115,7 @@ class HomePage extends GetView<HomeController> {
       () => CarouselSlider.builder(
         key: ValueKey(controller.currentIndex.value),
         options: CarouselOptions(
+          scrollPhysics: const BouncingScrollPhysics(),
           autoPlayAnimationDuration: const Duration(seconds: 1),
           autoPlayCurve: Curves.linear,
           enlargeCenterPage: true,

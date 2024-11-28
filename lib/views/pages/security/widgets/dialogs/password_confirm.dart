@@ -53,7 +53,7 @@ class _PasswordDialogState extends State<PasswordDialog> {
       );
 
   Widget _buildConfirmButton(AppLocalizations t) => BottomSheetBottom(
-        title: t.confirmPass,
+        title: t.confirm,
         onTap: () async {
           Get.back();
           QRCodeResponse? qrCodeModel =
