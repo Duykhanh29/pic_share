@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pic_share/app/helper/device_info_helper.dart';
 import 'package:pic_share/app/helper/snack_bar_helper.dart';
 import 'package:pic_share/app/services/local_storage_service.dart';
 import 'package:pic_share/app/services/notification_service.dart';
@@ -84,7 +85,8 @@ class AuthController extends GetxController {
   Future<void> logout() async {
     try {
       await updateFCMToken(isNull: true);
-      final response = await authRepository.logout();
+      final deviceId = await DeviceInfoHelper.getDeviceId();
+      final response = await authRepository.logout(deviceId: deviceId);
       if (response.isSuccess) {
         SnackbarHelper.successSnackbar(
             response.message ?? "Logout successfully");
