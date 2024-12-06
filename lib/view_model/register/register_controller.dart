@@ -8,6 +8,7 @@ import 'package:pic_share/data/models/user/user_model.dart';
 import 'package:pic_share/data/repositories/auth/auth_repository.dart';
 import 'package:pic_share/data/repositories/user/user_repository.dart';
 import 'package:pic_share/view_model/app/session_controller.dart';
+import 'package:pic_share/app/helper/device_info_helper.dart';
 
 class RegisterController extends GetxController {
   final AuthRepository authRepository;
@@ -66,11 +67,16 @@ class RegisterController extends GetxController {
     try {
       var isValid = formKey.currentState!.validate();
       if (isValid) {
+        final deviceId = await DeviceInfoHelper.getDeviceId();
+        final deviceName = await DeviceInfoHelper.getDeviceName();
         final response = await authRepository.registerUserByEmailAndPass(
-            email: emailController.text.trim(),
-            password: passController.text,
-            confirmPassword: confirmPasswordController.text,
-            name: nameController.text.trim());
+          email: emailController.text.trim(),
+          password: passController.text,
+          confirmPassword: confirmPasswordController.text,
+          name: nameController.text.trim(),
+          deviceId: deviceId,
+          deviceName: deviceName,
+        );
 
         if (response.isSuccess) {
           user.value = response.data;

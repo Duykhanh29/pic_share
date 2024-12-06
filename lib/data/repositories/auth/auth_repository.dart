@@ -6,11 +6,14 @@ import 'package:pic_share/data/providers/network/api_response.dart';
 import 'package:pic_share/data/providers/network/apis/auth/auth_api.dart';
 
 abstract class AuthRepository {
-  Future<ApiResponse<UserModel?>> registerUserByEmailAndPass(
-      {required String email,
-      required String password,
-      required String name,
-      required String confirmPassword});
+  Future<ApiResponse<UserModel?>> registerUserByEmailAndPass({
+    required String email,
+    required String password,
+    required String name,
+    required String confirmPassword,
+    String? deviceId,
+    String? deviceName,
+  });
   Future<ApiResponse<UserModel?>> signInWithEmailPass({
     required String email,
     required String password,
@@ -18,7 +21,7 @@ abstract class AuthRepository {
     String? deviceName,
   });
   Future<ApiResponse<UserModel?>> signInWithGoogle();
-  Future<ApiResponse> logout();
+  Future<ApiResponse> logout({String? deviceId});
   Future<ApiResponse<String?>> refreshToken({required String refreshToken});
 
   Future<ApiResponse<String?>> verify2FA({required String code});
@@ -48,17 +51,22 @@ abstract class AuthRepository {
 
 class AuthRepositoryImpl extends AuthRepository {
   @override
-  Future<ApiResponse<UserModel?>> registerUserByEmailAndPass(
-      {required String email,
-      required String password,
-      required String name,
-      required String confirmPassword}) async {
+  Future<ApiResponse<UserModel?>> registerUserByEmailAndPass({
+    required String email,
+    required String password,
+    required String name,
+    required String confirmPassword,
+    String? deviceId,
+    String? deviceName,
+  }) async {
     final response = await RegisterAPI(
-            email: email,
-            name: name,
-            password: password,
-            passwordConfirmation: confirmPassword)
-        .request();
+      email: email,
+      name: name,
+      password: password,
+      passwordConfirmation: confirmPassword,
+      deviceId: deviceId,
+      deviceName: deviceName,
+    ).request();
     return response;
   }
 
@@ -104,8 +112,8 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
-  Future<ApiResponse> logout() async {
-    final response = await LogoutAPI().request();
+  Future<ApiResponse> logout({String? deviceId}) async {
+    final response = await LogoutAPI(deviceId: deviceId).request();
     return response;
   }
 

@@ -18,6 +18,7 @@ import 'package:pic_share/view_model/friend_profile/friend_profile_controller.da
 import 'package:pic_share/view_model/home/home_controller.dart';
 import 'package:pic_share/view_model/nav_bottom/nav_bottom_controller.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+import 'package:pic_share/app/services/notification_service.dart';
 
 class APIProvider {
   late Dio _dio;
@@ -139,6 +140,7 @@ class APIProvider {
         await deleteSession();
         g.Get.offAllNamed(Routes.login);
         resetIndexes();
+        deleteFcmToken();
       }
     } catch (e) {
       rethrow;
@@ -206,6 +208,11 @@ class APIProvider {
     localStorageService.removeAllSharedPreferencesValues();
     await TokenManager().deleteAll();
     deleteControllerDependenciesInjection();
+  }
+
+  Future<void> deleteFcmToken() async {
+    final notificationService = g.Get.find<NotificationsService>();
+    await notificationService.deleteCurrentToken();
   }
 
   void resetIndexes() {

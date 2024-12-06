@@ -38,15 +38,20 @@ class AuthAPI extends APIRequestRepresentable {
 }
 
 class RegisterAPI extends APIRequestRepresentable<UserModel?> {
-  RegisterAPI(
-      {required this.email,
-      required this.name,
-      required this.password,
-      required this.passwordConfirmation});
+  RegisterAPI({
+    required this.email,
+    required this.name,
+    required this.password,
+    required this.passwordConfirmation,
+    this.deviceId,
+    this.deviceName,
+  });
   String name;
   String email;
   String password;
   String passwordConfirmation;
+  String? deviceId;
+  String? deviceName;
   @override
   String get endpoint => '/api/register';
 
@@ -58,7 +63,9 @@ class RegisterAPI extends APIRequestRepresentable<UserModel?> {
         'name': name,
         'email': email,
         'password': password,
-        'password_confirmation': passwordConfirmation
+        'password_confirmation': passwordConfirmation,
+        if (deviceId != null) 'device_id': deviceId,
+        if (deviceName != null) 'device_name': deviceName,
       };
 
   @override
@@ -139,13 +146,19 @@ class LoginWithGoogleAPI extends APIRequestRepresentable<UserModel?> {
 }
 
 class LogoutAPI extends APIRequestRepresentable {
-  LogoutAPI();
+  final String? deviceId;
+  LogoutAPI({this.deviceId});
 
   @override
   String get endpoint => '/api/logout';
 
   @override
   HTTPMethod get method => HTTPMethod.get;
+
+  @override
+  get body => {
+        if (deviceId != null) 'device_id': deviceId,
+      };
 
   @override
   Function(dynamic json) get fromJson => (json) {

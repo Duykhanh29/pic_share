@@ -166,6 +166,10 @@ class NotificationsService extends GetxService {
     return token;
   }
 
+  Future<void> deleteCurrentToken() async {
+    await FirebaseMessaging.instance.deleteToken();
+  }
+
   Future<void> _setupFirebaseMessaging() async {
     FirebaseMessaging.onBackgroundMessage(_backgroundMessageHandler);
     _initLocalNotification();
